@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Arriendo de Estacionamiento</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar Estacionamientos">
+                <button type="submit" onclick="buscar()">Buscar</button>
+            </div>
+            <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
+            <a href="{% url 'index' %}">Cerrar sesión</a> <!--{% url 'index' %} cambiar x login cuando esté implementado-->
+        </div>
+    </header>
+
+    <div class="location">
+        Ubicación: <span id="ubicacion">Mi Ubicación</span>
+    </div>
+
+    <div class="carousel-container">
+        <div class="slick-carousel">
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 1"></div>
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 2"></div>
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 3"></div>
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 4"></div>
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 5"></div>
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 6"></div>
+            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 7"></div>
+        </div>
+        <div class="slick-prev">❮</div>
+        <div class="slick-next">❯</div>
+    </div>
+
+    <section class="estacionamientos">
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 1">
+            <h2>Estacionamiento en el Centro</h2>
+            <p>Descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 2">
+            <h2>Estacionamiento en otro lugar</h2>
+            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 3">
+            <h2>Estacionamiento en otro lugar diferente</h2>
+            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 4">
+            <h2>Estacionamiento en el Centro</h2>
+            <p>Descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 5">
+            <h2>Estacionamiento en otro lugar</h2>
+            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 6">
+            <h2>Estacionamiento en otro lugar diferente</h2>
+            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 7">
+            <h2>Estacionamiento en otro lugar</h2>
+            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+
+        <article class="estacionamiento">
+            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 8">
+            <h2>Estacionamiento en otro lugar diferente</h2>
+            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
+            <p>Precio: $700 por hora</p>
+            <button>Contactar</button>
+        </article>
+    </section>
+
+    <div class="more-images">
+        <img src="{% static 'img/me1.webp' %}" alt="Imagen 1">
+        <img src="{% static 'img/me1.webp' %}" alt="Imagen 2">
+    </div>
+
+    <footer>
+        <p>Contacto: MiEstacionamiento@gmail.com</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="{% static 'js/index.js' %}" async></script>
+</body>
+
+</html>
