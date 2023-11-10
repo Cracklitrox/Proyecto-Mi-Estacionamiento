@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/pago.css' %}">
+    <title>MiEstacionamiento | Pago</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'img/me1.webp' %}" alt="Logo Mi Estacionamiento">
+            <h1>Mi Estacionamiento</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <form id="paymentForm" action="#" method="post">
+            <label for="numero">Número de tarjeta:</label>
+            <input type="number" id="numero" placeholder="1234 5678 9012 3456" autocomplete="off" required>
+
+            <label for="cardName">Nombre en la tarjeta:</label>
+            <input type="text" id="cardName" placeholder="Nombre Apellido" autocomplete="off" required>
+
+            <div class="row">
+                <div class="col">
+                    <label for="expiryDate">Fecha de Vencimiento:</label>
+                    <input type="date" id="expiryDate" placeholder="MM/YY" autocomplete="off" required>
+                </div>
+                <div class="col">
+                    <label for="cvv">CVV:</label>
+                    <input type="number" id="cvv" placeholder="123" autocomplete="off" required>
+                </div>
+            </div>
+
+            <button type="button" id="submitBtn" onclick="submitPayment()">Pagar</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/pago.js' %}"></script>
+</body>
+</html>
