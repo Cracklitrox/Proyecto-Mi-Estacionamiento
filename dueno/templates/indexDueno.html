@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/indexDueno.css' %}">
+    <title>Dueño</title>
+</head>
+
+<body>
+    <header>
+        <div class="buscador">
+            <input type="text" placeholder="Buscar">
+        </div>
+        <div class="usuario">
+            <span>Nombre de Usuario</span>
+            <button>Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="content">
+        <h2>Mis Estacionamientos</h2>
+
+        <div class="cartas">
+            <div class="carta">
+                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 1">
+                <p>Información sobre Estacionamiento 1...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 2">
+                <p>Información sobre Estacionamiento 2...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est3.jpg' %}" alt="Estacionamiento 3">
+                <p>Información sobre Estacionamiento 3...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 1">
+                <p>Información sobre Estacionamiento 1...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 2">
+                <p>Información sobre Estacionamiento 2...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est3.jpg' %}" alt="Estacionamiento 3">
+                <p>Información sobre Estacionamiento 3...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 1">
+                <p>Información sobre Estacionamiento 1...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 2">
+                <p>Información sobre Estacionamiento 2...</p>
+            </div>
+
+            <div class="carta">
+                <img src="{% static 'img/est3.jpg' %}" alt="Estacionamiento 3">
+                <p>Información sobre Estacionamiento 3...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        MiEstacionamiento@gmail.com
+    </footer>
+</body>
+
+</html>
