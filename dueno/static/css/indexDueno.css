@@ -1,3 +1,5 @@
+/* Agrega estos estilos a tu archivo CSS */
+
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -5,41 +7,52 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f4f4f4;
+    background: linear-gradient(45deg, #2e86de, #e74c3c);
+    color: #fff;
 }
 
 header {
-    background-color: #333;
+    background: #34495e;
     color: #fff;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+}
+
+.search-bar input {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
     width: 100%;
+    margin-bottom: 10px;
 }
 
-.buscador input {
-    padding: 8px;
+.welcome p {
+    margin: 0;
 }
 
-.usuario button {
-    background-color: #ff7b7b;
+.logout-btn button {
+    background-color: #e74c3c;
     color: #fff;
     border: none;
-    padding: 8px 15px;
-    margin-left: 10px;
+    padding: 10px 15px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .content {
     flex-grow: 1;
-    width: 80%;
+    width: 90%;
     max-width: 1200px;
     margin: 20px auto;
 }
 
 h2 {
-    color: #333;
+    color: #fefefe;
 }
 
 .cartas {
@@ -49,8 +62,8 @@ h2 {
 }
 
 .carta {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: #2c3e50;
+    border: 1px solid #34495e;
     border-radius: 8px;
     margin: 10px;
     padding: 20px;
@@ -60,19 +73,20 @@ h2 {
 
 .carta img {
     width: 100%;
-    height: 200px; /* Establece la altura deseada para todas las imágenes */
-    object-fit: cover; /* Mantiene la relación de aspecto y cubre el contenedor */
+    height: 200px;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
 }
 
 .carta p {
     font-size: 1em;
+    color: #fff;
     max-width: 100%;
 }
 
 footer {
-    background-color: #333;
+    background-color: #34495e;
     color: #fff;
     padding: 20px;
     width: 100%;
