@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'CSS/homeAdmin.css' %}">
+    <title>Panel de administracion</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'cerrarSesion' %}">Cerrar Sesion</a></li>
+            <li><a href="{% url 'cerrarSesion' %}"> Cerrar Sesion </a></li>
+            <li><a href="{% url 'cerrarSesion' %}"> Cerrar Sesion </a></li>
+            <li><a href="{% url 'cerrarSesion' %}"> Cerrar Sesion </a></li>
+            <li><a href="{% url 'cerrarSesion' %}"> Cerrar Sesion </a></li>
+        </ul>
+    </nav>
+    <h1>Panel de administracion</h1>
+    <h2>Bienvenido {{ nombreUsuarioAdministrador }}</h2>
+    <div style="text-align: center;" id="alertaMensaje">
+        {% if mensajePermisos %}
+            {{ mensajePermisos }}
+        {% endif %}
+    </div>
+    <script src="{% static 'JS/autentificacionAdmin.js' %}"></script>
+</body>
+</html>

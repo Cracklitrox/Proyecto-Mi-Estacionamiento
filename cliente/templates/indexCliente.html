@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Arriendo de Estacionamiento</title>
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
@@ -19,7 +19,7 @@
                 <button type="submit" onclick="buscar()">Buscar</button>
             </div>
             <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
-            <a href="{% url 'index' %}">Cerrar sesión</a> <!--{% url 'index' %} cambiar x login cuando esté implementado-->
+            <a href="{% url 'indexCliente' %}">Cerrar sesión</a> <!--{% url 'indexCliente' %} cambiar x login cuando esté implementado-->
         </div>
     </header>
 
@@ -118,7 +118,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="{% static 'js/index.js' %}" async></script>
+    <script src="{% static 'js/indexCliente.js' %}" async></script>
 </body>
 
 </html>

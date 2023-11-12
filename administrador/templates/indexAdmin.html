@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesion Administrador</title>
+    <link rel="stylesheet" href="{% static 'CSS/indexAdmin.css' %}">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Autentificacion Administrador</h1>
+        <form action="{% url 'indexAdmin' %}" method="POST">
+            {% csrf_token %}
+            <!-- Campos formularios -->
+            <div>
+                <label for="campoNombre">Nombre de usuario o correo electronico</label>
+                <input type="text" id="campoNombre" name="campoNombre" required>
+            </div>
+            <div>
+                <label for="campoContrasena">Contraseña</label>
+                <input type="password" id="campoContrasena" name="campoContrasena" required>
+            </div>
+            <!-- Mensajes de Alerta (exitoso y fallido) -->
+            <div id="alertaMensaje">
+                {% if mensajeLogueo %}
+                    {{mensajeLogueo}}
+                {% endif %}
+            </div>
+            <div id="alertaMensaje">
+                {% if mensajeAdvertencia %}
+                    {{mensajeAdvertencia}}
+                {% endif %}
+            </div>
+            <button type="submit">Ingresar</button>
+        </form>
+    </div>
+    <script src="{% static 'JS/autentificacionAdmin.js' %}"></script>
+</body>
+</html>
