@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/default.css' %}">
+    <title>GPS</title>
+</head>
+<body>
+    <section class="mt-5">
+        <div class="row">
+          <!-- <div class="col-md-12 text-center">
+            <input type="text" id="place_input" class="form-control form-control-md" placeholder="Tinta en Acción">
+          </div> -->
+        </div>
+        <div id="mapDiv" style="height: 400px;"></div>
+    </section>
+    <!-- Mapa -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&callback=initMap" defer></script>
+    <!-- Funciones Propias -->
+    <script src="{% static 'js/api.js' %}"></script>
+</body>
+</html>
