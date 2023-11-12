@@ -26,49 +26,58 @@
         <h2>Mis Estacionamientos</h2>
 
         <div class="cartas">
-            <div class="carta">
+            <div class="carta" id="carta1">
                 <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 1">
                 <p>Información sobre Estacionamiento 1...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup1')">Ver más</button>
             </div>
 
-            <div class="carta">
+            <div class="carta" id="carta2">
                 <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 2">
                 <p>Información sobre Estacionamiento 2...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup2')">Ver más</button>
             </div>
 
-            <div class="carta">
-                <img src="{% static 'img/est3.jpg' %}" alt="Estacionamiento 3">
-                <p>Información sobre Estacionamiento 3...</p>
-            </div>
-
-            <div class="carta">
-                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 1">
+            <div class="carta" id="carta3">
+                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 3">
                 <p>Información sobre Estacionamiento 1...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup1')">Ver más</button>
             </div>
 
-            <div class="carta">
-                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 2">
+            <div class="carta" id="carta4">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 4">
                 <p>Información sobre Estacionamiento 2...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup2')">Ver más</button>
             </div>
 
-            <div class="carta">
-                <img src="{% static 'img/est3.jpg' %}" alt="Estacionamiento 3">
-                <p>Información sobre Estacionamiento 3...</p>
-            </div>
-
-            <div class="carta">
-                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 1">
+            <div class="carta" id="carta5">
+                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 5">
                 <p>Información sobre Estacionamiento 1...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup1')">Ver más</button>
             </div>
 
-            <div class="carta">
-                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 2">
+            <div class="carta" id="carta6">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 6">
                 <p>Información sobre Estacionamiento 2...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup2')">Ver más</button>
             </div>
 
-            <div class="carta">
-                <img src="{% static 'img/est3.jpg' %}" alt="Estacionamiento 3">
-                <p>Información sobre Estacionamiento 3...</p>
+            <div class="carta" id="carta7">
+                <img src="{% static 'img/est1.jpg' %}" alt="Estacionamiento 7">
+                <p>Información sobre Estacionamiento 1...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup1')">Ver más</button>
+            </div>
+
+            <div class="carta" id="carta8">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 8">
+                <p>Información sobre Estacionamiento 2...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup2')">Ver más</button>
+            </div>
+
+            <div class="carta" id="carta9">
+                <img src="{% static 'img/est2.jpg' %}" alt="Estacionamiento 9">
+                <p>Información sobre Estacionamiento 2...</p>
+                <button class="ver-mas-btn" onclick="mostrarPopup('popup2')">Ver más</button>
             </div>
         </div>
     </div>
@@ -76,6 +85,116 @@
     <footer>
         MiEstacionamiento@gmail.com
     </footer>
+
+    <!-- Popups -->
+    <div class="popup" id="popup1">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup1')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup2">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup2')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup3">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup3')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup4">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup4')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup5">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup5')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup6">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup6')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+    <div class="popup" id="popup7">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup7')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup8">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup8')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <div class="popup" id="popup9">
+        <div class="popup-content">
+            <span class="cerrar-popup" onclick="cerrarPopup('popup9')">&times;</span>
+            <h2>Información Detallada</h2>
+            <p>Número de Vehículo: 123</p>
+            <p>Número de Cliente: 456</p>
+            <p>Tarifa: $900</p>
+            <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+            <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
+        </div>
+    </div>
+
+    <script src="{% static 'js/indexDueno.js' %}"></script>
 </body>
 
 </html>
