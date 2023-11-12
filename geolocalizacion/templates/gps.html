@@ -11,14 +11,71 @@
 <body>
     <section class="mt-5">
         <div class="row">
-          <!-- <div class="col-md-12 text-center">
-            <input type="text" id="place_input" class="form-control form-control-md" placeholder="Tinta en Acción">
-          </div> -->
+          <div class="col-md-12 text-center">
+            <input type="text" id="place_input" class="form-control form-control-md" placeholder="Busqueda">
         </div>
-        <div id="mapDiv" style="height: 400px;"></div>
+        <div id="map" style="height: 400px;"></div>
     </section>
+    <script> 
+      const imageUrl = "{% static 'images/geo-alt-fill.svg' %}";
+      const mapDiv = document.getElementById("map");
+      const input = document.getElementById("place_input");
+      let map;    
+      let marker;
+      let autoComplete;
+
+      const santiagoCoords = { 
+        lat: -33.45694,
+        lng: -70.64827,
+        name: 'Santiago'
+      };
+
+      function initMap() {
+        map = new google.maps.Map(mapDiv, {
+          center: santiagoCoords,
+          zoom: 15
+        });
+
+
+        const markerIcon = {
+          url: imageUrl, // Ruta al archivo SVG descargado
+          scaledSize: new google.maps.Size(40, 40), // Tamaño del ícono
+          origin: new google.maps.Point(0, 0), // Origen del ícono
+          anchor: new google.maps.Point(20, 40) // Punto de anclaje del ícono
+        };
+
+        marker = new google.maps.Marker ({
+          position: santiagoCoords,
+          map: map,
+          draggable: true,
+          icon: markerIcon,
+          title: 'Marcador Personalizado'
+        });
+
+        initAutoComplete();
+      }
+
+      function initAutoComplete(){
+        autoComplete = new google.maps.places.Autocomplete(input); 
+
+        input.addEventListener('focus', function () {
+          input.value = santiagoCoords.name;
+          map.setCenter(santiagoCoords);
+          map.setZoom(13  );
+          marker.setPosition(santiagoCoords);
+        });
+
+        autoComplete.addListener('place_changed', function () {
+          const place = autoComplete.getPlace();
+          console.log(place);
+          map.setCenter(place.geometry.location);
+          map.setZoom(12);
+          marker.setPosition(place.geometry.location);
+        });
+      }
+    </script>
     <!-- Mapa -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&callback=initMap" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap" defer></script>
     <!-- Funciones Propias -->
     <script src="{% static 'js/api.js' %}"></script>
 </body>

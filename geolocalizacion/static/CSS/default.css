@@ -1,17 +1,17 @@
 /* API */
 #map {
-    height: 400px;
-    width: 100%;
-    position: relative;
-    top: 0;
-    left: 0;
-    border: 1px solid ;
-    border-radius: 0px 0px 20px 20px;
+  height: 400px;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  border: 1px solid ;
+  border-radius: 0px 0px 20px 20px;
 
 }
 
 #place_input{
-    border: 1px solid black;
-    border-bottom: none;
-    border-radius: 20px 20px 0px 0px;
+  border: 1px solid black;
+  border-bottom: none;
+  border-radius: 20px 20px 0px 0px;
 }
