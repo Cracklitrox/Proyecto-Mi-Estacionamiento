@@ -6,3 +6,6 @@ def indexDueno(request):
 
 def cargando(request):
     return render(request,'cargando.html')
+
+def estacionamientos(request):
+    return render(request,'estacionamientos.html')
