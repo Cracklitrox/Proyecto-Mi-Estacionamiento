@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,14 @@
     <link rel="stylesheet" href="{% static 'css/Estacionamientos.css' %}">
     <script src="{% static 'js/estacionamientos.js' %}"></script>
 </head>
+
 <body onload="setupparkingmanager()">
     <div class="navbar">
         <div class="brand">MI ESTACIONAMIENTO</div>
     </div>
     <div class="dashboard">
         <div class="parking-manager">
-            <div class="new-car-btn">Estacionamientos</div>
+            <div class="new-car-btn">Seleccionar Estacionamientos</div>
             <div class="new-car-entry">
                 <div onclick="carenter(0)" id="slot1">1</div>
                 <div onclick="carenter(1)" id="slot2">2</div>
@@ -28,15 +30,9 @@
                 <div onclick="carenter(8)" id="slot9">9</div>
                 <div onclick="carenter(9)" id="slot10">10</div>
             </div>
-            <div class="new-car-btn">Manage Queue</div>
-            <div class="queue">
-                <img id="queue1" src="carfaded.png"></img>
-                <img id="queue2" src="carfaded.png"></img>
-                <img id="queue3" src="carfaded.png"></img>
-                <img id="queue4" src="carfaded.png"></img>
-                <img id="queue5" src="carfaded.png"></img>
-            </div>
-            <div class="addtoqueue" onclick="addtoqueue()">Add to Queue</div>
+            <div class="new-car-btn">Tarifa: 1000</div>
+            <br>
+            <div class="new-car-btn">Cliente: 10</div>
         </div>
         <div class="parking-container" id="parkingspace">
             <div class="parking-slots-holder">

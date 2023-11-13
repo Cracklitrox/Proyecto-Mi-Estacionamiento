@@ -51,24 +51,6 @@ function updatequeue(){
     }
 }
 
-function addtoqueue(){
-    var freeslotflag = 0;
-    for(j=0;j<10;j++){
-        if(parklist[j] != 1){
-            freeslotflag = 1;
-            alert("Free slots available");
-            break
-        }
-    }
-    if(freeslotflag != 1){
-        queueitems = queueitems + 1;
-        if(queueitems > 5)
-        alert("Queue Limit Reached")
-        else
-        updatequeue();
-    }
-}
-
 function queuecheck(slot){
     if(queueitems > 0){
         queueitems = queueitems - 1;
