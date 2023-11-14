@@ -1,6 +1,7 @@
 from django.db import models
 from dueno.models import Dueno
 from cliente.models import Cliente
+from geolocalizacion.models import Puntointeres
 
 # Create your models here.
 
@@ -26,8 +27,8 @@ class Estacionamiento(models.Model):
     direccion = models.CharField(max_length=255)
     disponible = models.BooleanField(default=False, verbose_name='Estado Estacionamiento')
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')
-    coordenadasgps = models.CharField(db_column='coordenadasGPS', max_length=255, verbose_name='Coordenadas GPS')
     observaciones = models.CharField(max_length=255, blank=True, null=True)
+    id_puntoInteres = models.ForeignKey('geolocalizacion.Puntointeres', models.DO_NOTHING, db_column='id_puntointeres', verbose_name='Punto de Interes')
 
     def __str__(self):
         return 'ID: ' + str(self.id) + ' / Dueño del Estacionamiento: ' + str(self.id_dueno.nombreusuario)
