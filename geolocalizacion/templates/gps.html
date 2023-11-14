@@ -21,6 +21,7 @@
                 <!-- Agrega más opciones según tus necesidades -->
             </select>
           </div>
+          
         </div>
         <div id="map" style="height: 400px;"></div>
     </section>
@@ -31,6 +32,7 @@
       let map;    
       let marker;
       let autoComplete;
+      let markersArray = []; // Array para almacenar marcadores
 
       const santiagoCoords = { 
         lat: -33.45694,
@@ -45,6 +47,31 @@
         3: { lat: -41.497492, lng: -72.990633, name: 'Punto de Interés 3' },
         // Agrega más puntos de interés según tus necesidades
       };
+      // Calcular la distancia entre dos puntos usando la fórmula del haversine
+      function haversineDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // radio de la Tierra en kilómetros
+        const dLat = toRadians(lat2 - lat1);
+        const dLon = toRadians(lon2 - lon1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const distance = R * c; // distancia en kilómetros
+        return distance;
+      }
+
+      function toRadians(degrees) {
+        return degrees * (Math.PI / 180);
+      }
+
+      // Obtener un array de puntos ordenados por distancia
+      const sortedPoints = Object.entries(pointsOfInterest).map(([id, point]) => ({
+        id,
+        distance: haversineDistance(santiagoCoords.lat, santiagoCoords.lng, point.lat, point.lng),
+        point,
+      })).sort((a, b) => a.distance - b.distance);
+
+      console.log(sortedPoints);
 
       function initMap() {
         map = new google.maps.Map(mapDiv, {
@@ -58,61 +85,42 @@
         // Mostrar el primer punto de interés al cargar la página
         handlePoiSelect();
 
-        const markerIcon = {
-          url: imageUrl, // Ruta al archivo SVG descargado
-          scaledSize: new google.maps.Size(40, 40), // Tamaño del ícono
-          origin: new google.maps.Point(0, 0), // Origen del ícono
-          anchor: new google.maps.Point(20, 40) // Punto de anclaje del ícono
-        };
-
-        // marker = new google.maps.Marker ({
-        //   position: santiagoCoords,
-        //   map: map,
-        //   draggable: true,
-        //   icon: markerIcon,
-        //   title: 'Marcador Personalizado'
-        // });
-
-        initAutoComplete();
-      }
-
-      function initAutoComplete(){
-        autoComplete = new google.maps.places.Autocomplete(input); 
-
-        input.addEventListener('focus', function () {
-          input.value = santiagoCoords.name;
-          map.setCenter(santiagoCoords);
-          map.setZoom(13);
-          marker.setPosition(santiagoCoords);
-        });
-
-        autoComplete.addListener('place_changed', function () {
-          const place = autoComplete.getPlace();
-          console.log(place);
-          map.setCenter(place.geometry.location);
-          map.setZoom(15);
-          marker.setPosition(place.geometry.location);
-        });
       }
 
       function handlePoiSelect() {
         const selectedPoiId = document.getElementById('poiSelect').value;
         const selectedPoi = pointsOfInterest[selectedPoiId];
 
-        // Limpiar el marcador anterior, si existe
-        if (marker) {
-            marker.setMap(null);
-        }
+        // Limpiar todos los marcadores antes de agregar uno nuevo
+        clearMarkers();
 
         // Mostrar el nuevo marcador
         marker = new google.maps.Marker({
-            position: { lat: selectedPoi.lat, lng: selectedPoi.lng },
-            map: map,
-            title: selectedPoi.name
+          position: { lat: selectedPoi.lat, lng: selectedPoi.lng },
+          map: map,
+          icon: {
+            url: imageUrl,
+            scaledSize: new google.maps.Size(40, 40),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(20, 40)
+          },
+          title: selectedPoi.name
         });
+
+        // Agregar el nuevo marcador al array
+        markersArray.push(marker);
 
         // Centrar el mapa en el nuevo marcador
         map.setCenter(marker.getPosition());
+      }
+
+      function clearMarkers() {
+        // Iterar sobre el array y configurar el mapa como nulo para cada marcador
+        for (let i = 0; i < markersArray.length; i++) {
+          markersArray[i].setMap(null);
+        }
+        // Limpiar el array
+        markersArray = [];
       }
     </script>
     <!-- Mapa -->
