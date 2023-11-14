@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'CSS/panelCliente.css' %}">
+    <title>Panel Cliente</title>
+</head>
+
+<body>
+    <div id="container">
+        <nav>
+            <ul>
+                <li class="left"><a href="{% url 'panelCliente' %}">Administrar clientes</a></li>
+                <li class="center"><a href="{% url 'crearCliente' %}">Crear cliente</a></li>
+                <li class="right"><a href="{% url 'homeAdmin' %}">Menu administrador</a></li>
+            </ul>
+        </nav>
+        <main>
+            <section id="buscador">
+                <form>
+                    <input type="text" name="buscar" id="buscar" placeholder="Buscar cliente...">
+                    <img src="{% static 'Images/lupa.png' %}" alt="Lupa" id="lupa">
+                </form>
+                <div id="filtros">
+                    <img src="{% static 'Images/filtrar.png' %}" alt="Filtro" id="filtro">
+                    <p>Filtrar por</p>
+                    <img src="{% static 'Images/flechaArriba.png' %}" alt="Flecha arriba" id="flecha-arriba">
+                    <p>Clientes más actuales</p>
+                    <img src="{% static 'Images/flechaAbajo.png' %}" alt="Flecha abajo" id="flecha-abajo">
+                    <p>Clientes más antiguos</p>
+                </div>
+            </section>
+            {% if cliente %}
+                {% for cli in cliente %}
+                <section id="desplegable">
+                    <h2 id="dropdown">
+                        {{ cli.id }}
+                        {{ cli.run }}-{{ cli.dv_run }}
+                        {{ cli.pnombre }} {{ cli.snombre }} {{ cli.appaterno }} {{ cli.apmaterno }}
+                        <img src="{% static 'Images/flechaDespegable.png' %}" alt="Flecha" id="flecha">
+                    </h2>
+                    <div id="contenido">
+                        <div class="fila">
+                            <div id="cuadrado-personal">
+                                <p>Datos personales</p>
+                                <ul>
+                                    <li>Run: {{ cli.run }}</li>
+                                    <li>DV Run: {{ cli.dv_run }}</li>
+                                    <li>Correo: {{ cli.correoelectronico }}</li>
+                                    <li>Teléfono: {{ cli.telefono }}</li>
+                                    <li>Dirección: {{ cli.direccion }}</li>
+                                </ul>
+                                <hr>
+                                <ul>
+                                    <li>Primer nombre: {{ cli.pnombre }}</li>
+                                    <li>Segundo nombre: {{ cli.snombre }}</li>
+                                    <li>Apellido paterno: {{ cli.appaterno }}</li>
+                                    <li>Apellido materno: {{ cli.apmaterno }}</li>
+                                    <li>Ubicación: {{ cli.id_comuna.nombre }} - {{ cli.id_comuna.id_provincia.nombre }} - {{ cli.id_comuna.id_provincia.id_region.nombre }}</li>
+                                </ul>
+                            </div>
+                            <div id="cuadrado-cuenta">
+                                <p>Datos cuenta</p>
+                                <ul>
+                                    <li>Nombre de usuario: {{ cli.nombreusuario }}</li>
+                                    <li>Contraseña: {{ cli.contrasena }}</li>
+                                    <li>Calificación: {{ cli.calificacionpromedio }}</li>
+                                    <li>Estado: {{ cli.activo }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="fila">
+                            <div id="cuadrado-tarjeta">
+                                <p>Tarjeta de crédito</p>
+                                <img src="{% static 'IMG/tarjeta.png' %}" alt="Tarjeta" id="tarjeta">
+                                <ul>
+                                    <li>Número: {{ cli.id_tarjetacredito.numero }}</li>
+                                    <li>Fecha de vencimiento: {{ cli.id_tarjetacredito.fechavencimiento }}</li>
+                                    <li>Banco: {{ cli.id_banco.nombre }}</li>
+                                </ul>
+                            </div>
+                            <div id="botones">
+                                <button id="modificar">Modificar</button>
+                                <button id="eliminar">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {% endfor %}
+            {% else %}
+            <p>No existen clientes en la base de datos.</p>
+            {% endif %}
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+        integrity="sha512-J9QfbPuFlqGD2CYVCa6zn8/7PEgZnGpM5qtFOBZgwujjDnG5w5Fjx46YzqvIh/ORstcj7luStvvIHkisQi5SKw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'JS/autentificacionAdmin.js' %}"></script>
+    <script src="{% static 'JS/panelCliente.js' %}"></script>
+</body>
+
+</html>
