@@ -21,7 +21,6 @@
                 <!-- Agrega más opciones según tus necesidades -->
             </select>
           </div>
-          
         </div>
         <div id="map" style="height: 400px;"></div>
     </section>
@@ -72,7 +71,7 @@
       })).sort((a, b) => a.distance - b.distance);
 
       console.log(sortedPoints);
-
+      
       function initMap() {
         map = new google.maps.Map(mapDiv, {
           center: santiagoCoords,
