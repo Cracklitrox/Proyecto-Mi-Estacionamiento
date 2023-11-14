@@ -12,11 +12,19 @@
     <section class="mt-5">
         <div class="row">
           <div class="col-md-12 text-center">
-            <input type="text" id="place_input" class="form-control form-control-md" placeholder="Busqueda">
+            <label for="poiSelect">Selecciona un Punto de Interés:</label>
+            <select id="poiSelect" class="form-control">
+                <option value="santiago">Santiago</option>
+                <option value="1">Punto de Interés 1</option>
+                <option value="2">Punto de Interés 2</option>
+                <option value="3">Punto de Interés 3</option>
+                <!-- Agrega más opciones según tus necesidades -->
+            </select>
+          </div>
         </div>
         <div id="map" style="height: 400px;"></div>
     </section>
-    <script> 
+    <script>
       const imageUrl = "{% static 'images/geo-alt-fill.svg' %}";
       const mapDiv = document.getElementById("map");
       const input = document.getElementById("place_input");
@@ -30,12 +38,25 @@
         name: 'Santiago'
       };
 
+      const pointsOfInterest = {
+        santiago: santiagoCoords,
+        1: { lat: -33.42694, lng: -70.64827, name: 'Punto de Interés 1' },
+        2: { lat: -33.46694, lng: -70.64827, name: 'Punto de Interés 2' },
+        3: { lat: -41.497492, lng: -72.990633, name: 'Punto de Interés 3' },
+        // Agrega más puntos de interés según tus necesidades
+      };
+
       function initMap() {
         map = new google.maps.Map(mapDiv, {
           center: santiagoCoords,
           zoom: 15
         });
 
+        // Manejar cambios en el select
+        document.getElementById('poiSelect').addEventListener('change', handlePoiSelect);
+
+        // Mostrar el primer punto de interés al cargar la página
+        handlePoiSelect();
 
         const markerIcon = {
           url: imageUrl, // Ruta al archivo SVG descargado
@@ -44,13 +65,13 @@
           anchor: new google.maps.Point(20, 40) // Punto de anclaje del ícono
         };
 
-        marker = new google.maps.Marker ({
-          position: santiagoCoords,
-          map: map,
-          draggable: true,
-          icon: markerIcon,
-          title: 'Marcador Personalizado'
-        });
+        // marker = new google.maps.Marker ({
+        //   position: santiagoCoords,
+        //   map: map,
+        //   draggable: true,
+        //   icon: markerIcon,
+        //   title: 'Marcador Personalizado'
+        // });
 
         initAutoComplete();
       }
@@ -61,7 +82,7 @@
         input.addEventListener('focus', function () {
           input.value = santiagoCoords.name;
           map.setCenter(santiagoCoords);
-          map.setZoom(13  );
+          map.setZoom(13);
           marker.setPosition(santiagoCoords);
         });
 
@@ -69,13 +90,33 @@
           const place = autoComplete.getPlace();
           console.log(place);
           map.setCenter(place.geometry.location);
-          map.setZoom(12);
+          map.setZoom(15);
           marker.setPosition(place.geometry.location);
         });
       }
+
+      function handlePoiSelect() {
+        const selectedPoiId = document.getElementById('poiSelect').value;
+        const selectedPoi = pointsOfInterest[selectedPoiId];
+
+        // Limpiar el marcador anterior, si existe
+        if (marker) {
+            marker.setMap(null);
+        }
+
+        // Mostrar el nuevo marcador
+        marker = new google.maps.Marker({
+            position: { lat: selectedPoi.lat, lng: selectedPoi.lng },
+            map: map,
+            title: selectedPoi.name
+        });
+
+        // Centrar el mapa en el nuevo marcador
+        map.setCenter(marker.getPosition());
+      }
     </script>
     <!-- Mapa -->
-    <script src="https://maps.googleapis.x|com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap" defer></script>
     <!-- Funciones Propias -->
     <script src="{% static 'js/api.js' %}"></script>
 </body>
