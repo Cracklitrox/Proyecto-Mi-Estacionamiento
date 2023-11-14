@@ -1,6 +1,6 @@
 from django.db import models
 from transaccion_pago.models import Banco, Tarjetacredito
-from usuario.models import Region
+from usuario.models import Comuna
 
 # Create your models here.
 
@@ -22,9 +22,9 @@ class Dueno(models.Model):
     activo = models.BooleanField(default=True, verbose_name='Dueño Activo')
     id_tarjetacredito = models.ForeignKey('transaccion_pago.Tarjetacredito', models.DO_NOTHING, db_column='id_tarjetaCredito', verbose_name='Tarjeta de Credito')
     id_banco = models.ForeignKey(Banco, models.DO_NOTHING, db_column='id_banco', verbose_name='Banco')
-    id_region = models.ForeignKey('usuario.Region', models.DO_NOTHING, db_column='id_region', verbose_name='Región')
+    id_comuna = models.ForeignKey('usuario.Comuna', models.DO_NOTHING, db_column='id_comuna', verbose_name='Comuna')
 
-    def __str__(self):
+    def _str_(self):
         return self.nombreusuario + ' / Estado: ' + str(self.activo)
 
     class Meta:
