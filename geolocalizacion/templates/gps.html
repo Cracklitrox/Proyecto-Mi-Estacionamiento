@@ -14,118 +14,96 @@
           <div class="col-md-12 text-center">
             <label for="poiSelect">Selecciona un Punto de Interés:</label>
             <select id="poiSelect" class="form-control">
-                <option value="santiago">Santiago</option>
-                <option value="1">Punto de Interés 1</option>
-                <option value="2">Punto de Interés 2</option>
-                <option value="3">Punto de Interés 3</option>
-                <!-- Agrega más opciones según tus necesidades -->
+              {% for punto in punto_intereses %}
+                <option value="{{ punto.id }}">{{ punto.nombre }}</option>
+              {% endfor %}
             </select>
           </div>
-          
         </div>
         <div id="map" style="height: 400px;"></div>
     </section>
     <script>
       const imageUrl = "{% static 'images/geo-alt-fill.svg' %}";
       const mapDiv = document.getElementById("map");
-      const input = document.getElementById("place_input");
       let map;    
       let marker;
-      let autoComplete;
       let markersArray = []; // Array para almacenar marcadores
-
+  
       const santiagoCoords = { 
-        lat: -33.45694,
-        lng: -70.64827,
-        name: 'Santiago'
+          lat: -33.45694,
+          lng: -70.64827,
+          name: 'Santiago'
       };
-
-      const pointsOfInterest = {
-        santiago: santiagoCoords,
-        1: { lat: -33.42694, lng: -70.64827, name: 'Punto de Interés 1' },
-        2: { lat: -33.46694, lng: -70.64827, name: 'Punto de Interés 2' },
-        3: { lat: -41.497492, lng: -72.990633, name: 'Punto de Interés 3' },
-        // Agrega más puntos de interés según tus necesidades
-      };
-      // Calcular la distancia entre dos puntos usando la fórmula del haversine
-      function haversineDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // radio de la Tierra en kilómetros
-        const dLat = toRadians(lat2 - lat1);
-        const dLon = toRadians(lon2 - lon1);
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = R * c; // distancia en kilómetros
-        return distance;
-      }
-
-      function toRadians(degrees) {
-        return degrees * (Math.PI / 180);
-      }
-
-      // Obtener un array de puntos ordenados por distancia
-      const sortedPoints = Object.entries(pointsOfInterest).map(([id, point]) => ({
-        id,
-        distance: haversineDistance(santiagoCoords.lat, santiagoCoords.lng, point.lat, point.lng),
-        point,
-      })).sort((a, b) => a.distance - b.distance);
-
-      console.log(sortedPoints);
-
+  
+      const pointsOfInterest = [
+          {% for punto in punto_intereses %}
+              {
+                  id: {{ punto.id }},
+                  latitud: {{ punto.latitud }},
+                  longitud: {{ punto.longitud }},
+                  nombre: "{{ punto.nombre }}"
+              },
+          {% endfor %}
+          // Agrega más puntos de interés según tus necesidades
+      ];
+  
       function initMap() {
-        map = new google.maps.Map(mapDiv, {
-          center: santiagoCoords,
-          zoom: 15
-        });
-
-        // Manejar cambios en el select
-        document.getElementById('poiSelect').addEventListener('change', handlePoiSelect);
-
-        // Mostrar el primer punto de interés al cargar la página
-        handlePoiSelect();
-
+          map = new google.maps.Map(mapDiv, {
+              center: santiagoCoords,
+              zoom: 15
+          });
+  
+          // Manejar cambios en el select
+          document.getElementById('poiSelect').addEventListener('change', handlePoiSelect);
+  
+          // Mostrar el primer punto de interés al cargar la página
+          handlePoiSelect();
       }
-
+  
       function handlePoiSelect() {
-        const selectedPoiId = document.getElementById('poiSelect').value;
-        const selectedPoi = pointsOfInterest[selectedPoiId];
-
-        // Limpiar todos los marcadores antes de agregar uno nuevo
-        clearMarkers();
-
-        // Mostrar el nuevo marcador
-        marker = new google.maps.Marker({
-          position: { lat: selectedPoi.lat, lng: selectedPoi.lng },
-          map: map,
-          icon: {
-            url: imageUrl,
-            scaledSize: new google.maps.Size(40, 40),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(20, 40)
-          },
-          title: selectedPoi.name
-        });
-
-        // Agregar el nuevo marcador al array
-        markersArray.push(marker);
-
-        // Centrar el mapa en el nuevo marcador
-        map.setCenter(marker.getPosition());
+          const selectedPoiId = document.getElementById('poiSelect').value;
+          const selectedPoi = pointsOfInterest.find(poi => poi.id == selectedPoiId);
+  
+          // Verificar si selectedPoi está definido antes de acceder a sus propiedades
+          if (selectedPoi) {
+              // Limpiar todos los marcadores antes de agregar uno nuevo
+              clearMarkers();
+  
+              // Mostrar el nuevo marcador
+              marker = new google.maps.Marker({
+                  position: { lat: parseFloat(selectedPoi.latitud), lng: parseFloat(selectedPoi.longitud) },
+                  map: map,
+                  icon: {
+                      url: imageUrl,
+                      scaledSize: new google.maps.Size(40, 40),
+                      origin: new google.maps.Point(0, 0),
+                      anchor: new google.maps.Point(20, 40)
+                  },
+                  title: selectedPoi.nombre
+              });
+  
+              // Agregar el nuevo marcador al array
+              markersArray.push(marker);
+  
+              // Centrar el mapa en el nuevo marcador
+              map.setCenter(marker.getPosition());
+          } else {
+              console.error(`No se encontró ningún punto de interés con id ${selectedPoiId}`);
+          }
       }
-
+  
       function clearMarkers() {
-        // Iterar sobre el array y configurar el mapa como nulo para cada marcador
-        for (let i = 0; i < markersArray.length; i++) {
-          markersArray[i].setMap(null);
-        }
-        // Limpiar el array
-        markersArray = [];
+          // Iterar sobre el array y configurar el mapa como nulo para cada marcador
+          for (let i = 0; i < markersArray.length; i++) {
+              markersArray[i].setMap(null);
+          }
+          // Limpiar el array
+          markersArray = [];
       }
     </script>
+  
     <!-- Mapa -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap" defer></script>
     <!-- Funciones Propias -->
-    <script src="{% static 'js/api.js' %}"></script>
 </body>
 </html>
