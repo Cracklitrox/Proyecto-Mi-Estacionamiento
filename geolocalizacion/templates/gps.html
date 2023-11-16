@@ -12,8 +12,8 @@
     <section class="mt-5">
         <div class="row">
           <div class="col-md-12 text-center">
-            <label for="poiSelect">Selecciona un Punto de Interés:</label>
-            <select id="poiSelect" class="form-control">
+            <label for="PuntoSelect">Selecciona un Punto de Interés:</label>
+            <select id="PuntoSelect" class="form-control">
               {% for punto in punto_intereses %}
                 <option value="{{ punto.id }}">{{ punto.nombre }}</option>
               {% endfor %}
@@ -27,7 +27,7 @@
       const mapDiv = document.getElementById("map");
       let map;    
       let marker;
-      let markersArray = []; // Array para almacenar marcadores
+      let marcadorArray = []; // Array para almacenar marcadores
   
       const santiagoCoords = { 
           lat: -33.45694,
@@ -35,7 +35,7 @@
           name: 'Santiago'
       };
   
-      const pointsOfInterest = [
+      const puntosDeInteres = [
           {% for punto in punto_intereses %}
               {
                   id: {{ punto.id }},
@@ -54,24 +54,24 @@
           });
   
           // Manejar cambios en el select
-          document.getElementById('poiSelect').addEventListener('change', handlePoiSelect);
+          document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
   
           // Mostrar el primer punto de interés al cargar la página
-          handlePoiSelect();
+          manejarPuntoSelect();
       }
   
-      function handlePoiSelect() {
-          const selectedPoiId = document.getElementById('poiSelect').value;
-          const selectedPoi = pointsOfInterest.find(poi => poi.id == selectedPoiId);
+      function manejarPuntoSelect() {
+          const selectPuntoId = document.getElementById('PuntoSelect').value;
+          const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);
   
-          // Verificar si selectedPoi está definido antes de acceder a sus propiedades
-          if (selectedPoi) {
+          // Verificar si selectPuntoI está definido antes de acceder a sus propiedades
+          if (selectPuntoI) {
               // Limpiar todos los marcadores antes de agregar uno nuevo
-              clearMarkers();
+              limpiarMarcadores();
   
               // Mostrar el nuevo marcador
               marker = new google.maps.Marker({
-                  position: { lat: parseFloat(selectedPoi.latitud), lng: parseFloat(selectedPoi.longitud) },
+                  position: { lat: parseFloat(selectPuntoI.latitud), lng: parseFloat(selectPuntoI.longitud) },
                   map: map,
                   icon: {
                       url: imageUrl,
@@ -79,26 +79,26 @@
                       origin: new google.maps.Point(0, 0),
                       anchor: new google.maps.Point(20, 40)
                   },
-                  title: selectedPoi.nombre
+                  title: selectPuntoI.nombre
               });
   
               // Agregar el nuevo marcador al array
-              markersArray.push(marker);
+              marcadorArray.push(marker);
   
               // Centrar el mapa en el nuevo marcador
               map.setCenter(marker.getPosition());
           } else {
-              console.error(`No se encontró ningún punto de interés con id ${selectedPoiId}`);
+              console.error(`No se encontró ningún punto de interés con id ${selectPuntoId}`);
           }
       }
   
-      function clearMarkers() {
+      function limpiarMarcadores() {
           // Iterar sobre el array y configurar el mapa como nulo para cada marcador
-          for (let i = 0; i < markersArray.length; i++) {
-              markersArray[i].setMap(null);
+          for (let i = 0; i < marcadorArray.length; i++) {
+              marcadorArray[i].setMap(null);
           }
           // Limpiar el array
-          markersArray = [];
+          marcadorArray = [];
       }
     </script>
   
