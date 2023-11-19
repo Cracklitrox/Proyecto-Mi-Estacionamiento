@@ -16,34 +16,65 @@
   <body>
     <div class="container mt-5">
       <a href="{% url 'indexDueno' %}" class="btn btn-primary">Regresar</a>
-      <form method="post" id="miFormulario" onsubmit="return validarFormulario();">
+      <form method="post" id="miFormulario" onsubmit="enviarFormulario()">
           {% csrf_token %}
           
-          <div class="form-group">
+          <div class="form-group mb-2">
             <label for="{{ estacionamiento_form.id_dueno.id_for_label }}">ID Dueño:</label>
             {{ estacionamiento_form.id_dueno }}
+            {{ estacionamiento_form.id_dueno.errors }}
         </div>
-        <div class="row form-group"> 
-          <div class="col-md-6">
-            <label for="{{ estacionamiento_form.direccion.id_for_label }}">Dirección:</label>
-            {{ estacionamiento_form.direccion }}
-          </div>
-          <div class="col-md-6">
-              <label for="{{ estacionamiento_form.tarifahora.id_for_label }}">Tarifa por Hora:</label>
-              {{ estacionamiento_form.tarifahora }}
-          </div>
+        <div class="row form-group mb-2"> 
+            <div class="col-md-6">
+                <label for="{{ estacionamiento_form.direccion.id_for_label }}">Dirección:</label>
+                {{ estacionamiento_form.direccion }}
+                {{ estacionamiento_form.direccion.errors }}
+            </div>
+            <div class="col-md-6">
+                <label for="{{ estacionamiento_form.tarifahora.id_for_label }}">Tarifa por Hora:</label>
+                {{ estacionamiento_form.tarifahora }}
+                {{ estacionamiento_form.tarifahora.errors }}
+            </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-2">
             <label for="{{ estacionamiento_form.observaciones.id_for_label }}">Observación:</label>
             {{ estacionamiento_form.observaciones }}
+            {{ estacionamiento_form.observaciones.errors }}
         </div>
-          {{ puntointeres_form.as_p }}
+        <div class="row form-group mb-2"> 
+
           
+          <div class="col-md-4">
+            <label for="{{ puntointeres_form.longitud.id_for_label }}">Longitud:</label>
+            {{ puntointeres_form.longitud }}
+            {{ puntointeres_form.longitud.errors }}
+          </div>
+          <div class="col-md-4">
+            <label for="{{ puntointeres_form.latitud.id_for_label }}">Latitud:</label>
+            {{ puntointeres_form.latitud }}
+            {{ puntointeres_form.latitud.errors }}
+          </div>
+          <div class="col-md-4">
+            <label for="{{ puntointeres_form.nombre.id_for_label }}">Nombre:</label>
+            {{ puntointeres_form.nombre }}
+            {{ puntointeres_form.nombre.errors }}
+            
+          </div>
+        </div>
+       
+        <div class="form-group mb-2">
+          <p class="h5 text-center"> Rellenar mapa</p>
+        </div>
           <div id="mapa" style="width: 100%; height: 500px" class="mb-3"></div>
           <button type="submit" class="btn btn-primary" id="enviarFormulario">Enviar</button>
       </form>
   </div>
     <script>
+      function enviarFormulario() {
+    
+        document.getElementById("miFormulario").submit();
+      }
+    
       let map;
       let mapDiv;
       let marcador;
@@ -93,3 +124,8 @@
     <script src="{% static 'js/validacionAddEstacionamiento.js' %}"></script>
   </body>
 </html>
+
+
+
+
+

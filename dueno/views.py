@@ -21,16 +21,17 @@ def addEstacionamiento(request):
         puntointeres_form = PuntointeresForm(request.POST)
         estacionamiento_form = EstacionamientoForm(request.POST)
 
-        if puntointeres_form.is_valid():
+        if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
             puntointeres = puntointeres_form.save()
             estacionamiento = estacionamiento_form.save(commit=False)
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
-            # Puedes agregar más lógica aquí si es necesario
-
-            return redirect('indexDueno')  # Reemplaza 'indexDueno' con el nombre de tu vista indexDueno
+            messages.success(request, 'Estacionamiento creado exitosamente.')
+            return redirect('indexDueno')
         else:
+            print(estacionamiento_form.errors)
             messages.error(request, 'Corrige los errores en el formulario.')
+
     else:
         puntointeres_form = PuntointeresForm()
         estacionamiento_form = EstacionamientoForm()
