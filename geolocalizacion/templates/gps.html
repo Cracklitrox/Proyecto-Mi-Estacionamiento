@@ -14,7 +14,7 @@
           <div class="col-md-12 text-center">
             <label for="PuntoSelect">Selecciona un Punto de Interés:</label>
             <select id="PuntoSelect" class="form-control">
-              {% for punto in punto_intereses %}
+              {% for punto in puntos_interes %}
                 <option value="{{ punto.id }}">{{ punto.nombre }}</option>
               {% endfor %}
             </select>
@@ -22,6 +22,7 @@
         </div>
         <div id="map" style="height: 400px;"></div>
     </section>
+    
     <script>
       const imageUrl = "{% static 'images/geo-alt-fill.svg' %}";
       const mapDiv = document.getElementById("map");
@@ -29,14 +30,8 @@
       let marker;
       let marcadorArray = []; // Array para almacenar marcadores
   
-      const santiagoCoords = { 
-          lat: -33.45694,
-          lng: -70.64827,
-          name: 'Santiago'
-      };
-  
       const puntosDeInteres = [
-          {% for punto in punto_intereses %}
+          {% for punto in puntos_interes %}
               {
                   id: {{ punto.id }},
                   latitud: {{ punto.latitud }},
@@ -46,6 +41,14 @@
           {% endfor %}
           // Agrega más puntos de interés según tus necesidades
       ];
+      
+      const santiagoCoords = { 
+          lat: -33.45694,
+          lng: -70.64827,
+          name: 'Santiago'
+      };
+  
+      
   
       function initMap() {
           map = new google.maps.Map(mapDiv, {
