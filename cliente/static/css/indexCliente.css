@@ -1,202 +1,348 @@
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
+/* Reset de estilos */
+* {
     margin: 0;
     padding: 0;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f7f7f7;
-}
-
-header {
-    background-color: #333;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
     color: #fff;
-    padding: 20px 0;
-}
-
-.header-content {
+    background-size: cover;
+  }
+  
+  header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-}
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /*ESTILOS TEXTO*/
+  h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: rgb(251, 251, 251);
+    text-align: center;
+  }
+  
+  /*ESTILOS TEXTO*/
+  h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #0095ff;
+  }
+  
+  /*ESTILOS TEXTO*/
+  p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: rgb(248, 248, 248);
+  }
 
-.search-box input[type="text"] {
+
+  .header {
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    /* Estilos del buscador */
+    box-shadow: 0 0 10px rgba(0, 255, 140, 0.5);
+  }
+  
+  .sidebar {
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    /* Estilos del buscador */
+    box-shadow: 0 0 10px rgba(0, 255, 140, 0.5);
+  }
+  
+  
+  .map {
+    height: 300px;
+    background-color: #222;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  /************************ CARTAS *****************************************/
+  .cartas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  .card {
+    background-color: #444;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  
+  }
+  
+  /* IMÁGEN DE LA CARTA*/
+  .card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  /************************ BOTÓN DISPONIBLE *****************************************/
+  .disponible-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #00ff6a;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: not-allowed;
+    /* Cambia el cursor a no disponible */
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  .disponible-btn:hover {
+    background-color: #cc0000;
+    /* Cambia el color de fondo al pasar el cursor */
+  }
+
+/************************ BOTÓN RESERVAR *****************************************/
+
+  
+  .reservar-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #ffcc00;
+    border: none;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  .reservar-btn:hover {
+    background-color: #ff3333;
+  }
+  
+  .reservar-btn {
+    background-color: rgb(0, 0, 0);
+    /* COLOR DE FONDO DEL BOTÓN */
+    color: #f9f9f9;
+    text-transform: uppercase;
+    border: 2px solid #fdfdfd;
+    transition: all 0.3s ease;
+  }
+  
+  .reservar-btn:hover {
+    background-color: #ffd633;
+    border-color: #ffd633;
+    color: #000;
+  }
+  
+  /************************ BOTÓN NO DISPONIBLE *****************************************/
+  .nodisponible-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #ff0000;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: not-allowed;
+    /* Cambia el cursor a no disponible */
+    border-radius: 10px;
+    /* Borde circular */
+    overflow: hidden;
+    /* Asegura que el contenido respete el borde circular */
+  }
+  
+  .nodisponible-btn:hover {
+    background-color: #cc0000;
+    /* Cambia el color de fondo al pasar el cursor */
+  }
+  
+  /*****************************************************************/
+  
+  
+  /*********************** Estilos para el botón de cerrar sesión ********************************/
+  .login-btn {
+    background-color: #f44336;
+    /* Rojo */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .login-btn:hover {
+    background-color: #d32f2f;
+    /* Rojo más oscuro al pasar el cursor */
+  }
+  
+  /* Estilos para el buscador */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    /* Espaciado a la derecha */
+  }
+  
+  /************************ BUSCADOR *****************************************/
+  #searchInput {
+    width: 100%;
+    /* Ocupar todo el ancho disponible */
+    max-width: 200px;
+    /* Límite máximo para evitar estirar demasiado en pantallas grandes */
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    font-size: 16px;
     margin-right: 10px;
-    width: 200px;
-}
-
-.search-box button {
-    padding: 8px 15px;
-    background-color: #555;
-    color: #fff;
+    /* Espaciado entre el input y el botón */
+  }
+  
+  #searchInput:focus {
+    outline: none;
+    /* Quita el contorno al enfocar */
+  }
+  
+  /* Estilos para el botón de búsqueda */
+  .search-bar button {
+    min-width: 80px;
+    /* Ancho mínimo del botón */
+    padding: 8px 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-a {
-    color: #fff;
+    background-color: #2b8886;
+    font-size: 14px;
+    flex-shrink: 0;
+    /* Evitar que el botón se encoja demasiado */
+  }
+  
+  .search-bar button:hover {
+    background-color: #45a049;
+    /* Verde más oscuro al pasar el cursor */
+  }
+  
+  /*************************************** FOOTER *****************************************/
+  
+  footer {
+    background-color: #000000;
+    padding: 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+  }
+  
+  .footer-content {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .footer-bottom {
+    margin-top: 20px;
+  }
+  
+  
+  /* contenedor de las imágenes de RRSS */
+  .Piedepagina .grupo1 .red-social a {
+    display: inline-block;
     text-decoration: none;
-}
-
-.location {
-    background-color: #ddd;
-    padding: 20px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: white;
+    margin-right: 10px;
+    background-color: #0d2033;
     text-align: center;
-}
-/*ÍCONO CARRITO*/
-.cart-icon {
-    font-size: 24px; /* Tamaño del icono */
-    color: #000; /* Color del icono */
-}
-
-
-/* Aquí puedes agregar tus estilos personalizados */
-/* Estilos para las flechas */
-.slick-prev, .slick-next {
-    position: absolute;
-    top: 50%;
-    z-index: 1;
-    width: 30px;
-    height: 30px;
-    background: #ccc;
+    transition: all 300ms ease;
+  }
+  
+  .Piedepagina .grupo1 .red-social a:hover {
+    color: aqua;
+  
+  }
+  
+  .Piedepagina .grupo2 {
+    background-color: #0a1a2a;
+    padding: 15px 10px;
     text-align: center;
-    font-size: 20px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #fff;
-    line-height: 30px;
-    user-select: none;
-}
-
-.slick-prev {
-    left: -30px;
-}
-
-.slick-next {
-    right: -30px;
-}
-
-.carrito {
-    background-color: #ddd;
-    padding: 20px;
-    text-align: center;
-}
-
-.carousel-container {
-    width: 80%;
-    margin: auto;
-    position: relative;
-}
-
-.slick-carousel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    position: relative;
-}
-
-.slide {
-    flex: 0 0 auto;
-    width: 300px;
-    overflow: hidden;
-}
-
-.slide img {
-    width: 100%;
-    height: auto;
-}
-
-.slick-prev,
-.slick-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 24px;
-    color: #000;
-    z-index: 1;
-}
-
-.slick-prev {
-    left: 0;
-}
-
-.slick-next {
-    right: 0;
-}
-
-
-.estacionamientos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-}
-
-.estacionamiento {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    width: 300px;
-}
-
-.estacionamiento img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-.estacionamiento h2 {
-    font-size: 1.2em;
-    margin-top: 0;
-}
-
-.estacionamiento p {
-    margin: 10px 0;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #555;
-}
-
-.more-images {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
-}
-
-.more-images img {
-    width: 300px;
-    height: auto;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #333;
-    color: #fff;
-}
+    color: white;
+    /*COLOR LETRAS FOOTER*/
+  }
+  
+  .Piedepagina .grupo2 small {
+    font-size: 15px;
+  }
+  
+  /********************************************************************************/
+  
+  
+  
+  /* Sirve para mostrar 3 cartas por fila */
+  @media (min-width: 768px) {
+    .cartas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+  
+/* Ajuste de la disposición de las cartas para pantallas pequeñas */
+@media (max-width: 767px) {
+    .login-btn {
+      padding: 8px 12px; /* Reducir el padding del botón */
+      font-size: 12px; /* Disminuir el tamaño de la fuente */
+      margin-right: 10px; /* Ajuste del margen */
+    }
+  
+    .search-bar {
+      margin-right: 10px; /* Reducir el espacio a la derecha */
+    }
+  
+    #searchInput {
+      max-width: calc(100% - 100px); /* Incrementar el ancho del input */
+      margin-right: 5px; /* Reducir el espacio entre input y botón */
+    }
+  
+    .search-bar button {
+      min-width: 60px; /* Reducir el ancho del botón */
+      padding: 8px 12px; /* Reducir el padding del botón */
+      font-size: 12px; /* Disminuir el tamaño de la fuente */
+    }
+  
+    .cartas {
+      grid-template-columns: repeat(2, 1fr); /* Dos cartas por fila */
+      gap: 15px; /* Reducir el espacio entre cartas */
+    }
+  }

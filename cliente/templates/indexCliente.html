@@ -4,121 +4,136 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Arriendo de Estacionamiento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <title>Mi Estacionamiento | Estacionamientos</title>
 </head>
 
 <body>
-    <header>
-        <div class="header-content">
-            <div class="search-box">
-                <input type="text" placeholder="Buscar Estacionamientos">
-                <button type="submit" onclick="buscar()">Buscar</button>
+    <main>
+        <section class="content">
+            <header>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Buscar...">
+                    <button onclick="searchFunction()">Buscar</button>
+                </div>
+                <h1>Mi Estacionamiento</h1>
+                <button class="login-btn">Cerrar Sesión</button>
+            </header>
+            <br> <br>
+            <!-- Aquí va el mapa -->
+            <div class="map">
+                <p>aquí va el MAPA</p>
             </div>
-            <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
-            <a href="{% url 'indexCliente' %}">Cerrar sesión</a> <!--{% url 'indexCliente' %} cambiar x login cuando esté implementado-->
+            <div class="cartas">
+                <!-- Cartas -->
+                <div class="card">
+                    <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 1</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="disponible-btn">Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 2</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="disponible-btn">Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 3</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="nodisponible-btn">No Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 4</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="disponible-btn">Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 5</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="disponible-btn">Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 6</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="nodisponible-btn">No Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+                <div class="card">
+                    <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 7</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="disponible-btn">Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 8</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="disponible-btn">Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 9</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="nodisponible-btn">No Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+
+                <div class="card">
+                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
+                    <h2>Estacionamiento 10</h2>
+                    <p>Información sobre el estacionamiento.</p>
+                    <button class="nodisponible-btn">No Disponible</button>
+                    <button class="reservar-btn">Reservar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="Piedepagina">
+        <div class="grupo1">
+            <div class="box">
+                <h2>MI ESTACIONAMIENTO</h2>
+                <p>NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE SU UBICACIÓN</p>
+            </div>
+            <div class="box">
+                <h2>SÍGUENOS</h2>
+                <div class="red-social">
+                    <a href="https://www.instagram.com/" class="bi bi-instagram" target="_blank">
+                        <img src="{% static 'img/rrss/instagram.png' %}" width="45" height="45" alt="">
+                    </a>
+                    <a href="https://es-la.facebook.com/" class="bi bi-facebook" target="_blank">
+                        <img src="{% static 'img/rrss/facebook.png' %}" width="45" height="45" alt="">
+                    </a>
+                    <a href="https://twitter.com/?lang=es" class="bi bi-twitter" target="_blank">
+                        <img src="{% static 'img/rrss/twitter.png' %}" width="45" height="45" alt="">
+                    </a>
+                </div>
+            </div>
         </div>
-    </header>
-
-    <div class="location">
-        Ubicación: <span id="ubicacion">Mi Ubicación</span>
-    </div>
-
-    <div class="carousel-container">
-        <div class="slick-carousel">
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 1"></div>
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 2"></div>
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 3"></div>
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 4"></div>
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 5"></div>
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 6"></div>
-            <div class="slide"><img src=" {% static 'img/me1.webp' %}"  alt="Imagen 7"></div>
+        <div class="grupo2">
+            <small>&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos Reservados.</small>
         </div>
-        <div class="slick-prev">❮</div>
-        <div class="slick-next">❯</div>
-    </div>
-
-    <section class="estacionamientos">
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 1">
-            <h2>Estacionamiento en el Centro</h2>
-            <p>Descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 2">
-            <h2>Estacionamiento en otro lugar</h2>
-            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 3">
-            <h2>Estacionamiento en otro lugar diferente</h2>
-            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 4">
-            <h2>Estacionamiento en el Centro</h2>
-            <p>Descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 5">
-            <h2>Estacionamiento en otro lugar</h2>
-            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 6">
-            <h2>Estacionamiento en otro lugar diferente</h2>
-            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 7">
-            <h2>Estacionamiento en otro lugar</h2>
-            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-
-        <article class="estacionamiento">
-            <img src="{% static 'img/me1.webp' %}" alt="Estacionamiento 8">
-            <h2>Estacionamiento en otro lugar diferente</h2>
-            <p>Otra descripción del estacionamiento, detalles, ubicación, etc.</p>
-            <p>Precio: $700 por hora</p>
-            <button>Contactar</button>
-        </article>
-    </section>
-
-    <div class="more-images">
-        <img src="{% static 'img/me1.webp' %}" alt="Imagen 1">
-        <img src="{% static 'img/me1.webp' %}" alt="Imagen 2">
-    </div>
-
-    <footer>
-        <p>Contacto: MiEstacionamiento@gmail.com</p>
     </footer>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="{% static 'js/indexCliente.js' %}" async></script>
 </body>
 
 </html>
