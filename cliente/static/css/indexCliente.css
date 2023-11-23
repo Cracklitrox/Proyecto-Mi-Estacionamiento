@@ -12,6 +12,17 @@
     background-size: cover;
   }
   
+  #map {
+    height: 400px;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    border: 1px solid ;
+    border-radius: 0px 0px 20px 20px;
+  
+  }
+  
   header {
     display: flex;
     justify-content: space-between;
