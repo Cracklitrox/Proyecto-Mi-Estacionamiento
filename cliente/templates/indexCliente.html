@@ -18,7 +18,11 @@
                     <button onclick="searchFunction()">Buscar</button>
                 </div>
                 <h1>Mi Estacionamiento</h1>
-                <button class="login-btn">Cerrar Sesión</button>
+                {% if user.is_authenticated %}
+                    <button class="login-btn">Cerrar Sesión</button>
+                {% else %}
+                    <button class="login-btn">Cliente</button>
+                {% endif %}
             </header>
             <br> <br>
             <!-- Aquí va el mapa -->
@@ -35,7 +39,7 @@
                     <button class="reservar-btn">Reservar</button>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
                     <h2>Estacionamiento 2</h2>
                     <p>Información sobre el estacionamiento.</p>
@@ -104,7 +108,7 @@
                     <p>Información sobre el estacionamiento.</p>
                     <button class="nodisponible-btn">No Disponible</button>
                     <button class="reservar-btn">Reservar</button>
-                </div>
+                </div> -->
             </div>
         </section>
     </main>
