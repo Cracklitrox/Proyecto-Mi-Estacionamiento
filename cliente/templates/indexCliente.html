@@ -1,15 +1,20 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
     <title>Mi Estacionamiento | Estacionamientos</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
         <section class="content">
             <header>
@@ -28,79 +33,105 @@
             <!-- Aquí va el mapa -->
             <div class="map">
                 <p>aquí va el MAPA</p>
+      <section class="content">
+        <header>
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar..." />
+            <button onclick="searchFunction()">Buscar</button>
+          </div>
+          <h1>Mi Estacionamiento</h1>
+          <button class="login-btn">Cerrar Sesión</button>
+        </header>
+        <br />
+        <br />
+        <!-- Aquí va el mapa -->
+        <div class="mb-5">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <label for="PuntoSelect">Busqueda de Estacionamiento</label>
+              <select id="PuntoSelect" class="form-control">
+                {% for punto in puntos_interes %}
+                <option value="{{ punto.id }}">{{ punto.nombre }}</option>
+                {% endfor %}
+              </select>
             </div>
-            <div class="cartas">
-                <!-- Cartas -->
-                <div class="card">
-                    <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 1</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="disponible-btn">Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          </div>
+          <div id="map" style="height: 400px"></div>
+        </div>
+        <div class=>
+        </div>
+        <div class="cartas">
+          <!-- Cartas -->
+          <div class="card">
+            <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 1</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="disponible-btn">Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <!-- <div class="card">
-                    <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 2</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="disponible-btn">Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 2</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="disponible-btn">Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <div class="card">
-                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 3</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="nodisponible-btn">No Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 3</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="nodisponible-btn">No Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <div class="card">
-                    <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 4</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="disponible-btn">Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 4</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="disponible-btn">Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <div class="card">
-                    <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 5</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="disponible-btn">Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 5</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="disponible-btn">Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <div class="card">
-                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 6</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="nodisponible-btn">No Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
-                <div class="card">
-                    <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 7</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="disponible-btn">Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 6</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="nodisponible-btn">No Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
+          <div class="card">
+            <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 7</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="disponible-btn">Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <div class="card">
-                    <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 8</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="disponible-btn">Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 8</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="disponible-btn">Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
-                <div class="card">
-                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 9</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="nodisponible-btn">No Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
+          <div class="card">
+            <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1" />
+            <h2>Estacionamiento 9</h2>
+            <p>Información sobre el estacionamiento.</p>
+            <button class="nodisponible-btn">No Disponible</button>
+            <button class="reservar-btn">Reservar</button>
+          </div>
 
                 <div class="card">
                     <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
@@ -108,36 +139,155 @@
                     <p>Información sobre el estacionamiento.</p>
                     <button class="nodisponible-btn">No Disponible</button>
                     <button class="reservar-btn">Reservar</button>
-                </div> -->
+                </div>
             </div>
         </section>
     </main>
 
     <footer class="Piedepagina">
-        <div class="grupo1">
-            <div class="box">
-                <h2>MI ESTACIONAMIENTO</h2>
-                <p>NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE SU UBICACIÓN</p>
-            </div>
-            <div class="box">
-                <h2>SÍGUENOS</h2>
-                <div class="red-social">
-                    <a href="https://www.instagram.com/" class="bi bi-instagram" target="_blank">
-                        <img src="{% static 'img/rrss/instagram.png' %}" width="45" height="45" alt="">
-                    </a>
-                    <a href="https://es-la.facebook.com/" class="bi bi-facebook" target="_blank">
-                        <img src="{% static 'img/rrss/facebook.png' %}" width="45" height="45" alt="">
-                    </a>
-                    <a href="https://twitter.com/?lang=es" class="bi bi-twitter" target="_blank">
-                        <img src="{% static 'img/rrss/twitter.png' %}" width="45" height="45" alt="">
-                    </a>
-                </div>
-            </div>
+      <div class="grupo1">
+        <div class="box">
+          <h2>MI ESTACIONAMIENTO</h2>
+          <p>
+            NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE
+            SU UBICACIÓN
+          </p>
         </div>
-        <div class="grupo2">
-            <small>&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos Reservados.</small>
+        <div class="box">
+          <h2>SÍGUENOS</h2>
+          <div class="red-social">
+            <a
+              href="https://www.instagram.com/"
+              class="bi bi-instagram"
+              target="_blank"
+            >
+              <img
+                src="{% static 'img/rrss/instagram.png' %}"
+                width="45"
+                height="45"
+                alt=""
+              />
+            </a>
+            <a
+              href="https://es-la.facebook.com/"
+              class="bi bi-facebook"
+              target="_blank"
+            >
+              <img
+                src="{% static 'img/rrss/facebook.png' %}"
+                width="45"
+                height="45"
+                alt=""
+              />
+            </a>
+            <a
+              href="https://twitter.com/?lang=es"
+              class="bi bi-twitter"
+              target="_blank"
+            >
+              <img
+                src="{% static 'img/rrss/twitter.png' %}"
+                width="45"
+                height="45"
+                alt=""
+              />
+            </a>
+          </div>
         </div>
+      </div>
+      <div class="grupo2">
+        <small
+          >&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos
+          Reservados.</small
+        >
+      </div>
     </footer>
-</body>
+    <script>
+      const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
+      const mapDiv = document.getElementById("map");
+      let map;
+      let marker;
+      let marcadorArray = []; // Array para almacenar marcadores
 
+      const puntosDeInteres = [
+          {% for punto in puntos_interes %}
+              {
+                  id: {{ punto.id }},
+                  latitud: {{ punto.latitud }},
+                  longitud: {{ punto.longitud }},
+                  nombre: "{{ punto.nombre }}"
+              },
+          {% endfor %}
+          // Agrega más puntos de interés según tus necesidades
+      ];
+
+      const santiagoCoords = {
+          lat: -33.45694,
+          lng: -70.64827,
+          name: 'Santiago'
+      };
+
+
+
+      function initMap() {
+          map = new google.maps.Map(mapDiv, {
+              center: santiagoCoords,
+              zoom: 15
+          });
+
+          // Manejar cambios en el select
+          document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
+
+          // Mostrar el primer punto de interés al cargar la página
+          manejarPuntoSelect();
+      }
+
+      function manejarPuntoSelect() {
+          const selectPuntoId = document.getElementById('PuntoSelect').value;
+          const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);
+
+          // Verificar si selectPuntoI está definido antes de acceder a sus propiedades
+          if (selectPuntoI) {
+              // Limpiar todos los marcadores antes de agregar uno nuevo
+              limpiarMarcadores();
+
+              // Mostrar el nuevo marcador
+              marker = new google.maps.Marker({
+                  position: { lat: parseFloat(selectPuntoI.latitud), lng: parseFloat(selectPuntoI.longitud) },
+                  map: map,
+                  icon: {
+                      url: imageUrl,
+                      scaledSize: new google.maps.Size(40, 40),
+                      origin: new google.maps.Point(0, 0),
+                      anchor: new google.maps.Point(20, 40)
+                  },
+                  title: selectPuntoI.nombre
+              });
+
+              // Agregar el nuevo marcador al array
+              marcadorArray.push(marker);
+
+              // Centrar el mapa en el nuevo marcador
+              map.setCenter(marker.getPosition());
+          } else {
+              console.error(`No se encontró ningún punto de interés con id ${selectPuntoId}`);
+          }
+      }
+
+      function limpiarMarcadores() {
+          // Iterar sobre el array y configurar el mapa como nulo para cada marcador
+          for (let i = 0; i < marcadorArray.length; i++) {
+              marcadorArray[i].setMap(null);
+          }
+          // Limpiar el array
+          marcadorArray = [];
+      }
+    </script>
+
+    <!-- Mapa -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
+      defer
+    ></script>
+  </body>
 </html>

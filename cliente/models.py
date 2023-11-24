@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna
 
@@ -23,6 +24,11 @@ class Cliente(models.Model):
     id_tarjetacredito = models.ForeignKey('transaccion_pago.Tarjetacredito', models.DO_NOTHING, db_column='id_tarjetaCredito', verbose_name='Tarjeta de Credito')
     id_banco = models.ForeignKey(Banco, models.DO_NOTHING, db_column='id_banco', verbose_name='Banco')
     id_comuna = models.ForeignKey('usuario.Comuna', models.DO_NOTHING, db_column='id_comuna', verbose_name='Comuna')
+    
+    def save(self, *args, **kwargs):
+        if not self.id or self.contrasena != Cliente.objects.get(id=self.id).contrasena:
+            self.contrasena = make_password(self.contrasena);
+        super (Cliente, self).save(*args, **kwargs)
 
     def _str_(self):
         return self.nombreusuario + ' / Estado: ' + str(self.activo)

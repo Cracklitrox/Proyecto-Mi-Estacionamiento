@@ -7,8 +7,9 @@ from geolocalizacion.models import *
 from geolocalizacion.forms import *
 
 # Create your views here.
-def indexDueno(request):
-    return render(request,'indexDueno.html')
+def indexDueno(request):    
+    estacionamientos = Estacionamiento.objects.all()
+    return render(request,'indexDueno.html', {'estacionamientos':estacionamientos})
 
 def cargando(request):
     return render(request,'cargando.html')

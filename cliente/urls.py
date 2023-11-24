@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from geolocalizacion.models import *
 
 urlpatterns = [
     path('',views.indexCliente,name='indexCliente'),

@@ -2,10 +2,15 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import Cliente
+from geolocalizacion.models import Puntointeres
+from estacionamiento.models import Estacionamiento
 
 # Create your views here.
 def indexCliente(request):
-    return render(request,'indexCliente.html')
+    puntos_interes = Puntointeres.objects.all()
+    estacionamiento = Estacionamiento.objects.all()
+    return render(request,'indexCliente.html', {'puntos_interes': puntos_interes,
+                                                'estacionamiento': estacionamiento})
 
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
