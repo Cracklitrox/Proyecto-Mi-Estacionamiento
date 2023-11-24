@@ -19,6 +19,7 @@ class Cliente(models.Model):
     direccion = models.CharField(max_length=255)
     calificacionpromedio = models.DecimalField(db_column='calificacionPromedio', max_digits=2, decimal_places=1, verbose_name='Calificacion Promedio', blank=True, null=True)
     activo = models.BooleanField(default=True, verbose_name='Cliente Activo')
+    imagen = models.ImageField(upload_to='fotoCliente/', null=True, blank=True, verbose_name='Imagen del Cliente')
     id_tarjetacredito = models.ForeignKey('transaccion_pago.Tarjetacredito', models.DO_NOTHING, db_column='id_tarjetaCredito', verbose_name='Tarjeta de Credito')
     id_banco = models.ForeignKey(Banco, models.DO_NOTHING, db_column='id_banco', verbose_name='Banco')
     id_comuna = models.ForeignKey('usuario.Comuna', models.DO_NOTHING, db_column='id_comuna', verbose_name='Comuna')

@@ -28,6 +28,7 @@ class Estacionamiento(models.Model):
     disponible = models.BooleanField(default=False, verbose_name='Estado Estacionamiento')
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')
     observaciones = models.CharField(max_length=255, blank=True, null=True)
+    imagen = models.ImageField(upload_to='fotoEstacionamiento/', null=True, blank=True, verbose_name='Imagen del Estacionamiento')
     id_puntoInteres = models.ForeignKey('geolocalizacion.Puntointeres', models.DO_NOTHING, db_column='id_puntointeres', verbose_name='Punto de Interes')
 
     def __str__(self):
@@ -71,6 +72,7 @@ class Casilla(models.Model):
     id = models.AutoField(primary_key=True)
     posicion = models.CharField(max_length=30)
     disponible = models.BooleanField(default=True)
+    imagen = models.ImageField(upload_to='fotoCasilla/', null=True, blank=True, verbose_name='Imagen de la Casilla del Estacionamiento')
 
     def __str__(self):
         return 'ID Casilla: ' + str(self.id) + ' / Estado: ' + str(self.disponible)

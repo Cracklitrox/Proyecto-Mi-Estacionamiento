@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 from .models import Administrador
 from cliente.models import Cliente
 from transaccion_pago.models import Banco, Tarjetacredito

@@ -9,3 +9,6 @@ def pagoCliente(request):
 
 def registroCliente(request):
     return render(request,'registroCliente.html')
+
+def loginCliente(request):
+    return render(request, 'loginCliente.html')
