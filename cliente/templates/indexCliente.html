@@ -16,23 +16,6 @@
 
   <body>
     <main>
-        <section class="content">
-            <header>
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Buscar...">
-                    <button onclick="searchFunction()">Buscar</button>
-                </div>
-                <h1>Mi Estacionamiento</h1>
-                {% if user.is_authenticated %}
-                    <button class="login-btn">Cerrar Sesión</button>
-                {% else %}
-                    <button class="login-btn">Cliente</button>
-                {% endif %}
-            </header>
-            <br> <br>
-            <!-- Aquí va el mapa -->
-            <div class="map">
-                <p>aquí va el MAPA</p>
       <section class="content">
         <header>
           <div class="search-bar">

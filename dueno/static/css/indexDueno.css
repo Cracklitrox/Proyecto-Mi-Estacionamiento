@@ -24,6 +24,17 @@ header {
     padding: 10px 20px;
 }
 
+#product-container {
+    border-radius: 15px; /* Ajusta el valor según sea necesario para la redondez deseada */
+    overflow: hidden; /* Esto asegura que la imagen no sobresalga del borde redondeado */
+}
+
+.card-img-top {
+    border-top-left-radius: 15px; /* Redondea solo las esquinas superiores izquierdas de la imagen */
+    border-top-right-radius: 15px; /* Redondea solo las esquinas superiores derechas de la imagen */
+    width: 100%; /* Ajusta el ancho de la imagen según sea necesario */
+    height: auto; /* Ajusta la altura de la imagen según sea necesario */
+}
 
 .card-body{
     color: black;
