@@ -57,13 +57,25 @@ body{
     gap: 10px;
 }
 
-.new-car-entry div{
-    background: rgb(27,118,19);
+.disabled {
+    pointer-events: none;
+    opacity: 0.5; /* o algún otro estilo para indicar desactivación */
+}
+
+.new-car-entry div {
     width: 12%;
     padding: 15px;
     text-align: center;
     line-height: 20px;
     cursor: pointer;
+}
+
+.btn-success {
+    background-color: rgb(27, 118, 19);  /* Verde cuando está disponible */
+}
+
+.btn-danger {
+    background-color: rgb(146, 18, 18);  /* Rojo cuando no está disponible */
 }
 
 .parking-container{

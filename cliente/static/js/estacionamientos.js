@@ -3,7 +3,9 @@ var parklock = false;
 var parklist = [0,0,0,0,0,0,0,0,0,0];
 var queueitems = 0; // initially its 0
 
+
 function setupparkingmanager(){
+    
     w = document.getElementById('parkingspace').offsetWidth;
     h = document.getElementById('parkingspace').offsetHeight;
 
@@ -39,9 +41,11 @@ function setupparkingmanager(){
         '}');
     anim.appendChild(rule4);
     document.getElementById('parkingspace').appendChild(anim);
+    inicializarVehiculos();
 }
 
 function updatequeue(){
+    
     for(i=1;i<=5;i++){
         if(i<=queueitems){
             document.getElementById('queue'+i.toString()).src = 'car.png';
@@ -52,6 +56,7 @@ function updatequeue(){
 }
 
 function queuecheck(slot){
+   
     if(queueitems > 0){
         queueitems = queueitems - 1;
         updatequeue();
@@ -60,20 +65,22 @@ function queuecheck(slot){
 }
 
 function carexit(slot){
+    
     if(!parklock){
         parklist[slot] = 0;
         console.log(parklist)
         parklock = true;
         document.getElementById('slot'+(slot+1).toString()).style.background = 'rgb(27,118,19)';
         if(slot <= 4)
-        document.getElementById('car'+(slot).toString()).style.animation = 'car-exit-top 2s both';
+        document.getElementById('car'+(slot).toString()).style.animation = 'car-exit-top 1s both';
         else
-        document.getElementById('car'+(slot).toString()).style.animation = 'car-exit-bottom 2s both';
-        setTimeout(function(){document.getElementById('car'+(slot).toString()).remove();parklock=false;queuecheck(slot)},2000)
+        document.getElementById('car'+(slot).toString()).style.animation = 'car-exit-bottom 1s both';
+        setTimeout(function(){document.getElementById('car'+(slot).toString()).remove();parklock=false;queuecheck(slot)},1500)
     }
 }
 
 function generatenewcar(slot){
+    
     var space = document.getElementById('parkingspace');
     let img = document.createElement('img');
     img.src = '/static/img/rayo.png';
@@ -85,6 +92,14 @@ function generatenewcar(slot){
 
 
 function carenter(slot){
+    let casilla = document.getElementById('slot');
+
+    // Verificar si la casilla está disponible
+    if (casilla && casilla.classList.contains('no-disponible')) {
+        // La casilla no está disponible, no hacer nada
+        return;
+    }
+
     if(!document.getElementById('car'+(slot).toString()) && !parklock){
         parklist[slot] = 1;
         console.log(parklist)
@@ -96,9 +111,9 @@ function carenter(slot){
         else
         document.getElementById('car'+(slot).toString()).style.right = (-w+(w*.1)+((w*.8)*.05))+'px';
         if(slot <= 4)
-        document.getElementById('car'+(slot).toString()).style.animation = 'car-park 2s both';
+        document.getElementById('car'+(slot).toString()).style.animation = 'car-park 1.5s both';
         else
-        document.getElementById('car'+(slot).toString()).style.animation = 'car-bottom 2s both';
+        document.getElementById('car'+(slot).toString()).style.animation = 'car-bottom 1.5s both';
         setTimeout(function(){parklock = false;},2000)
     }
     else{
