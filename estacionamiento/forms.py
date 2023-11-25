@@ -1,5 +1,5 @@
 from django import forms
-from .models import Estacionamiento
+from .models import *
 from dueno.models import Dueno
 
 class EstacionamientoForm(forms.ModelForm):
@@ -23,3 +23,11 @@ class EstacionamientoForm(forms.ModelForm):
         self.fields['direccion'].widget.attrs.update({'class': 'form-control'})
         self.fields['tarifahora'].widget.attrs.update({'class': 'form-control'})
         self.fields['observaciones'].widget.attrs.update({'class': 'form-control'})
+
+class CasillaForm(forms.ModelForm):
+    class Meta:
+        model = Casilla
+        fields = ['posicion','disponible']
+
+    def __init__(self, *args, **kwargs):
+        super(CasillaForm, self).__init__(*args, **kwargs)

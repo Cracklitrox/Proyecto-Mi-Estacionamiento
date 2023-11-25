@@ -44,7 +44,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="hidden" name="casilla_seleccionada" id="casilla_seleccionada" value="">
-                <button type="submit">Guardar</button>
+                <button class="btn-cambiar-estado" type="submit">Guardar</button>
             </form>
         </div>
         <div class="parking-container" id="parkingspace">
@@ -92,7 +92,36 @@
             inicializarCasillasNoDisponibles(0);
         }
     </script>
-    
+    <script>
+        $(document).ready(function () {
+            $('.btn-cambiar-estado').click(function (e) {
+                e.preventDefault();
+
+                var casillaId = $(this).data('#casilla_seleccionada');
+
+                var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'cambiar_casilla/' + casillaId + '/',
+                    headers: {'X-CSRFToken': csrftoken},
+                    success: function (data) {
+                        // Actualiza el texto del botón según el nuevo estado
+                        if (data.estado) {
+                            alert('Estacionamiento habilitado.');
+                            $(this).text('Deshabilitado');
+                        } else {
+                            alert('Estacionamiento deshabilitado.');
+                            $(this).text('Habilitado');
+                        }
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.log('Error al cambiar el estado del estacionamiento:', error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
