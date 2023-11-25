@@ -15,7 +15,7 @@
   </head>
   <body>
     <div class="container mt-5">
-      <a href="{% url 'indexDueno' %}" class="btn btn-primary">Regresar</a>
+      <a href="{% url 'index' %}" class="btn btn-primary">Regresar</a>
       <form method="post" id="miFormulario" onsubmit="enviarFormulario()">
           {% csrf_token %}
           

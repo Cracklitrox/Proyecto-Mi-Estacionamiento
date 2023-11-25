@@ -12,10 +12,9 @@ def indexDueno(request):
     return render(request,'indexDueno.html', {'estacionamientos':estacionamientos})
 
 def cargando(request):
-    return render(request,'cargando.html')
-
-def estacionamientos(request):
-    return render(request,'estacionamientos.html')
+    casilla = Casilla.objects.all()
+    context = {'casilla': casilla}
+    return render(request,'cargando.html', context)
 
 def addEstacionamiento(request):
     if request.method == 'POST':
