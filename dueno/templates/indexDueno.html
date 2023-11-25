@@ -119,6 +119,7 @@
                             alert('Estacionamiento deshabilitado.');
                             $(this).text('Habilitado');
                         }
+                        location.reload();
                     },
                     error: function (error) {
                         console.log('Error al cambiar el estado del estacionamiento:', error);
