@@ -27,11 +27,13 @@
         </header>
         <br />
         <br />
+      </section>
+      <section class="m-5 mt-0">
         <!-- Aquí va el mapa -->
-        <div class="mb-5">
+        <div class="">
           <div class="row">
             <div class="col-md-12 text-center">
-              <label for="PuntoSelect">Busqueda de Estacionamiento</label>
+              <label for="PuntoSelect"> <h1>Busqueda de Estacionamiento </h1></label>
               <select id="PuntoSelect" class="form-control">
                 {% for punto in puntos_interes %}
                 <option value="{{ punto.id }}">{{ punto.nombre }}</option>
@@ -41,8 +43,44 @@
           </div>
           <div id="map" style="height: 400px"></div>
         </div>
-        <div class=>
+      </section>
+      <section class="m-5">
+        <h2>Mis estacionamientos</h2>
+        <div class="m-5 mb-0">
+          <div class="row">
+            <div class="row-cols-1 row-cols-md-4 row-col-sm-12">
+              {% for n in estacionamiento %}
+              <div class="col-xl-3 col-md-6 col-sm-3">
+                <div id="product-container" class="card round">
+                  <img class="card-img-top" src="{% static 'img/cars1.jpg' %}" alt="{{ n.direccion }}">
+                  <div class="card-body text-center fw-bold">
+                    <h3 class="card-title mb-3 text-info">{{ n.direccion }}</h3>
+                    <p class="card-text mb-2">Tarifa H/R: ${{ n.tarifahora }}</p>
+                    <p class="card-text mb-3">Cantidad: </p>
+              
+                    <div class="row">
+                      <div class="col-7">
+                        <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg " disabled>
+                          {% if n.disponible %}
+                          Disponible
+                          {% else %}
+                          No Disponible
+                          {% endif %}
+                      </button>
+                      </div>
+                      <div class="col-5">
+                        <a href="{% url 'estacionamientos' %}" class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
+                      </div>
+                    </div>
+                </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
         </div>
+      </section>
+      <section>
         <div class="cartas">
           <!-- Cartas -->
           <div class="card">
@@ -69,61 +107,6 @@
             <button class="reservar-btn">Reservar</button>
           </div>
 
-          <div class="card">
-            <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 4</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="disponible-btn">Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-          <div class="card">
-            <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 5</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="disponible-btn">Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-          <div class="card">
-            <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 6</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="nodisponible-btn">No Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-          <div class="card">
-            <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 7</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="disponible-btn">Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-          <div class="card">
-            <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 8</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="disponible-btn">Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-          <div class="card">
-            <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 9</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="nodisponible-btn">No Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-                <div class="card">
-                    <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1">
-                    <h2>Estacionamiento 10</h2>
-                    <p>Información sobre el estacionamiento.</p>
-                    <button class="nodisponible-btn">No Disponible</button>
-                    <button class="reservar-btn">Reservar</button>
-                </div>
-            </div>
         </section>
     </main>
 

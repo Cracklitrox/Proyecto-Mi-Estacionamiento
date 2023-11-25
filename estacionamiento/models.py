@@ -34,6 +34,13 @@ class Estacionamiento(models.Model):
     def __str__(self):
         return 'ID: ' + str(self.id) + ' / Dueño del Estacionamiento: ' + str(self.id_dueno.nombreusuario)
 
+    def cambiar_estado(self):
+        """
+        Cambia el estado del estacionamiento (disponible/deshabilitado).
+        """
+        self.disponible = not self.disponible
+        self.save()
+
     class Meta:
         managed = False
         db_table = 'estacionamiento'

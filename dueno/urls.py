@@ -1,10 +1,10 @@
 from django.urls import path
 from . import views
+from estacionamiento.views import cambiar_estado
 
 urlpatterns = [
-    path('',views.indexDueno,name='indexDueno'),
-    path('indexDueno/',views.indexDueno,name='indexDueno'),
+    path('index/',views.indexDueno,name='index'),
+    path('index/cambiar_estado/<int:estacionamiento_id>/', cambiar_estado, name='cambiar_estado'),
     path('cargando/',views.cargando,name='cargando'),
-    path('estacionamientos/',views.estacionamientos,name='estacionamientos'),
-    path('addEstacionamiento/',views.addEstacionamiento,name='addEstacionamiento')
+    path('index/addEstacionamiento/',views.addEstacionamiento,name='addEstacionamiento')
 ]

@@ -89,6 +89,22 @@
   }
   
   /************************ CARTAS *****************************************/
+
+  
+#product-container {
+  border-radius: 15px; /* Ajusta el valor según sea necesario para la redondez deseada */
+  overflow: hidden; /* Esto asegura que la imagen no sobresalga del borde redondeado */
+  color: white;
+}
+
+.card-img-top {
+  border-top-left-radius: 15px; /* Redondea solo las esquinas superiores izquierdas de la imagen */
+  border-top-right-radius: 15px; /* Redondea solo las esquinas superiores derechas de la imagen */
+  width: 100%; /* Ajusta el ancho de la imagen según sea necesario */
+  height: auto; /* Ajusta la altura de la imagen según sea necesario */
+}
+
+
   .cartas {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -137,10 +153,6 @@
     /* Asegura que el contenido respete el borde circular */
   }
   
-  .disponible-btn:hover {
-    background-color: #cc0000;
-    /* Cambia el color de fondo al pasar el cursor */
-  }
 
 /************************ BOTÓN RESERVAR *****************************************/
 
