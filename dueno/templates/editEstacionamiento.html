@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="id_direccion">Dirección:</label>
+    {{ formulario.direccion }}
+    <br>
+    <label for="id_tarifa">Tarifa:</label>
+    {{ formulario.tarifahora }}
+    <br>
+    <label for="id_tarifa">Tarifa:</label>
+    {{ formulario.observaciones }}
+    <br>
+    <button type="submit">Guardar Cambios</button>
+</form>

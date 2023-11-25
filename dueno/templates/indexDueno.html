@@ -29,9 +29,8 @@
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Inicio</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'addEstacionamiento' %}">Crear estacionamiento</a>
-                  </li>
+                  <a name="" id="" class="btn btn-success" href="{% url 'addEstacionamiento' %}" role="button">Añadir</a>
+
                 </ul>
                 <span class="navbar-text">
                     <a href="">Cerrar Sesion</a>
@@ -53,6 +52,12 @@
                             <p class="card-text">${{ n.tarifahora }}</p>
                             <a onclick="mostrarPopup('popup1')" class="btn btn-outline-dark btn-dark product-add">Agregar</a>
                         </div>
+                        <td>
+                            <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' n.id %}" role="button">Editar</a>
+                            |
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminarEstacionamiento' n.id %}" role="button">Eliminar</a>
+                            
+                        </td>
                     </div>
                 </div>
                 {% endfor %}

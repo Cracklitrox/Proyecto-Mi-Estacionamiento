@@ -39,3 +39,14 @@ def addEstacionamiento(request):
 
     return render(request, 'addEstacionamiento.html', {'puntointeres_form': puntointeres_form, 
                                                        'estacionamiento_form': estacionamiento_form})
+
+
+def editEstacionamiento(request, id=id):
+    estacionamiento = Estacionamiento.objects.get(id=id)
+    formulario = EstacionamientoForm(request.POST or None,request.FILES or None,instance=estacionamiento)
+    return render(request,'editEstacionamiento.html', {'formulario':formulario})
+
+def eliminarEstacionamiento(request,id):
+    estacionamiento = Estacionamiento.objects.get(id=id)
+    estacionamiento.delete()
+    return redirect('indexDueno')
