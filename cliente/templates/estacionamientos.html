@@ -23,16 +23,9 @@
         <div class="parking-manager">
             <div class="new-car-btn">Seleccionar Estacionamientos</div>
             <div class="new-car-entry d-flex">
-                <div onclick="carenter(0)" id="slot1" class="casilla" data-casilla-id="1">1</div>
-                <div onclick="carenter(1)" id="slot2" class="casilla" data-casilla-id="2">2</div>
-                <div onclick="carenter(2)" id="slot3" class="casilla" data-casilla-id="3">3</div>
-                <div onclick="carenter(3)" id="slot4" class="casilla" data-casilla-id="4">4</div>
-                <div onclick="carenter(4)" id="slot5" class="casilla" data-casilla-id="5">5</div>
-                <div onclick="carenter(5)" id="slot6" class="casilla" data-casilla-id="6">6</div>
-                <div onclick="carenter(6)" id="slot7" class="casilla" data-casilla-id="7">7</div>
-                <div onclick="carenter(7)" id="slot8" class="casilla" data-casilla-id="8">8</div>
-                <div onclick="carenter(8)" id="slot9" class="casilla" data-casilla-id="9">9</div>
-                <div onclick="carenter(9)" id="slot10" class="casilla" data-casilla-id="10">10</div>
+                {% for casilla in casilla %}
+                    <div onclick="carenter({{ casilla.id }})" id="slot{{ casilla.posicion }}" class="casilla {% if not casilla.disponible %}no-disponible{% endif %}" data-casilla-id="{{ casilla.id }}">{{ casilla.posicion }}</div>
+                {% endfor %}
             </div>
             {% for n in estacionamiento %}
             <div class="new-car-btn">Tarifa: ${{n.tarifahora}}</div>
