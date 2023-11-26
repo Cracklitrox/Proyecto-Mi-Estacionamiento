@@ -53,24 +53,46 @@ def loginCliente(request):
             return render(request, "loginCliente.html")
     else:
         return render(request, "loginCliente.html")
+    
 
 def estacionamientos(request, id):
-    # Intenta obtener el objeto EstacionamientoCasilla o devuelve un error 404 si no se encuentra
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
-
-    # Obtén otras variables necesarias, como las casillas y EstacionamientoCasillas
     casilla = Casilla.objects.all()
     estacionamientoCasilla = EstacionamientoCasilla.objects.all()
-    # Pasa todas las variables al contexto
+
+    # Obtiene el id del dueño asociado al estacionamiento
+    id_dueno_id = estacionamiento.id_dueno.id
+    tarifahora = estacionamiento.tarifahora
+
+    # Crea una instancia del formulario ArriendoForm
+    arriendo_form = ArriendoForm(id_estacionamiento=id, id_dueno=id_dueno_id, preciototal=tarifahora)
+
+    if request.method == 'POST':
+        # Procesar el formulario cuando se envíe
+        arriendo_form = ArriendoForm(request.POST)
+
+        if arriendo_form.is_valid():
+            # Guarda el formulario y realiza las acciones necesarias
+            arriendo = arriendo_form.save(commit=False)
+            arriendo.save()
+
+            # Resto del código para actualizar las casillas...
+            
+            messages.success(request, 'Estacionamiento creado exitosamente.')
+            return redirect('index')
+        else:
+            print(arriendo_form.errors)
+            messages.error(request, 'Corrige los errores en el formulario.')
+
+    # Método GET, renderiza la página con el formulario
     context = {
         'estacionamiento': estacionamiento,
         'casilla': casilla,
-        'estacionamientoCasilla': estacionamientoCasilla
+        'estacionamientoCasilla': estacionamientoCasilla,
+        'arriendo_form': arriendo_form,
     }
 
-    # Renderiza la plantilla
     return render(request, 'estacionamientos.html', context)
-
 
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):
