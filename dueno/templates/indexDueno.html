@@ -46,7 +46,11 @@
                     {% for n in estacionamientos %}
                     <div class="col-xl-4 col-md-6 col-sm-3">
                         <div id="product-container" class="card round">
-                            <img class="card-img-top" src="{{n.imagen}}" alt="{{ n.direccion }}">
+                            {% if n.imagen %}
+                                <img class="card-img-top" src="{{ n.imagen.url }}" alt="{{ n.direccion }}">
+                            {% else %}
+                                <p>No hay imagen disponible</p>
+                            {% endif %}
                             <ul class="list-group list-group-flush text-center">
                                 <li class="list-group-item">
                                     <h5 class="card-title">Dirección: {{ n.direccion }}</h5>

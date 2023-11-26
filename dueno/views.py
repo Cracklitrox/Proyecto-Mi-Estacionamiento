@@ -48,4 +48,4 @@ def editEstacionamiento(request, id=id):
 def eliminarEstacionamiento(request,id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     estacionamiento.delete()
-    return redirect('indexDueno')
+    return redirect('index')
