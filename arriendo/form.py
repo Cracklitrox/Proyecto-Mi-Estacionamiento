@@ -18,14 +18,3 @@ class arriendoForm(forms.ModelForm):
         super(arriendoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control'})
-
-class estacionamientoCasillaForm(forms.ModelForm):
-    class Meta:
-        model = EstacionamientoCasilla
-        fields = ['id_estacionamiento', 'id_casilla']
-  
-    def __init__(self, *args, **kwargs):
-        super(estacionamientoCasillaForm, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'form-control'})
-  
