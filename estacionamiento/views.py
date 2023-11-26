@@ -14,8 +14,8 @@ def cambiar_estado(request, estacionamiento_id):
 
 def cambiar_casilla(request, casilla_id):
     try:
-        casilla = Casilla.objects.get(id=casilla_id)
-        casilla.cambiar_casilla()
-        return JsonResponse({'estado': casilla.disponible})
-    except Casilla.DoesNotExist:
-        return JsonResponse({'error': 'Casilla no encontrada'}, status=404)
+        estacionamientoCasilla = EstacionamientoCasilla.objects.get(id=casilla_id)
+        estacionamientoCasilla.cambiar_casilla()
+        return JsonResponse({'estado': estacionamientoCasilla.disponible})
+    except EstacionamientoCasilla.DoesNotExist:
+        return JsonResponse({'error': 'EstacionamientoCasilla no encontrada'}, status=404)

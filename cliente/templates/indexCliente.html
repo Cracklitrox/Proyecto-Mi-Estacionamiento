@@ -69,7 +69,11 @@
                       </button>
                       </div>
                       <div class="col-5">
-                        <a href="{% url 'estacionamientos' %}" class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
+                        {% if n.disponible %}
+                            <a href="{% url 'estacionamientos' id=n.id %}" class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
+                        {% else %}
+                        <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
+                        {% endif %}
                       </div>
                     </div>
                 </div>
