@@ -97,7 +97,7 @@
         }
 
         $(document).ready(function () {
-            $('.casilla-btn').prop('disabled', false);
+            
             $('.casilla-btn').click(function () {
                 var casillaId = $(this).data('casilla-id');
                 console.log(casillaId);
@@ -107,7 +107,7 @@
                 var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 $.ajax({
                     type: 'POST',
-                    url: '/cliente/index/estacionamientos/cambiar_casilla/' + casillaId,
+                    url: '/cliente/indexCliente/estacionamientos/cambiar_casilla/' + casillaId,
                     headers: {'X-CSRFToken': csrftoken},
                     success: function (data) {
                         // Actualiza el texto del botón según el nuevo estado
