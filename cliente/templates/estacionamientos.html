@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-cJ0fTZd0lS2e6Uly6E77T1DtuM1tzAg73O8h2tqN8LWv0eGGGVphTxF1E3zIdhFg"
         crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/Estacionamientos.css' %}">
 
     <script src="{% static 'js/estacionamientos.js' %}"></script>
@@ -28,12 +28,13 @@
             <div class="new-car-entry d-flex">
                 {% for casilla in casilla %}
                 <div onclick="carenter({{ casilla.id }})" id="slot{{ casilla.posicion }}"
-                    class="btn {% if casilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %}"
+                    class="btn {% if casilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %} casilla-btn"
                     data-casilla-id="{{ casilla.id }}">
                     {{ casilla.posicion }}
                 </div>
                 {% endfor %}
             </div>
+            
             
             {% for n in estacionamiento %}
             <div class="new-car-btn">Tarifa: ${{n.tarifahora}}</div>
@@ -43,7 +44,7 @@
             <form method="post" enctype="multipart/form-data" class="text-white m-5 mt-4">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="hidden" name="casilla_seleccionada" id="casilla_seleccionada" value="">
+                <input type="text" name="casilla_seleccionada" id="casilla_seleccionada" value="">
                 <button class="btn-cambiar-estado" type="submit">Guardar</button>
             </form>
         </div>
@@ -91,18 +92,18 @@
             // Inicia la inicialización de casillas no disponibles
             inicializarCasillasNoDisponibles(0);
         }
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('.btn-cambiar-estado').click(function (e) {
-                e.preventDefault();
 
-                var casillaId = $(this).data('#casilla_seleccionada');
+        $(document).ready(function () {
+            $('.casilla-btn').click(function () {
+                var casillaId = $(this).data('casilla-id');
+                console.log(casillaId);
+                // Actualiza el valor del campo oculto en el formulario
+                $('#casilla_seleccionada').val(casillaId);
 
                 var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 $.ajax({
                     type: 'POST',
-                    url: 'cambiar_casilla/' + casillaId + '/',
+                    url: 'cambiar_casilla/' + casillaId,
                     headers: {'X-CSRFToken': csrftoken},
                     success: function (data) {
                         // Actualiza el texto del botón según el nuevo estado
@@ -113,7 +114,6 @@
                             alert('Estacionamiento deshabilitado.');
                             $(this).text('Habilitado');
                         }
-                        location.reload();
                     },
                     error: function (error) {
                         console.log('Error al cambiar el estado del estacionamiento:', error);
