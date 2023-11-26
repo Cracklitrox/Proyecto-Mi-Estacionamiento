@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import Cliente
@@ -54,12 +54,23 @@ def loginCliente(request):
     else:
         return render(request, "loginCliente.html")
 
-def estacionamientos(request):
+def estacionamientos(request, id):
+    # Intenta obtener el objeto EstacionamientoCasilla o devuelve un error 404 si no se encuentra
+    estacionamiento = get_object_or_404(Estacionamiento, id=id)
+
+    # Obtén otras variables necesarias, como las casillas y EstacionamientoCasillas
     casilla = Casilla.objects.all()
+    estacionamientoCasilla = EstacionamientoCasilla.objects.all()
+    # Pasa todas las variables al contexto
     context = {
-        'casilla':casilla,
-        }
-    return render(request,'estacionamientos.html',context )
+        'estacionamiento': estacionamiento,
+        'casilla': casilla,
+        'estacionamientoCasilla': estacionamientoCasilla
+    }
+
+    # Renderiza la plantilla
+    return render(request, 'estacionamientos.html', context)
+
 
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):

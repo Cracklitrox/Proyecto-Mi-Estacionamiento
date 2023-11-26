@@ -76,20 +76,14 @@ class ClienteVehiculo(models.Model):
         verbose_name_plural = 'Vehiculos/Cliente'
 
 class Casilla(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     posicion = models.CharField(max_length=30)
-    disponible = models.BooleanField(default=True)
     imagen = models.ImageField(upload_to='fotoCasilla/', null=True, blank=True, verbose_name='Imagen de la Casilla del Estacionamiento')
 
-    def cambiar_casilla(self):
-        """
-        Cambia el estado del estacionamiento (disponible/deshabilitado).
-        """
-        self.disponible = not self.disponible
-        self.save()
+    
 
     def __str__(self):
-        return 'ID Casilla: ' + str(self.id) + ' / Estado: ' + str(self.disponible)
+        return 'ID Casilla: ' + str(self.id) 
 
     class Meta:
         managed = False
@@ -101,9 +95,17 @@ class EstacionamientoCasilla(models.Model):
     id = models.AutoField(primary_key=True)
     id_estacionamiento = models.ForeignKey(Estacionamiento, models.DO_NOTHING, db_column='id_estacionamiento')
     id_casilla = models.ForeignKey(Casilla, models.DO_NOTHING, db_column='id_casilla')
+    disponible = models.BooleanField(default=True)
+
+    def cambiar_casilla(self):
+        """
+        Cambia el estado del estacionamiento (disponible/deshabilitado).
+        """
+        self.disponible = not self.disponible
+        self.save()
 
     def __str__(self):
-        return 'ID Estacionamiento: {} / ID Casilla: {}'.format(self.id_estacionamiento.id, self.id_casilla.id)
+        return 'ID Estacionamiento: {} / ID Casilla: {}'.format(self.id_estacionamiento.id, self.id_casilla.id) + ' / Estado: ' + str(self.disponible)
 
     class Meta:
         managed = False

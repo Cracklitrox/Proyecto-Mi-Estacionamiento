@@ -27,7 +27,7 @@ class EstacionamientoForm(forms.ModelForm):
 class CasillaForm(forms.ModelForm):
     class Meta:
         model = Casilla
-        fields = ['posicion','disponible']
+        fields = ['posicion']
 
     def __init__(self, *args, **kwargs):
         super(CasillaForm, self).__init__(*args, **kwargs)

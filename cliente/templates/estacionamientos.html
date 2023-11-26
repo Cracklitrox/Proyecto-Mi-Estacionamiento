@@ -26,19 +26,19 @@
         <div class="parking-manager">
             <div class="new-car-btn">Seleccionar Estacionamientos</div>
             <div class="new-car-entry d-flex">
-                {% for casilla in casilla %}
-                <div onclick="carenter({{ casilla.id }})" id="slot{{ casilla.posicion }}"
-                    class="btn {% if casilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %} casilla-btn"
-                    data-casilla-id="{{ casilla.id }}">
-                    {{ casilla.posicion }}
-                </div>
+                {% for estacasilla in estacionamientoCasilla %}
+                    {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
+                        <div onclick="carenter({{ estacasilla.id_casilla.posicion }})" id="slot{{ estacasilla.id_casilla.posicion }}"
+                            class="btn {% if estacasilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %} casilla-btn"
+                            data-casilla-id="{{ estacasilla.id }}">
+                            {{ estacasilla.id_casilla.id }}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
             
             
-            {% for n in estacionamiento %}
-            <div class="new-car-btn">Tarifa: ${{n.tarifahora}}</div>
-            {% endfor %}
+            <div class="new-car-btn">Tarifa: </div>
             <br>
             <div class="new-car-btn">Cliente: 10</div>
             <form method="post" enctype="multipart/form-data" class="text-white m-5 mt-4">
@@ -72,12 +72,15 @@
         function inicializarVehiculos() {
             var casillasNoDisponibles = [];
 
-            {% for casilla in casilla %}
-                {% if not casilla.disponible %}
+            {% for estacasilla in estacionamientoCasilla %}
+                {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
+                    {% if not estacasilla.disponible %}
                     // Agrega la casilla a un array de casillas no disponibles
-                    casillasNoDisponibles.push({{ casilla.id }});
+                        casillasNoDisponibles.push({{ estacasilla.id_casilla.posicion }});
+                    {% endif %}
                 {% endif %}
             {% endfor %}
+
     
             // Función para inicializar vehículos en casillas no disponibles
             function inicializarCasillasNoDisponibles(index) {
@@ -94,6 +97,7 @@
         }
 
         $(document).ready(function () {
+            $('.casilla-btn').prop('disabled', false);
             $('.casilla-btn').click(function () {
                 var casillaId = $(this).data('casilla-id');
                 console.log(casillaId);
@@ -103,7 +107,7 @@
                 var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
                 $.ajax({
                     type: 'POST',
-                    url: 'cambiar_casilla/' + casillaId,
+                    url: '/cliente/index/estacionamientos/cambiar_casilla/' + casillaId,
                     headers: {'X-CSRFToken': csrftoken},
                     success: function (data) {
                         // Actualiza el texto del botón según el nuevo estado
@@ -118,6 +122,7 @@
                     error: function (error) {
                         console.log('Error al cambiar el estado del estacionamiento:', error);
                     }
+                    
                 });
             });
         });

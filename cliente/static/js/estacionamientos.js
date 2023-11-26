@@ -105,7 +105,7 @@ function carenter(slot){
         console.log(parklist)
         parklock = true;
         generatenewcar(slot);
-        document.getElementById('slot'+(slot+1).toString()).style.background = 'rgb(146,18,18)';
+        document.getElementById('slot'+(slot).toString()).style.background = 'rgb(146,18,18)';
         if(slot !=4 && slot != 9)
         document.getElementById('car'+(slot).toString()).style.right = (-w+(w*.1)+(((5 - (slot+1)%5))*((w*.8)*.2))+((w*.8)*.05))+'px'
         else
