@@ -79,7 +79,7 @@ def estacionamientos(request, id):
             # Resto del código para actualizar las casillas...
             
             messages.success(request, 'Estacionamiento creado exitosamente.')
-            return redirect('index')
+            return redirect('indexCliente')
         else:
             print(arriendo_form.errors)
             messages.error(request, 'Corrige los errores en el formulario.')
