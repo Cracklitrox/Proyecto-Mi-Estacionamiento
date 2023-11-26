@@ -27,7 +27,7 @@ def addEstacionamiento(request):
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
             messages.success(request, 'Estacionamiento creado exitosamente.')
-            return redirect('indexDueno')
+            return redirect('index')
         else:
             print(estacionamiento_form.errors)
             messages.error(request, 'Corrige los errores en el formulario.')
@@ -48,4 +48,4 @@ def editEstacionamiento(request, id=id):
 def eliminarEstacionamiento(request,id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     estacionamiento.delete()
-    return redirect('indexDueno')
+    return redirect('index')

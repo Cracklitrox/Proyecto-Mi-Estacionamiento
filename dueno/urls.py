@@ -6,10 +6,9 @@ urlpatterns = [
     path('index/',views.indexDueno,name='index'),
     path('index/cambiar_estado/<int:estacionamiento_id>/', cambiar_estado, name='cambiar_estado'),
     path('cargando/',views.cargando,name='cargando'),
-    path('estacionamientos/',views.estacionamientos,name='estacionamientos'),
     path('index/addEstacionamiento/',views.addEstacionamiento,name='addEstacionamiento'),
     path('eliminarEstacionamiento/<int:id>',views.eliminarEstacionamiento,name='eliminarEstacionamiento'),
     path('editEstacionamiento/<int:id>',views.editEstacionamiento,name='editEstacionamiento'),
 
-   
+
 ]
