@@ -76,7 +76,7 @@ class ClienteVehiculo(models.Model):
         verbose_name_plural = 'Vehiculos/Cliente'
 
 class Casilla(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     posicion = models.CharField(max_length=30)
     disponible = models.BooleanField(default=True)
     imagen = models.ImageField(upload_to='fotoCasilla/', null=True, blank=True, verbose_name='Imagen de la Casilla del Estacionamiento')
