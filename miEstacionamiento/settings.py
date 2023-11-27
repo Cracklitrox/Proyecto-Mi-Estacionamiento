@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'transaccion_pago',
     'usuario',
     'administrador',
-    'bootstrap5',
 ]
 
 MIDDLEWARE = [

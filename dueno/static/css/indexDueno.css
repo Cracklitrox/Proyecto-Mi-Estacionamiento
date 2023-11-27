@@ -1,163 +1,97 @@
-/* Agrega estos estilos a tu archivo CSS */
-:root {
-    --color-cartas: rgba(0, 147, 167, 0.986);
-    --color-secundario: #9c9d9e;
-  }
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: linear-gradient(45deg, #2e86de, #e74c3c);
-    color: #fff;
-}
-
-header {
-    background: #34495e;
-    color: #fff;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-
-#product-container {
-    border-radius: 15px; /* Ajusta el valor según sea necesario para la redondez deseada */
-    overflow: hidden; /* Esto asegura que la imagen no sobresalga del borde redondeado */
-}
-
-.card-img-top {
-    border-top-left-radius: 15px; /* Redondea solo las esquinas superiores izquierdas de la imagen */
-    border-top-right-radius: 15px; /* Redondea solo las esquinas superiores derechas de la imagen */
-    width: 100%; /* Ajusta el ancho de la imagen según sea necesario */
-    height: auto; /* Ajusta la altura de la imagen según sea necesario */
-}
-
-.card-body{
-    color: black;
-}
-
-.search-bar input {
-    padding: 10px;
-    background-color: #fff;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.welcome p {
-    margin: 0;
-}
-
-.logout-btn button {
-    background-color: #e74c3c;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
 }
 
 .content {
-    flex-grow: 1;
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-}
-
-h2 {
-    color: #fefefe;
-}
-
-.cartas {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.carta {
-    background-color: #2c3e50;
-    border: 1px solid #34495e;
-    border-radius: 8px;
-    margin: 10px;
     padding: 20px;
-    width: calc(33.33% - 20px);
-    box-sizing: border-box;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.carta img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
+.card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
     margin-bottom: 10px;
 }
 
-.carta p {
-    font-size: 1em;
-    color: #fff;
-    max-width: 100%;
+.card-text {
+    margin-bottom: 10px;
+}
+
+.row-cols-1,
+.row-cols-md-4,
+.row-col-sm-12 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-cambiar-estado {
+    margin-right: 10px;
+}
+
+.btn-info,
+.btn-danger {
+    margin: 5px;
 }
 
 footer {
-    background-color: #34495e;
+    background-color: #333;
     color: #fff;
-    padding: 20px;
-    width: 100%;
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
     text-align: center;
 }
 
-/******************* POP UP *************************/
-
+/* Añade esto a tu CSS */
 .popup {
-    display: none;
     position: fixed;
     top: 0;
+    bottom: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
 }
 
 .popup-content {
-    background: #000000;
+    margin: 70px auto;
     padding: 20px;
-    border-radius: 10px;
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
     position: relative;
+    transition: all 5s ease-in-out;
 }
 
 .cerrar-popup {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.ver-mas-btn,
-.arrendar-btn {
-    background-color: #3498db;
-    color: #fff;
-    padding: 10px 15px;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
     text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    display: inline-block;
-    cursor: pointer;
+    color: #333;
 }
 
-.ver-mas-btn:hover,
-.arrendar-btn:hover {
-    background-color: #2980b9;
+.cerrar-popup:hover {
+    color: #06D85F;
 }

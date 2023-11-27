@@ -1,92 +1,98 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
-    <title>Mi Estacionamiento | Estacionamientos</title>
-  </head>
 
-  <body>
-    <main>
-      <section class="content">
-        <header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>Mi Estacionamiento | Estacionamientos</title>
+</head>
+
+<body>
+  <main>
+    <section class="content">
+      <header>
+        <div class="header-container">
           <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar..." />
-            <button onclick="searchFunction()">Buscar</button>
+            <button onclick="searchFunction()"><i class="fas fa-search"></i></button>
           </div>
-          <h1>Mi Estacionamiento</h1>
+          <h1 class="title">Mi Estacionamiento</h1>
           <button class="login-btn">Cerrar Sesión</button>
-        </header>
-        <br />
-        <br />
-      </section>
-      <section class="m-5 mt-0">
-        <!-- Aquí va el mapa -->
-        <div class="">
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <label for="PuntoSelect"> <h1>Busqueda de Estacionamiento </h1></label>
-              <select id="PuntoSelect" class="form-control">
-                {% for punto in puntos_interes %}
-                <option value="{{ punto.id }}">{{ punto.nombre }}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div id="map" style="height: 400px"></div>
         </div>
-      </section>
-      <section class="m-5">
-        <h2>Mis estacionamientos</h2>
-        <div class="m-5 mb-0">
-          <div class="row">
-            <div class="row-cols-1 row-cols-md-4 row-col-sm-12">
-              {% for n in estacionamiento %}
-              <div class="col-xl-3 col-md-6 col-sm-3">
-                <div id="product-container" class="card round">
-                  <img class="card-img-top" src="{% static 'img/cars1.jpg' %}" alt="{{ n.direccion }}">
-                  <div class="card-body text-center fw-bold">
-                    <h3 class="card-title mb-3 text-info">{{ n.direccion }}</h3>
-                    <p class="card-text mb-2">Tarifa H/R: ${{ n.tarifahora }}</p>
-                    <p class="card-text mb-3">Cantidad: </p>
-              
-                    <div class="row">
-                      <div class="col-7">
-                        <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg " disabled>
-                          {% if n.disponible %}
-                          Disponible
-                          {% else %}
-                          No Disponible
-                          {% endif %}
-                      </button>
-                      </div>
-                      <div class="col-5">
-                        {% if n.disponible %}
-                            <a href="{% url 'estacionamientos' id=n.id %}" class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
-                        {% else %}
-                        <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
-                        {% endif %}
-                      </div>
-                    </div>
-                </div>
+      </header>
+    </section>
+    <section class="m-5 mt-0">
+      <!-- Aquí va el mapa -->
+      <div class="">
+        <div class="row">
+          <div class="col-md-12 text-center">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <select id="PuntoSelect" class="form-control">
+      {% for punto in puntos_interes %}
+      <option value="{{ punto.id }}">{{ punto.nombre }}</option>
+      {% endfor %}
+    </select>
+    </div>
+    </div>
+    <div id="map" style="height: 400px"></div>
+    </div>
+    </section>
+    <section class="m-5">
+      <h2>Mis estacionamientos</h2>
+      <div class="m-5 mb-0">
+        <div class="row">
+          {% for n in estacionamiento %}
+          <div class="col-xl-3 col-md-6 col-sm-3">
+            <div id="product-container" class="card round">
+              <img class="card-img-top" src="{% static 'img/cars1.jpg' %}" alt="{{ n.direccion }}">
+              <div class="card-body text-center fw-bold">
+                <h3 class="card-title mb-3 text-info">{{ n.direccion }}</h3>
+                <p class="card-text mb-2">Tarifa H/R: ${{ n.tarifahora }}</p>
+                <p class="card-text mb-3">Cantidad: </p>
+                <div class="row">
+                  <div class="col-7">
+                    <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg "
+                      disabled>
+                      {% if n.disponible %}
+                      Disponible
+                      {% else %}
+                      No Disponible
+                      {% endif %}
+                    </button>
+                  </div>
+                  <div class="col-5">
+                    {% if n.disponible %}
+                    <a href="{% url 'estacionamientos' id=n.id %}"
+                      class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
+                    {% else %}
+                    <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
+                    {% endif %}
+                  </div>
                 </div>
               </div>
-              {% endfor %}
             </div>
           </div>
+
+          {% if forloop.counter|divisibleby:4 and not forloop.last %}
         </div>
-      </section>
-      <section>
+        <div class="row">
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    <!-- <section>
         <div class="cartas">
-          <!-- Cartas -->
+          Cartas 
           <div class="card">
             <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
             <h2>Estacionamiento 1</h2>
@@ -111,153 +117,124 @@
             <button class="reservar-btn">Reservar</button>
           </div>
 
-        </section>
-    </main>
+        </section> -->
+  </main>
 
-    <footer class="Piedepagina">
-      <div class="grupo1">
-        <div class="box">
-          <h2>MI ESTACIONAMIENTO</h2>
-          <p>
-            NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE
-            SU UBICACIÓN
-          </p>
-        </div>
-        <div class="box">
-          <h2>SÍGUENOS</h2>
-          <div class="red-social">
-            <a
-              href="https://www.instagram.com/"
-              class="bi bi-instagram"
-              target="_blank"
-            >
-              <img
-                src="{% static 'img/rrss/instagram.png' %}"
-                width="45"
-                height="45"
-                alt=""
-              />
-            </a>
-            <a
-              href="https://es-la.facebook.com/"
-              class="bi bi-facebook"
-              target="_blank"
-            >
-              <img
-                src="{% static 'img/rrss/facebook.png' %}"
-                width="45"
-                height="45"
-                alt=""
-              />
-            </a>
-            <a
-              href="https://twitter.com/?lang=es"
-              class="bi bi-twitter"
-              target="_blank"
-            >
-              <img
-                src="{% static 'img/rrss/twitter.png' %}"
-                width="45"
-                height="45"
-                alt=""
-              />
-            </a>
-          </div>
+  <footer class="Piedepagina">
+    <div class="grupo1">
+      <div class="box">
+        <h2>MI ESTACIONAMIENTO</h2>
+        <p>
+          NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE
+          SU UBICACIÓN
+        </p>
+      </div>
+      <div class="box">
+        <h2>SÍGUENOS</h2>
+        <div class="red-social">
+          <a href="https://www.instagram.com/" class="bi bi-instagram" target="_blank">
+            <img src="{% static 'img/rrss/instagram.png' %}" width="45" height="45" alt="" />
+          </a>
+          <a href="https://es-la.facebook.com/" class="bi bi-facebook" target="_blank">
+            <img src="{% static 'img/rrss/facebook.png' %}" width="45" height="45" alt="" />
+          </a>
+          <a href="https://twitter.com/?lang=es" class="bi bi-twitter" target="_blank">
+            <img src="{% static 'img/rrss/twitter.png' %}" width="45" height="45" alt="" />
+          </a>
         </div>
       </div>
-      <div class="grupo2">
-        <small
-          >&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos
-          Reservados.</small
-        >
-      </div>
-    </footer>
-    <script>
-      const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
-      const mapDiv = document.getElementById("map");
-      let map;
-      let marker;
-      let marcadorArray = []; // Array para almacenar marcadores
+    </div>
+    <div class="grupo2">
+      <small>&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos
+        Reservados.</small>
+    </div>
+  </footer>
+  <script>
+    const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
+    const mapDiv = document.getElementById("map");
+    let map;
+    let marker;
+    let marcadorArray = []; // Array para almacenar marcadores
 
-      const puntosDeInteres = [
-          {% for punto in puntos_interes %}
-              {
-                  id: {{ punto.id }},
-                  latitud: {{ punto.latitud }},
-                  longitud: {{ punto.longitud }},
-                  nombre: "{{ punto.nombre }}"
-              },
-          {% endfor %}
+    const puntosDeInteres = [
+      {% for punto in puntos_interes %}
+    {
+      id: { { punto.id } },
+      latitud: { { punto.latitud } },
+      longitud: { { punto.longitud } },
+      nombre: "{{ punto.nombre }}"
+    },
+    {% endfor %}
           // Agrega más puntos de interés según tus necesidades
       ];
 
-      const santiagoCoords = {
-          lat: -33.45694,
-          lng: -70.64827,
-          name: 'Santiago'
-      };
+    const santiagoCoords = {
+      lat: -33.45694,
+      lng: -70.64827,
+      name: 'Santiago'
+    };
 
 
 
-      function initMap() {
-          map = new google.maps.Map(mapDiv, {
-              center: santiagoCoords,
-              zoom: 15
-          });
+    function initMap() {
+      map = new google.maps.Map(mapDiv, {
+        center: santiagoCoords,
+        zoom: 15
+      });
 
-          // Manejar cambios en el select
-          document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
+      // Manejar cambios en el select
+      document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
 
-          // Mostrar el primer punto de interés al cargar la página
-          manejarPuntoSelect();
+      // Mostrar el primer punto de interés al cargar la página
+      manejarPuntoSelect();
+    }
+
+    function manejarPuntoSelect() {
+      const selectPuntoId = document.getElementById('PuntoSelect').value;
+      const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);
+
+      // Verificar si selectPuntoI está definido antes de acceder a sus propiedades
+      if (selectPuntoI) {
+        // Limpiar todos los marcadores antes de agregar uno nuevo
+        limpiarMarcadores();
+
+        // Mostrar el nuevo marcador
+        marker = new google.maps.Marker({
+          position: { lat: parseFloat(selectPuntoI.latitud), lng: parseFloat(selectPuntoI.longitud) },
+          map: map,
+          icon: {
+            url: imageUrl,
+            scaledSize: new google.maps.Size(40, 40),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(20, 40)
+          },
+          title: selectPuntoI.nombre
+        });
+
+        // Agregar el nuevo marcador al array
+        marcadorArray.push(marker);
+
+        // Centrar el mapa en el nuevo marcador
+        map.setCenter(marker.getPosition());
+      } else {
+        console.error(`No se encontró ningún punto de interés con id ${selectPuntoId}`);
       }
+    }
 
-      function manejarPuntoSelect() {
-          const selectPuntoId = document.getElementById('PuntoSelect').value;
-          const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);
-
-          // Verificar si selectPuntoI está definido antes de acceder a sus propiedades
-          if (selectPuntoI) {
-              // Limpiar todos los marcadores antes de agregar uno nuevo
-              limpiarMarcadores();
-
-              // Mostrar el nuevo marcador
-              marker = new google.maps.Marker({
-                  position: { lat: parseFloat(selectPuntoI.latitud), lng: parseFloat(selectPuntoI.longitud) },
-                  map: map,
-                  icon: {
-                      url: imageUrl,
-                      scaledSize: new google.maps.Size(40, 40),
-                      origin: new google.maps.Point(0, 0),
-                      anchor: new google.maps.Point(20, 40)
-                  },
-                  title: selectPuntoI.nombre
-              });
-
-              // Agregar el nuevo marcador al array
-              marcadorArray.push(marker);
-
-              // Centrar el mapa en el nuevo marcador
-              map.setCenter(marker.getPosition());
-          } else {
-              console.error(`No se encontró ningún punto de interés con id ${selectPuntoId}`);
-          }
+    function limpiarMarcadores() {
+      // Iterar sobre el array y configurar el mapa como nulo para cada marcador
+      for (let i = 0; i < marcadorArray.length; i++) {
+        marcadorArray[i].setMap(null);
       }
+      // Limpiar el array
+      marcadorArray = [];
+    }
+  </script>
 
-      function limpiarMarcadores() {
-          // Iterar sobre el array y configurar el mapa como nulo para cada marcador
-          for (let i = 0; i < marcadorArray.length; i++) {
-              marcadorArray[i].setMap(null);
-          }
-          // Limpiar el array
-          marcadorArray = [];
-      }
-    </script>
+  <!-- Mapa -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
+    defer></script>
+</body>
 
-    <!-- Mapa -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
-      defer
-    ></script>
-  </body>
 </html>

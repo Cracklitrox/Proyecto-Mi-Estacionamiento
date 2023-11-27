@@ -42,59 +42,61 @@
         <h2>Mis estacionamientos</h2>
         <div class="m-5">
             <div class="row">
-                <div class="row-cols-1 row-cols-md-4 row-col-sm-12">
-                    {% for n in estacionamientos %}
-                    <div class="col-xl-4 col-md-6 col-sm-3">
-                        <div id="product-container" class="card round">
-                            {% if n.imagen %}
-                                <img class="card-img-top" src="{{ n.imagen.url }}" alt="{{ n.direccion }}">
-                            {% else %}
-                                <p>No hay imagen disponible</p>
-                            {% endif %}
-                            <ul class="list-group list-group-flush text-center">
-                                <li class="list-group-item">
-                                    <h5 class="card-title">Dirección: {{ n.direccion }}</h5>
-                                    <p class="card-text">Tarifa H/R: ${{ n.tarifahora }}</p>
-                                    <p class="card-text">
-                                        {% if n.disponible %}
-                                        Habilitado
-                                        {% else %}
-                                        Deshabilitado
-                                        {% endif %}
-                                    </p>
-                                </li>
-                            </ul>
-                            <div class="card-body d-flex align-items-center justify-content-center">
-                                <a href="#"
-                                    class="btn btn-outline-light btn-dark product-add btn-cambiar-estado"
-                                    data-estacionamiento-id="{{ n.id }}">
+                {% for n in estacionamientos %}
+                <div class="col-xl-4 col-md-6 col-sm-3">
+                    <div id="product-container" class="card round">
+                        <!-- {% if n.imagen %}
+                        <img class="card-img-top" src="{{ n.imagen.url }}" alt="{{ n.direccion }}">
+                        {% else %}
+                        <p>No hay imagen disponible</p>
+                        {% endif %} -->
+                        <ul class="list-group list-group-flush text-center">
+                            <li class="list-group-item">
+                                <h5 class="card-title">Dirección: {{ n.direccion }}</h5>
+                                <p class="card-text">Tarifa H/R: ${{ n.tarifahora }}</p>
+                                <p class="card-text">
                                     {% if n.disponible %}
-                                    Deshabilitado
-                                    {% else %}
                                     Habilitado
+                                    {% else %}
+                                    Deshabilitado
                                     {% endif %}
-                                </a>
-                                <a onclick="mostrarPopup('popup1')"
-                                    class="btn btn-outline-light btn-dark product-add">Ver más</a>
-                            </div>
+                                </p>
+                            </li>
+                        </ul>
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <a href="#" class="btn btn-outline-light btn-dark product-add btn-cambiar-estado"
+                                data-estacionamiento-id="{{ n.id }}">
+                                {% if n.disponible %}
+                                Deshabilitado
+                                {% else %}
+                                Habilitado
+                                {% endif %}
+                            </a>
+                            <a onclick="mostrarPopup('popup1')" class="btn btn-outline-light btn-dark product-add">Ver
+                                más</a>
                         </div>
                         <td>
-                            <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' n.id %}" role="button">Editar</a>
-                            |
-                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminarEstacionamiento' n.id %}" role="button">Eliminar</a>
-                            
+                            <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' n.id %}"
+                                role="button">Editar</a>
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminarEstacionamiento' n.id %}"
+                                role="button">Eliminar</a>
                         </td>
                     </div>
-                    {% endfor %}
                 </div>
+                {% if forloop.counter|divisibleby:4 and not forloop.last %}
+            </div>
+            <div class="row">
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
     </section>
+    <section>
+        <footer>
+            MiEstacionamiento@gmail.com
+        </footer>
+    </section>
 
-
-    <footer>
-        MiEstacionamiento@gmail.com
-    </footer>
 
     <!-- Popups -->
     <div class="popup" id="popup1">
@@ -119,7 +121,7 @@
                 $.ajax({
                     type: 'POST',
                     url: 'cambiar_estado/' + estacionamientoId + '/',
-                    headers: {'X-CSRFToken': csrftoken},
+                    headers: { 'X-CSRFToken': csrftoken },
                     success: function (data) {
                         // Actualiza el texto del botón según el nuevo estado
                         if (data.estado) {
