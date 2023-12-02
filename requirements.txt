@@ -1,3 +1,4 @@
 Django==4.2.7
-Python==3.11.6
 crispy-bootstrap5==0.7
+pillow
+django-admin-interface
