@@ -1,0 +1,20 @@
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+.content {
+    padding: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.row-cols-1,
+.row-cols-md-4,
+.row-col-sm-12 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

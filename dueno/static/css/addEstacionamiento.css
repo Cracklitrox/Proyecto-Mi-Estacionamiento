@@ -1,60 +1,46 @@
-/* Estilo general del formulario */
-body {
-    background-color: #0f0f0f;
-    color: #fff;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .container {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 30px;
-    border-radius: 10px;
-  }
-  
-  .btn-primary {
-    background-color: #4caf50;
-    border-color: #4caf50;
-    font-weight: bold;
-  }
-  
-  .btn-primary:hover {
-    background-color: #3d8b3d;
-    border-color: #3d8b3d;
-  }
-  
-  /* Estilos para los campos del formulario */
-  .form-group label {
-    color: #4caf50;
-    font-weight: bold;
-  }
-  
-  .form-control {
-    background-color: #222;
-    border: 1px solid #4caf50;
-    color: #fff;
-  }
-  
-  .form-control:focus {
-    background-color: #333;
-    border: 1px solid #4caf50;
-    color: #fff;
-  }
-  
-  /* Estilos para el mapa */
-  #mapa {
-    border: 2px solid #4caf50;
-    border-radius: 5px;
-  }
-  
-  /* Estilos para el botón de enviar */
-  #enviarFormulario {
-    background-color: #ff5722;
-    border-color: #ff5722;
-    font-weight: bold;
-  }
-  
-  #enviarFormulario:hover {
-    background-color: #e64a19;
-    border-color: #e64a19;
-  }
-  
+ .btn-primary {
+   background-color: #4caf50;
+   border-color: #4caf50;
+   font-weight: bold;
+ }
+
+ .btn-primary:hover {
+   background-color: #3d8b3d;
+   border-color: #3d8b3d;
+ }
+
+ /* Estilos para los campos del formulario */
+ .form-group label {
+   color: #4caf50;
+   font-weight: bold;
+ }
+
+ .form-control {
+   background-color: #222;
+   border: 1px solid #4caf50;
+   color: #fff;
+ }
+
+ .form-control:focus {
+   background-color: #333;
+   border: 1px solid #4caf50;
+   color: #fff;
+ }
+
+ /* Estilos para el mapa */
+ #mapa {
+   border: 2px solid #4caf50;
+   border-radius: 5px;
+ }
+
+ /* Estilos para el botón de enviar */
+ #enviarFormulario {
+   background-color: #ff5722;
+   border-color: #ff5722;
+   font-weight: bold;
+ }
+
+ #enviarFormulario:hover {
+   background-color: #e64a19;
+   border-color: #e64a19;
+ }

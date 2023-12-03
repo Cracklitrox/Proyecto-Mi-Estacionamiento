@@ -1,66 +1,68 @@
+{% extends 'baseDueno.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dueño</title>
-    {% include 'bloques/header_dueno.html' %}
-</head>
+{% load humanize %}
 
-<body>
-    {% include 'bloques/natvar_dueno.html' %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'css/indexDueno.css' %}">
+{% endblock%}
+
+{% block title %}
+Index
+{% endblock %}
+
+{% block content %}
+<div class="container">
     <!-- Cartas -->
+
     <section class="m-5">
-        {% load humanize %}
-        <h2 class="mb-4">Estacionamientos</h2>
-        <div class="row row-cols-1 row-cols-xl-4 row-cols-md-3 g-4 m-10">
+        <h2 class="mb-4">Mis estacionamientos</h2>
+        <div class="row row-cols-1 row-cols-xl-4 row-cols-md-3 g-4">
             {% for estacionamiento in estacionamientos %}
-                <div class="col">
-                    <div class="card h-100">
-                        {% if estacionamiento.imagen %}
-                            <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
-                        {% else %}
-                            <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
-                        {% endif %}
-                        <ul class="list-group list-group-flush text-center">
-                            <li class="list-group-item">
-                                <h5 class="card-title">Dirección: {{ estacionamiento.direccion }}</h5>
-                                <p class="card-text">Tarifa H/R: ${{ estacionamiento.tarifahora }}</p>
-                                <p class="card-text">
-                                    {% if estacionamiento.disponible %}
-                                    Habilitado
-                                    {% else %}
-                                    Deshabilitado
-                                    {% endif %}
-                                </p>
-                            </li>
-                        </ul>
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <a href="#" class="btn btn-outline-light btn-dark product-add btn-cambiar-estado"
-                                data-estacionamiento-id="{{ estacionamiento.id }}">
+            <div class="col">
+                <div class="card h-100">
+                    {% if estacionamiento.imagen %}
+                    <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
+                    {% else %}
+                    <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
+                    {% endif %}
+                    <ul class="list-group list-group-flush text-center">
+                        <li class="list-group-item">
+                            <h5 class="card-title">Dirección: {{ estacionamiento.direccion }}</h5>
+                            <p class="card-text">Tarifa H/R: ${{ estacionamiento.tarifahora }}</p>
+                            <p class="card-text">
                                 {% if estacionamiento.disponible %}
-                                Deshabilitado
-                                {% else %}
                                 Habilitado
+                                {% else %}
+                                Deshabilitado
                                 {% endif %}
-                            </a>
-                            <a onclick="mostrarPopup('popup1')" class="btn btn-outline-light btn-dark product-add">Ver
-                                más</a>
-                        </div>
-                        <td>
-                            <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' estacionamiento.id %}"
-                                role="button">Editar</a>
-                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminarEstacionamiento' estacionamiento.id %}"
-                                role="button">Eliminar</a>
-                        </td>
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <a href="#" class="btn btn-outline-light btn-dark product-add btn-cambiar-estado"
+                            data-estacionamiento-id="{{ estacionamiento.id }}">
+                            {% if estacionamiento.disponible %}
+                            Deshabilitado
+                            {% else %}
+                            Habilitado
+                            {% endif %}
+                        </a>
+                        <a onclick="mostrarPopup('popup1')" class="btn btn-outline-light btn-dark product-add">Ver
+                            más</a>
                     </div>
+                    <td>
+                        <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' estacionamiento.id %}"
+                            role="button">Editar</a>
+                        <a name="" id="" class="btn btn-danger"
+                            href="{% url 'eliminarEstacionamiento' estacionamiento.id %}" role="button">Eliminar</a>
+                    </td>
                 </div>
+            </div>
             {% endfor %}
         </div>
     </section>
-    {% include 'bloques/footer_dueno.html' %}
     <!-- Popups -->
     <div class="popup" id="popup1">
         <div class="popup-content">
@@ -73,37 +75,38 @@
             <a href="" class="arrendar-btn" onclick="mostrarCargando()">Editar</a>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('.btn-cambiar-estado').click(function (e) {
-                e.preventDefault();
+</div>
+<!-- Cambiar a js Propios -->
+<script>
+    $(document).ready(function () {
+        $('.btn-cambiar-estado').click(function (e) {
+            e.preventDefault();
 
-                var estacionamientoId = $(this).data('estacionamiento-id');
+            var estacionamientoId = $(this).data('estacionamiento-id');
 
-                var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-                $.ajax({
-                    type: 'POST',
-                    url: 'cambiar_estado/' + estacionamientoId + '/',
-                    headers: { 'X-CSRFToken': csrftoken },
-                    success: function (data) {
-                        // Actualiza el texto del botón según el nuevo estado
-                        if (data.estado) {
-                            alert('Estacionamiento habilitado.');
-                            $(this).text('Deshabilitado');
-                        } else {
-                            alert('Estacionamiento deshabilitado.');
-                            $(this).text('Habilitado');
-                        }
-                        location.reload();
-                    },
-                    error: function (error) {
-                        console.log('Error al cambiar el estado del estacionamiento:', error);
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                type: 'POST',
+                url: 'cambiar_estado/' + estacionamientoId + '/',
+                headers: { 'X-CSRFToken': csrftoken },
+                success: function (data) {
+                    // Actualiza el texto del botón según el nuevo estado
+                    if (data.estado) {
+                        alert('Estacionamiento habilitado.');
+                        $(this).text('Deshabilitado');
+                    } else {
+                        alert('Estacionamiento deshabilitado.');
+                        $(this).text('Habilitado');
                     }
-                });
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log('Error al cambiar el estado del estacionamiento:', error);
+                }
             });
         });
-    </script>
-    {% include 'bloques/scripts_dueno.html' %}
-</body>
+    });
+</script>
 
-</html>
+
+{% endblock %}
