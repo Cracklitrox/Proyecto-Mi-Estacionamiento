@@ -14,24 +14,28 @@ body {
     margin-bottom: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.card-img-top {
+  }
+  
+  .card-img-top {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-}
-
-.card-body {
+    height: 250px; /* Establece una altura fija */
+    object-fit: cover; /* Hace que la imagen cubra la caja manteniendo su relación de aspecto */
+    width: 100%;
+  }
+  
+  .card-body {
     padding: 20px;
-}
-
-.card-title {
+  }
+  
+  .card-title {
     margin-bottom: 10px;
-}
-
-.card-text {
+  }
+  
+  .card-text {
     margin-bottom: 10px;
-}
+  }
+  
 
 .row-cols-1,
 .row-cols-md-4,

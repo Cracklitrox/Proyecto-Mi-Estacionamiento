@@ -8,44 +8,7 @@ $(document).ready(function () {
         nextArrow: $('.slick-next'),
     });
 });
-const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
-const mapDiv = document.getElementById("map");
-let map;
-let marker;
-let marcadorArray = []; // Array para almacenar marcadores
 
-const puntosDeInteres = [
-    {% for punto in puntos_interes %}
-{
-    id: { { punto.id } },
-    latitud: { { punto.latitud } },
-    longitud: { { punto.longitud } },
-    nombre: "{{ punto.nombre }}"
-},
-{% endfor %}
-          // Agrega más puntos de interés según tus necesidades
-    ];
-
-const santiagoCoords = {
-    lat: -33.45694,
-    lng: -70.64827,
-    name: 'Santiago'
-};
-
-
-
-function initMap() {
-    map = new google.maps.Map(mapDiv, {
-        center: santiagoCoords,
-        zoom: 15
-    });
-
-    // Manejar cambios en el select
-    document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
-
-    // Mostrar el primer punto de interés al cargar la página
-    manejarPuntoSelect();
-}
 
 function manejarPuntoSelect() {
     const selectPuntoId = document.getElementById('PuntoSelect').value;

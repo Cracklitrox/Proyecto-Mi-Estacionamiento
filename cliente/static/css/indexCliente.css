@@ -3,6 +3,10 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.m-10{
+  margin:0% 10% 0% 10%;
+}
+
 .card {
   margin-bottom: 20px;
   border-radius: 10px;
@@ -12,6 +16,9 @@ body {
 .card-img-top {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  height: 250px; /* Establece una altura fija */
+  object-fit: cover; /* Hace que la imagen cubra la caja manteniendo su relación de aspecto */
+  width: 100%;
 }
 
 .card-body {
