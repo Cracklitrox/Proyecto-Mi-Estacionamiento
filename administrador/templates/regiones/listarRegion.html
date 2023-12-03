@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block title %}
-Lista de Tarjetas de Credito
+Lista de Regiones
 {% endblock %}
 
 {% block content %}
@@ -15,23 +15,20 @@ Lista de Tarjetas de Credito
 <br><br>
 <div class="card">
     <div class="card-body">
-        <h2 style="text-align: center;">Listado de Tarjetas de Credito</h2>
+        <h2 style="text-align: center;">Listado de Regiones</h2>
         <hr>
         <table class="table table-striped table-hover table-responsive-sm">
             <tr class="table-active">
                 <th scope="col">#</th>
-                <th>Numero</th>
-                <th>Fecha de Vencimiento</th>
-                <th>Opciones</th>
+                <th>Nombre</th>
             </tr>
-            {% for tc in tarjetacreditos %}
+            {% for r in regiones %}
             <tr class="table-default">
-                <th scope="row">{{ tc.id }}</th>
-                <td>{{ tc.numero }}</td>
-                <td>{{ tc.fechavencimiento }}</td>
+                <th scope="row">{{ r.id }}</th>
+                <td>{{ r.nombre }}</td>
                 <td>
-                    <a href="{% url 'modificarTarjetacredito' tc.id %}" class="btn btn-info btn-sm">Modificar</a>
-                    <a href="{% url 'eliminarTarjetacredito' tc.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="{% url 'modificarRegion' r.id %}" class="btn btn-info btn-sm">Modificar</a>
+                    <a href="{% url 'eliminarRegion' r.id %}" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}

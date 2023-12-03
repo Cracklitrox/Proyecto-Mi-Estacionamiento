@@ -1,15 +1,13 @@
 {% extends 'baseAdministrador.html' %}
 
 {% load static %}
-
 {% block css %}
 {# Tus estilos específicos para esta vista #}
 {% endblock %}
 
 {% block title %}
-Modiificar Tarjeta de Credito
+Agregar Provincia
 {% endblock %}
-
 {% block content %}
 {% load crispy_forms_tags %}
 <br><br>
@@ -17,7 +15,7 @@ Modiificar Tarjeta de Credito
     <div class="col-12 col-md-6 offset-md-3">
         <div class="card">
             <div class="card-body">
-                <h2 style="text-align: center;">Editar Tarjeta de Credito</h2>
+                <h2 style="text-align: center;">Nueva Provinca</h2>
                 <hr>
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -25,7 +23,7 @@ Modiificar Tarjeta de Credito
                     <div class="d-flex justify-content-center">
                         <input type="reset" value="Cancelar" class="btn btn-secondary">
                         &nbsp;
-                        <input type="submit" value="Editar" class="btn btn-primary">
+                        <input type="submit" value="Guardar" class="btn btn-primary">
                     </div>
                 </form>
                 {{mensaje_correcto}}

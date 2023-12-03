@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BancoForm
-from transaccion_pago.models import Banco
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm
+from transaccion_pago.models import Banco, Tarjetacredito
+from usuario.models import Comuna, Provincia, Region
 
-# Create your views here.
+
+# Funciones BANCO
 
 def agregarBanco(request):
     context = {
@@ -49,3 +51,202 @@ def eliminarBanco(request, id):
     banco = get_object_or_404(Banco, id=id)
     banco.delete()
     return redirect(to='listarBanco')
+
+
+# Funciones TARJETACREDITO
+
+
+def agregarTarjetacredito(request):
+    context = {
+        'form':TarjetacreditoForm()
+    }
+
+    if request.method == 'POST':
+        formulario = TarjetacreditoForm(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Tarjeta de credito guardada."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar la tarjeta de credito."
+    return render(request, 'tarjetaCredito/agregarTarjetacredito.html', context)
+
+def listarTarjetacredito(request):
+    tarjetacreditos = Tarjetacredito.objects.all()
+
+    context = {
+        'tarjetacreditos': tarjetacreditos
+    }
+    return render(request, 'tarjetaCredito/listarTarjetacredito.html', context)
+
+def modificarTarjetacredito(request, id):
+    tarjetacredito = get_object_or_404(Tarjetacredito, id=id)
+
+    context = {
+        'form':TarjetacreditoForm(instance=tarjetacredito)
+    }
+
+    if request.method == 'POST':
+        formulario = TarjetacreditoForm(data = request.POST, instance=tarjetacredito)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarTarjetacredito')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar la tarjeta de credito."
+
+    return render(request, 'tarjetaCredito/modificarTarjetacredito.html', context)
+
+def eliminarTarjetacredito(request, id):
+    tarjetacredito = get_object_or_404(Tarjetacredito, id=id)
+    tarjetacredito.delete()
+    return redirect(to='listarTarjetacredito')
+
+
+# Funciones COMUNA
+
+
+def agregarComuna(request):
+    context = {
+        'form':ComunaForm
+    }
+
+    if request.method == 'POST':
+        formulario = ComunaForm(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Comuna guardada."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar la comuna."
+    return render(request, 'comunas/agregarComuna.html', context)
+
+def listarComuna(request):
+    comunas = Comuna.objects.all()
+
+    context = {
+        'comunas': comunas
+    }
+    return render(request, 'comunas/listarComuna.html', context)
+
+def modificarComuna(request, id):
+    comunas = get_object_or_404(Comuna, id=id)
+
+    context = {
+        'form':ComunaForm(instance=comunas)
+    }
+
+    if request.method == 'POST':
+        formulario = ComunaForm(data = request.POST, instance=comunas)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarComuna')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar la comuna."
+
+    return render(request, 'comunas/modificarComuna.html', context)
+
+def eliminarComuna(request, id):
+    comuna = get_object_or_404(Comuna, id=id)
+    comuna.delete()
+    return redirect(to='listarComuna')
+
+
+# Funciones PROVINCIA
+
+
+def agregarProvincia(request):
+    context = {
+        'form':ProvinciaForm
+    }
+    if request.method == 'POST':
+        formulario = ProvinciaForm(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Provincia guardada."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar la provincia."
+    return render(request, 'provincias/agregarProvincia.html', context)
+
+def listarProvincia(request):
+    provincias = Provincia.objects.all()
+
+    context = {
+        'provincias': provincias
+    }
+    return render(request, 'provincias/listarProvincia.html', context)
+
+def modificarProvincia(request, id):
+    provincias = get_object_or_404(Provincia, id=id)
+
+    context = {
+        'form':ProvinciaForm(instance=provincias)
+    }
+
+    if request.method == 'POST':
+        formulario = ProvinciaForm(data = request.POST, instance=provincias)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarProvincia')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar la provincia."
+
+    return render(request, 'provincias/modificarProvincia.html', context)
+
+def eliminarProvincia(request, id):
+    provincia = get_object_or_404(Provincia, id=id)
+    provincia.delete()
+    return redirect(to='listarProvincia')
+
+
+# Funciones REGION
+
+
+def agregarRegion(request):
+    context = {
+        'form':RegionForm
+    }
+
+    if request.method == 'POST':
+        formulario = RegionForm(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Region guardada."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar la region."
+    return render(request, 'regiones/agregarRegion.html', context)
+
+def listarRegion(request):
+    regiones = Region.objects.all()
+
+    context = {
+        'regiones': regiones
+    }
+    return render(request, 'regiones/listarRegion.html', context)
+
+def modificarRegion(request, id):
+    regiones = get_object_or_404(Region, id=id)
+
+    context = {
+        'form':RegionForm(instance=regiones)
+    }
+
+    if request.method == 'POST':
+        formulario = RegionForm(data = request.POST, instance=regiones)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarRegion')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar la region."
+
+    return render(request, 'regiones/modificarRegion.html', context)
+
+def eliminarRegion(request, id):
+    region = get_object_or_404(Region, id=id)
+    region.delete()
+    return redirect(to='listarRegion')
