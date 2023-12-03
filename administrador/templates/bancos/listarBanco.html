@@ -1,49 +1,50 @@
+{% extends 'baseAdministrador.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'bloques/header_cliente.html' %}
-    <title>Lista de Bancos</title>
-</head>
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
 
-<body>
-    {% load crispy_forms_tags %}
-    <br><br>
-    <div class="card">
-        <div class="card-body">
-            <h2 style="text-align: center;">Listado de Bancos</h2>
-            <hr>
-            <table class="table table-striped table-hover table-responsive-sm">
-                <tr class="table-active">
-                    <th scope="col">#</th>
-                    <th>Nombre</th>
-                    <th>Imagen</th>
-                    <th>Opciones</th>
-                </tr>
-                {% for b in bancos %}
-                <tr class="table-default">
-                    <th scope="row">{{ b.id }}</th>
-                    <td>{{ b.nombre | title }}</td>
-                    <td>
-                        {% if b.imagen %}
-                            <img src="{{ b.imagen.url }}" alt="{{ b.nombre }} Imagen" class="img-fluid">
-                        {% else %}
-                            Sin imagen
-                        {% endif %}
-                    </td>       
-                    <td>
-                        <a href="{% url 'modificarBanco' b.id %}" class="btn btn-info btn-sm">Modificar</a>
-                        <a href="{% url 'eliminarBanco' b.id %}" class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>             
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+{% block title %}
+Lista de Bancos
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h2 style="text-align: center;">Listado de Bancos</h2>
+        <hr>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <tr class="table-active">
+                <th scope="col">#</th>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Opciones</th>
+            </tr>
+            {% for b in bancos %}
+            <tr class="table-default">
+                <th scope="row">{{ b.id }}</th>
+                <td>{{ b.nombre | title }}</td>
+                <td>
+                    {% if b.imagen %}
+                    <img src="{{ b.imagen.url }}" alt="{{ b.nombre }} Imagen" class="img-fluid">
+                    {% else %}
+                    Sin imagen
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modificarBanco' b.id %}" class="btn btn-info btn-sm">Modificar</a>
+                    <a href="{% url 'eliminarBanco' b.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    {% include 'bloques/scripts_cliente.html' %}
-</body>
-
-</html>
+</div>
+{% endblock %}
+{% block js%}
+{# Scripts específicos para esta vista #}
+{% endblock %}

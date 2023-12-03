@@ -1,39 +1,38 @@
+{% extends 'baseAdministrador.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'bloques/header_cliente.html' %}
-    <title>Agregar Banco</title>
-</head>
-
-<body>
-    {% load crispy_forms_tags %}
-    <br><br>
-    <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h2 style="text-align: center;">Nuevo Banco</h2>
-                    <hr>
-                    <form action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form | crispy }}
-                        <div class="d-flex justify-content-center">
-                            <input type="reset" value="Cancelar" class="btn btn-secondary">
-                            &nbsp;
-                            <input type="submit" value="Guardar" class="btn btn-primary">
-                        </div>
-                    </form>
-                    {{mensaje_correcto}}
-                    {{mensaje_incorrecto}}
-                </div>
+{% block title %}
+Agregar Banco
+{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 style="text-align: center;">Nuevo Banco</h2>
+                <hr>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="d-flex justify-content-center">
+                        <input type="reset" value="Cancelar" class="btn btn-secondary">
+                        &nbsp;
+                        <input type="submit" value="Guardar" class="btn btn-primary">
+                    </div>
+                </form>
+                {{mensaje_correcto}}
+                {{mensaje_incorrecto}}
             </div>
         </div>
     </div>
-    {% include 'bloques/scripts_cliente.html' %}
-</body>
-
-</html>
+</div>
+{% endblock %}
+{% block js%}
+{# Scripts específicos para esta vista #}
+{% endblock %}
