@@ -5,7 +5,7 @@ from django.db import models
 class Banco(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
-
+    imagen = models.ImageField(upload_to='fotoBanco/', null=True, blank=True, verbose_name='Imagen del Banco')
     def __str__(self):
         return 'Nombre del Banco: ' + self.nombre
     
