@@ -1,0 +1,34 @@
+{% load static %}
+
+<!-- Bloque Footer -->
+{% block footer_content %}
+<footer class="Piedepagina">
+    <div class="grupo1">
+        <div class="box">
+            <h2>MI ESTACIONAMIENTO</h2>
+            <p>
+                NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE
+                SU UBICACIÓN
+            </p>
+        </div>
+        <div class="box">
+            <h2>SÍGUENOS</h2>
+            <div class="red-social">
+                <a href="https://www.instagram.com/" class="bi bi-instagram" target="_blank">
+                    <img src="{% static 'img/rrss/instagram.png' %}" width="45" height="45" alt="" />
+                </a>
+                <a href="https://es-la.facebook.com/" class="bi bi-facebook" target="_blank">
+                    <img src="{% static 'img/rrss/facebook.png' %}" width="45" height="45" alt="" />
+                </a>
+                <a href="https://twitter.com/?lang=es" class="bi bi-twitter" target="_blank">
+                    <img src="{% static 'img/rrss/twitter.png' %}" width="45" height="45" alt="" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="grupo2">
+        <small>&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos
+            Reservados.</small>
+    </div>
+</footer>
+{% endblock %}

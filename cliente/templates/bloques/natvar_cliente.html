@@ -1,0 +1,16 @@
+<!-- Bloque Natvar -->
+{% block natvar_content  %}
+<section class="content">
+    <header>
+        <div class="header-container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar..." />
+                <button onclick="searchFunction()"><i class="fas fa-search"></i></button>
+            </div>
+            <h1 class="title">Mi Estacionamiento</h1>
+            <a class="contacto-btn" href="{% url 'contacto' %}">Contacto</a>
+            <button class="login-btn">Cerrar Sesión</button>
+        </div>
+    </header>
+</section>
+{% endblock %}

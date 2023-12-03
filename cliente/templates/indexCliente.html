@@ -5,28 +5,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
-  <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <title>Mi Estacionamiento | Estacionamientos</title>
+  {% include 'bloques/header_cliente.html' %}
+  <!-- CSS independiente de la pagina -->
+  <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
 </head>
 
 <body>
   <main>
-    <section class="content">
-      <header>
-        <div class="header-container">
-          <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar..." />
-            <button onclick="searchFunction()"><i class="fas fa-search"></i></button>
-          </div>
-          <h1 class="title">Mi Estacionamiento</h1>
-          <a class="contacto-btn" href="{% url 'contacto' %}">Contacto</a>
-          <button class="login-btn">Cerrar Sesión</button>
-        </div>
-      </header>
-    </section>
+    {% include 'bloques/natvar_cliente.html' %}
     <section class="m-5 mt-0">
       <!-- Aquí va el mapa -->
       <div class="">
@@ -51,20 +38,21 @@
           <div class="col-xl-3 col-md-6 col-sm-3">
             <div id="product-container" class="card round">
               {% if n.imagen %}
-                <img class="card-img-top" src="{{ n.imagen.url }}" alt="Imagen del estacionamiento">
+              <img class="card-img-top" src="{{ n.imagen.url }}" alt="Imagen del estacionamiento">
               {% else %}
-                <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">              
+              <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
               {% endif %}
               <div class="card-body text-center fw-bold">
                 <h3 class="card-title mb-3 text-info">{{ n.direccion | capfirst}}</h3>
                 <p class="card-text mb-2">Precio: ${{ n.tarifahora_str | intcomma }}</p>
                 <div class="row">
                   <div class="col-7">
-                    <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg " disabled>
+                    <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg "
+                      disabled>
                       {% if n.disponible %}
-                        Disponible
+                      Disponible
                       {% else %}
-                        No Disponible
+                      No Disponible
                       {% endif %}
                     </button>
                   </div>
@@ -73,7 +61,7 @@
                     <a href="{% url 'estacionamientos' id=n.id %}"
                       class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
                     {% else %}
-                      <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
+                    <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
                     {% endif %}
                   </div>
                 </div>
@@ -89,42 +77,14 @@
       </div>
     </section>
   </main>
-  <footer class="Piedepagina">
-    <div class="grupo1">
-      <div class="box">
-        <h2>MI ESTACIONAMIENTO</h2>
-        <p>
-          NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE
-          SU UBICACIÓN
-        </p>
-      </div>
-      <div class="box">
-        <h2>SÍGUENOS</h2>
-        <div class="red-social">
-          <a href="https://www.instagram.com/" class="bi bi-instagram" target="_blank">
-            <img src="{% static 'img/rrss/instagram.png' %}" width="45" height="45" alt="" />
-          </a>
-          <a href="https://es-la.facebook.com/" class="bi bi-facebook" target="_blank">
-            <img src="{% static 'img/rrss/facebook.png' %}" width="45" height="45" alt="" />
-          </a>
-          <a href="https://twitter.com/?lang=es" class="bi bi-twitter" target="_blank">
-            <img src="{% static 'img/rrss/twitter.png' %}" width="45" height="45" alt="" />
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="grupo2">
-      <small>&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos
-        Reservados.</small>
-    </div>
-  </footer>
+  {% include 'bloques/footer_cliente.html' %}
   <!-- Mapa -->
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
-    defer>
-    </script>
+    defer></script>
   <!-- JS -->
   <script src="../static/js/indexCliente.js"></script>
+  {% include 'bloques/scripts_cliente.html' %}
 </body>
 
 </html>
