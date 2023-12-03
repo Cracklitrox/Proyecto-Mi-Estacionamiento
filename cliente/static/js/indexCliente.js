@@ -1,15 +1,3 @@
-$(document).ready(function () {
-    $('.slick-carousel').slick({
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        prevArrow: $('.slick-prev'),
-        nextArrow: $('.slick-next'),
-    });
-});
-
-
 function manejarPuntoSelect() {
     const selectPuntoId = document.getElementById('PuntoSelect').value;
     const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);

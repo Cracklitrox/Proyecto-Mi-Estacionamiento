@@ -1,123 +1,117 @@
+{% extends 'baseCliente.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mi Estacionamiento | Estacionamientos</title>
-  {% include 'bloques/header_cliente.html' %}
-  <!-- CSS independiente de la pagina -->
-  <link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
-</head>
+{% load humanize %}
 
-<body>
-  <main>
-    {% include 'bloques/natvar_cliente.html' %}
-    <!-- Mapa -->
-    <section class="m-5">
-      <select id="PuntoSelect" class="form-control">
-        {% for punto in puntos_interes %}
-        <option value="{{ punto.id }}">{{ punto.nombre }}</option>
-        {% endfor %}
-      </select>
-      <div id="map" style="height: 400px"></div>
-    </section>
-    
-    <!-- Cartas -->
-    <section class="m-5">
-      {% load humanize %}
-      <h2 class="mb-4">Estacionamientos</h2>
-      <div class="row row-cols-1 row-cols-xl-4 row-cols-md-3 g-4 m-10">
-          {% for estacionamiento in estacionamientos %}
-              <div class="col">
-                  <div class="card h-100">
-                      {% if estacionamiento.imagen %}
-                          <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
-                      {% else %}
-                          <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
-                      {% endif %}
-                      <div class="card-body text-center">
-                          <h3 class="card-title mb-3 text-info">{{ estacionamiento.direccion | capfirst }}</h3>
-                          <p class="card-text mb-2">Precio: ${{ estacionamiento.tarifahora_str | intcomma }}</p>
-                          <div class="row">
-                              <div class="col">
-                                  <button class="btn {% if estacionamiento.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg"
-                                          disabled>
-                                      {% if estacionamiento.disponible %}
-                                          <i class="bi bi-check-circle"></i> Disponible
-                                      {% else %}
-                                          <i class="bi bi-x-circle"></i> No Disponible
-                                      {% endif %}
-                                  </button>
-                              </div>
-                              <div class="col">
-                                  {% if estacionamiento.disponible %}
-                                      <a href="{% url 'estacionamientos' id=estacionamiento.id %}"
-                                         class="btn btn-outline-light btn-lg btn-dark" data-bs-toggle="tooltip" title="Reservar">
-                                          <i class="bi bi-calendar-plus"></i> Reservar
-                                      </a>
-                                  {% else %}
-                                      <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled" data-bs-toggle="tooltip"
-                                         title="Estacionamiento no disponible">
-                                          <i class="bi bi-calendar-minus"></i> Reservar
-                                      </a>
-                                  {% endif %}
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          {% endfor %}
-      </div>
-  </section>
-  </main>
-  {% include 'bloques/footer_cliente.html' %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'css/indexCliente.css' %}" />
+{% endblock%}
+
+{% block title %}
+Mi Estacionamiento | Estacionamientos
+{% endblock %}
+
+{% block content %}
+<main class="container">
   <!-- Mapa -->
-  <script>
-    const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
-    const mapDiv = document.getElementById("map");
-    let map;
-    let marker;
-    let marcadorArray = []; // Array para almacenar marcadores
-
-    const puntosDeInteres = [
+  <h2 class="mt-5">Puntos de Interes </h2>
+  <section class="mt-3 mb-5">
+    <select id="PuntoSelect" class="form-control">
       {% for punto in puntos_interes %}
-    {
-      id: {{ punto.id }},
-      latitud: {{ punto.latitud }},
-      longitud: {{ punto.longitud }},
-      nombre: "{{ punto.nombre }}"
-    },
-    {% endfor %}
-          // Agrega más puntos de interés según tus necesidades
-    ];
+      <option value="{{ punto.id }}">{{ punto.nombre }}</option>
+      {% endfor %}
+    </select>
+    <div id="map" style="height: 400px"></div>
+  </section>
 
-    const santiagoCoords = {
-      lat: -33.45694,
-      lng: -70.64827,
-      name: 'Santiago'
-    };
+  <!-- Cartas -->
+  <section class="">
+    {% load humanize %}
+    <h2 class="mb-3">Estacionamientos</h2>
+    <div class="row row-cols-1 row-cols-xl-4 row-cols-md-3 g-4 m-5">
+      {% for estacionamiento in estacionamientos %}
+      <div class="col">
+        <div class="card h-100">
+          {% if estacionamiento.imagen %}
+          <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
+          {% else %}
+          <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
+          {% endif %}
+          <div class="card-body text-center">
+            <h3 class="card-title mb-3 text-info">{{ estacionamiento.direccion | capfirst }}</h3>
+            <p class="card-text mb-2">Precio: ${{ estacionamiento.tarifahora_str | intcomma }}</p>
+            <div class="row">
+              <div class="col">
+                <button class="btn {% if estacionamiento.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg"
+                  disabled>
+                  {% if estacionamiento.disponible %}
+                  <i class="bi bi-check-circle"></i> Disponible
+                  {% else %}
+                  <i class="bi bi-x-circle"></i> No Disponible
+                  {% endif %}
+                </button>
+              </div>
+              <div class="col">
+                {% if estacionamiento.disponible %}
+                <a href="{% url 'estacionamientos' id=estacionamiento.id %}"
+                  class="btn btn-outline-light btn-lg btn-dark" data-bs-toggle="tooltip" title="Reservar">
+                  <i class="bi bi-calendar-plus"></i> Reservar
+                </a>
+                {% else %}
+                <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled" data-bs-toggle="tooltip"
+                  title="Estacionamiento no disponible">
+                  <i class="bi bi-calendar-minus"></i> Reservar
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+<script>
+  const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
+  const mapDiv = document.getElementById("map");
+  let map;
+  let marker;
+  let marcadorArray = []; // Array para almacenar marcadores
 
-    function initMap() {
-      map = new google.maps.Map(mapDiv, {
-        center: santiagoCoords,
-        zoom: 15
-      });
+  const puntosDeInteres = [
+    {% for punto in puntos_interes %}
+  {
+    id: {{ punto.id }},
+    latitud: {{ punto.latitud }},
+    longitud: {{ punto.longitud }},
+    nombre: "{{ punto.nombre }}"
+  },
+  {% endfor %}
+        // Agrega más puntos de interés según tus necesidades
+  ];
 
-      // Manejar cambios en el select
-      document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
+  const santiagoCoords = {
+    lat: -33.45694,
+    lng: -70.64827,
+    name: 'Santiago'
+  };
 
-      // Mostrar el primer punto de interés al cargar la página
-      manejarPuntoSelect();
-    }
-  </script>
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
-    defer></script>
-  <!-- JS -->
-  <script src="../static/js/indexCliente.js"></script>
-  {% include 'bloques/scripts_cliente.html' %}
-</body>
+  function initMap() {
+    map = new google.maps.Map(mapDiv, {
+      center: santiagoCoords,
+      zoom: 15
+    });
 
-</html>
+    // Manejar cambios en el select
+    document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
+
+    // Mostrar el primer punto de interés al cargar la página
+    manejarPuntoSelect();
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
+  defer></script>
+
+{% endblock %}
