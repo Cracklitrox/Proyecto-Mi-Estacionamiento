@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.contrib import admin
 from django.db.models import Count
-from .models import Region, Provincia, Comuna
+from .models import Region, Provincia, Comuna, Contacto
 
 # Register your models here.
 
@@ -48,6 +48,12 @@ class RegionAtributos(admin.ModelAdmin):
         return format_html('<a href="{}">{}</a>', url, obj.cantidad_provincias)
     link_cantidad_provincias.short_description = 'Cantidad de Provincias'
 
+class ContactoAtributos(admin.ModelAdmin):
+    list_display = ["id", "nombre", "correo_electronico", "tipo_consulta", "mensaje"]
+    search_fields = ["nombre", "correo_electronico"]
+    list_filter = ["tipo_consulta"]
+
 admin.site.register(Region, RegionAtributos)
 admin.site.register(Provincia, ProvinciaAtributos)
 admin.site.register(Comuna, ComunaAtributos)
+admin.site.register(Contacto, ContactoAtributos)

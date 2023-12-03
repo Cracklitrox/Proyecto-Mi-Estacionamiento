@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -22,6 +22,7 @@
             <button onclick="searchFunction()"><i class="fas fa-search"></i></button>
           </div>
           <h1 class="title">Mi Estacionamiento</h1>
+          <a class="contacto-btn" href="{% url 'contacto' %}">Contacto</a>
           <button class="login-btn">Cerrar Sesión</button>
         </div>
       </header>
@@ -35,37 +36,35 @@
         </div>
       </div>
     </section>
-
     <select id="PuntoSelect" class="form-control">
       {% for punto in puntos_interes %}
       <option value="{{ punto.id }}">{{ punto.nombre }}</option>
       {% endfor %}
     </select>
-    </div>
-    </div>
     <div id="map" style="height: 400px"></div>
-    </div>
-    </section>
     <section class="m-5">
+      {% load humanize %}
       <h2>Mis estacionamientos</h2>
       <div class="m-5 mb-0">
         <div class="row">
-          {% for n in estacionamiento %}
+          {% for n in estacionamientos %}
           <div class="col-xl-3 col-md-6 col-sm-3">
             <div id="product-container" class="card round">
-              <img class="card-img-top" src="{% static 'img/cars1.jpg' %}" alt="{{ n.direccion }}">
+              {% if n.imagen %}
+                <img class="card-img-top" src="{{ n.imagen.url }}" alt="Imagen del estacionamiento">
+              {% else %}
+                <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">              
+              {% endif %}
               <div class="card-body text-center fw-bold">
-                <h3 class="card-title mb-3 text-info">{{ n.direccion }}</h3>
-                <p class="card-text mb-2">Tarifa H/R: ${{ n.tarifahora }}</p>
-                <p class="card-text mb-3">Cantidad: </p>
+                <h3 class="card-title mb-3 text-info">{{ n.direccion | capfirst}}</h3>
+                <p class="card-text mb-2">Precio: ${{ n.tarifahora_str | intcomma }}</p>
                 <div class="row">
                   <div class="col-7">
-                    <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg "
-                      disabled>
+                    <button class="btn {% if n.disponible %}btn-success{% else %}btn-danger{% endif %} btn-lg " disabled>
                       {% if n.disponible %}
-                      Disponible
+                        Disponible
                       {% else %}
-                      No Disponible
+                        No Disponible
                       {% endif %}
                     </button>
                   </div>
@@ -74,14 +73,13 @@
                     <a href="{% url 'estacionamientos' id=n.id %}"
                       class="btn btn-outline-light btn-lg btn-dark">Reservar</a>
                     {% else %}
-                    <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
+                      <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled">Reservar</a>
                     {% endif %}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
           {% if forloop.counter|divisibleby:4 and not forloop.last %}
         </div>
         <div class="row">
@@ -90,36 +88,7 @@
         </div>
       </div>
     </section>
-    <!-- <section>
-        <div class="cartas">
-          Cartas 
-          <div class="card">
-            <img src="{% static 'img/cars1.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 1</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="disponible-btn">Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-          <div class="card">
-            <img src="{% static 'img/cars2.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 2</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="disponible-btn">Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-          <div class="card">
-            <img src="{% static 'img/cars3.jpg' %}" alt="Estacionamiento 1" />
-            <h2>Estacionamiento 3</h2>
-            <p>Información sobre el estacionamiento.</p>
-            <button class="nodisponible-btn">No Disponible</button>
-            <button class="reservar-btn">Reservar</button>
-          </div>
-
-        </section> -->
   </main>
-
   <footer class="Piedepagina">
     <div class="grupo1">
       <div class="box">
@@ -149,92 +118,13 @@
         Reservados.</small>
     </div>
   </footer>
-  <script>
-    const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";
-    const mapDiv = document.getElementById("map");
-    let map;
-    let marker;
-    let marcadorArray = []; // Array para almacenar marcadores
-
-    const puntosDeInteres = [
-      {% for punto in puntos_interes %}
-    {
-      id: { { punto.id } },
-      latitud: { { punto.latitud } },
-      longitud: { { punto.longitud } },
-      nombre: "{{ punto.nombre }}"
-    },
-    {% endfor %}
-          // Agrega más puntos de interés según tus necesidades
-      ];
-
-    const santiagoCoords = {
-      lat: -33.45694,
-      lng: -70.64827,
-      name: 'Santiago'
-    };
-
-
-
-    function initMap() {
-      map = new google.maps.Map(mapDiv, {
-        center: santiagoCoords,
-        zoom: 15
-      });
-
-      // Manejar cambios en el select
-      document.getElementById('PuntoSelect').addEventListener('change', manejarPuntoSelect);
-
-      // Mostrar el primer punto de interés al cargar la página
-      manejarPuntoSelect();
-    }
-
-    function manejarPuntoSelect() {
-      const selectPuntoId = document.getElementById('PuntoSelect').value;
-      const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);
-
-      // Verificar si selectPuntoI está definido antes de acceder a sus propiedades
-      if (selectPuntoI) {
-        // Limpiar todos los marcadores antes de agregar uno nuevo
-        limpiarMarcadores();
-
-        // Mostrar el nuevo marcador
-        marker = new google.maps.Marker({
-          position: { lat: parseFloat(selectPuntoI.latitud), lng: parseFloat(selectPuntoI.longitud) },
-          map: map,
-          icon: {
-            url: imageUrl,
-            scaledSize: new google.maps.Size(40, 40),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(20, 40)
-          },
-          title: selectPuntoI.nombre
-        });
-
-        // Agregar el nuevo marcador al array
-        marcadorArray.push(marker);
-
-        // Centrar el mapa en el nuevo marcador
-        map.setCenter(marker.getPosition());
-      } else {
-        console.error(`No se encontró ningún punto de interés con id ${selectPuntoId}`);
-      }
-    }
-
-    function limpiarMarcadores() {
-      // Iterar sobre el array y configurar el mapa como nulo para cada marcador
-      for (let i = 0; i < marcadorArray.length; i++) {
-        marcadorArray[i].setMap(null);
-      }
-      // Limpiar el array
-      marcadorArray = [];
-    }
-  </script>
-
   <!-- Mapa -->
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
-    defer></script>
+    defer>
+    </script>
+  <!-- JS -->
+  <script src="../static/js/indexCliente.js"></script>
 </body>
 
 </html>

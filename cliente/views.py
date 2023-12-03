@@ -12,12 +12,16 @@ from arriendo.form import *
 # Create your views here.
 def indexCliente(request):
     puntos_interes = Puntointeres.objects.all()
-    estacionamiento = Estacionamiento.objects.all()
+    estacionamientos = Estacionamiento.objects.all()
+
+    for estacionamiento in estacionamientos:
+        estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')
+
     context = {
         'puntos_interes': puntos_interes,
-        'estacionamiento': estacionamiento
-        }
-    return render(request,'indexCliente.html', context)
+        'estacionamientos': estacionamientos,
+    }
+    return render(request, 'indexCliente.html', context)
 
 def pagoCliente(request):
     return render(request,'pagoCliente.html')

@@ -50,10 +50,14 @@ INSTALLED_APPS = [
     'reporte',
     'transaccion_pago',
     'usuario',
-    'administrador',
     "colorfield",
+    "django.contrib.humanize",
+    'crispy_forms',
+    "crispy_bootstrap5",
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
