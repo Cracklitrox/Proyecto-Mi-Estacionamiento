@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
+from cliente.models import Cliente
+from dueno.models import Dueno
 
 
 # Funciones BANCO
@@ -300,3 +302,103 @@ def eliminarContacto(request, id):
     contacto = get_object_or_404(Contacto, id=id)
     contacto.delete()
     return redirect(to='listarContacto')
+
+
+# Funciones CLIENTE
+
+
+def agregarCliente(request):
+    context = {
+        'form':ClienteForm
+    }
+
+    if request.method == 'POST':
+        formulario = ClienteForm(data = request.POST, files = request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Cliente guardado."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar el cliente."
+    return render(request, 'clientes/agregarCliente.html', context)
+
+def listarCliente(request):
+    clientes = Cliente.objects.all()
+
+    context = {
+        'clientes': clientes
+    }
+    return render(request, 'clientes/listarCliente.html', context)
+
+def modificarCliente(request, id):
+    clientes = get_object_or_404(Cliente, id=id)
+
+    context = {
+        'form':ClienteForm(instance=clientes)
+    }
+
+    if request.method == 'POST':
+        formulario = ClienteForm(data = request.POST, instance=clientes, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarCliente')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar el cliente."
+
+    return render(request, 'clientes/modificarCliente.html', context)
+
+def eliminarCliente(request, id):
+    cliente = get_object_or_404(Cliente, id=id)
+    cliente.delete()
+    return redirect(to='listarCliente')
+
+
+# Funciones DUENO
+
+
+def agregarDueno(request):
+    context = {
+        'form':DuenoForm
+    }
+
+    if request.method == 'POST':
+        formulario = DuenoForm(data = request.POST, files = request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Dueño guardado."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar el dueño."
+    return render(request, 'duenos/agregarDueno.html', context)
+
+def listarDueno(request):
+    duenos = Dueno.objects.all()
+
+    context = {
+        'duenos': duenos
+    }
+    return render(request, 'duenos/listarDueno.html', context)
+
+def modificarDueno(request, id):
+    duenos = get_object_or_404(Dueno, id=id)
+
+    context = {
+        'form':DuenoForm(instance=duenos)
+    }
+
+    if request.method == 'POST':
+        formulario = DuenoForm(data = request.POST, instance=duenos, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarDueno')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar el dueño."
+
+    return render(request, 'duenos/modificarDueno.html', context)
+
+def eliminarDueno(request, id):
+    dueno = get_object_or_404(Dueno, id=id)
+    dueno.delete()
+    return redirect(to='listarDueno')

@@ -1,0 +1,70 @@
+{% extends 'baseAdministrador.html' %}
+
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Lista de Dueños
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h2 style="text-align: center;">Listado de Dueños</h2>
+        <hr>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <tr class="table-active">
+                <th scope="col">#</th>
+                <th>Run</th>
+                <th>Nombre</th>
+                <th>Correo Electronico</th>
+                <th>Telefono</th>
+                <th>Nombre de Usuario</th>
+                <th>Direccion</th>
+                <th>Calificacion Promedio</th>
+                <th>Dueño Activo?</th>
+                <th>Imagen</th>
+                <th>Opciones</th>
+            </tr>
+            {% for d in duenos %}
+            <tr class="table-default">
+                <th scope="row">{{ d.id }}</th>
+                <td>{{ d.run }}.{{ d.dv_run }}</td>
+                <td>{{ d.pnombre | title }} {{ d.snombre | title }} {{ d.appaterno | title }} {{ d.apmaterno | title }}</td>
+                <td>{{ d.correoelectronico }}</td>
+                <td>{{ d.telefono }}</td>
+                <td>{{ d.nombreusuario }}</td>
+                <td>{{ d.direccion }}</td>
+                <td>{{ d.calificacionpromedio }}</td>
+                <td>
+                    {% if d.activo %}
+                    <i class="bi bi-check2-square" style="color: rgb(31, 208, 0);"></i>
+                    {% else %}
+                    <i class="bi bi-dash-circle" style="color: rgb(208, 0, 0);"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if d.imagen %}
+                    <img src="{{ d.imagen.url }}" alt="{{ d.nombre }} Imagen" class="img-fluid">
+                    {% else %}
+                    Sin imagen
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modificarDueno' d.id %}" class="btn btn-info btn-sm">Modificar</a>
+                    <a href="{% url 'eliminarDueno' d.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block js%}
+{# Scripts específicos para esta vista #}
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'baseAdministrador.html' %}
+
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Lista de Clientes
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h2 style="text-align: center;">Listado de Clientes</h2>
+        <hr>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <tr class="table-active">
+                <th scope="col">#</th>
+                <th>Run</th>
+                <th>Nombre</th>
+                <th>Correo Electronico</th>
+                <th>Telefono</th>
+                <th>Nombre de Usuario</th>
+                <th>Direccion</th>
+                <th>Calificacion Promedio</th>
+                <th>Cliente Activo?</th>
+                <th>Imagen</th>
+                <th>Opciones</th>
+            </tr>
+            {% for c in clientes %}
+            <tr class="table-default">
+                <th scope="row">{{ c.id }}</th>
+                <td>{{ c.run }}.{{ c.dv_run }}</td>
+                <td>{{ c.pnombre | title }} {{ c.snombre | title }} {{ c.appaterno | title }} {{ c.apmaterno | title }}</td>
+                <td>{{ c.correoelectronico }}</td>
+                <td>{{ c.telefono }}</td>
+                <td>{{ c.nombreusuario }}</td>
+                <td>{{ c.direccion }}</td>
+                <td>{{ c.calificacionpromedio }}</td>
+                <td>
+                    {% if c.activo %}
+                    <i class="bi bi-check2-square" style="color: rgb(31, 208, 0);"></i>
+                    {% else %}
+                    <i class="bi bi-dash-circle" style="color: rgb(208, 0, 0);"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if c.imagen %}
+                    <img src="{{ c.imagen.url }}" alt="{{ c.nombre }} Imagen" class="img-fluid">
+                    {% else %}
+                    Sin imagen
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modificarCliente' c.id %}" class="btn btn-info btn-sm">Modificar</a>
+                    <a href="{% url 'eliminarCliente' c.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block js%}
+{# Scripts específicos para esta vista #}
+{% endblock %}
