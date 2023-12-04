@@ -1,0 +1,56 @@
+{% extends 'baseAdministrador.html' %}
+
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Lista de Contactos
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h2 style="text-align: center;">Listado de Contactos</h2>
+        <hr>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <tr class="table-active">
+                <th scope="col">#</th>
+                <th>Nombre</th>
+                <th>Correo Electronico</th>
+                <th>Tipo de Consulta</th>
+                <th>Mensaje</th>
+                <th>Notificacion de avisos</th>
+                <th>Opciones</th>
+            </tr>
+            {% for c in contactos %}
+            <tr class="table-default">
+                <th scope="row">{{ c.id }}</th>
+                <td>{{ c.nombre }}</td>
+                <td>{{ c.correo_electronico }}</td>
+                <td>{{ c.get_tipo_consulta_display }}</td>
+                <td>{{ c.mensaje }}</td>
+                <td>
+                    {% if c.avisos %}
+                    <i class="bi bi-check2-square" style="color: rgb(31, 208, 0);"></i>
+                    {% else %}
+                    <i class="bi bi-dash-circle" style="color: rgb(208, 0, 0);"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modificarContacto' c.id %}" class="btn btn-info btn-sm">Modificar</a>
+                    <a href="{% url 'eliminarContacto' c.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block js%}
+{# Scripts específicos para esta vista #}
+{% endblock %}

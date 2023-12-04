@@ -27,4 +27,9 @@ urlpatterns = [
     path('regiones/listarRegion/', views.listarRegion, name='listarRegion'),
     path('regiones/modificarRegion/<id>/', views.modificarRegion, name='modificarRegion'),
     path('regiones/eliminarRegion/<id>/', views.eliminarRegion, name='eliminarRegion'),
+    # Rutas CONTACTO
+    path('contactos/agregarContacto/', views.agregarContacto, name='agregarContacto'),
+    path('contactos/listarContacto/', views.listarContacto, name='listarContacto'),
+    path('contactos/modificarRegion/<id>/', views.modificarContacto, name='modificarContacto'),
+    path('contactos/eliminarContacto/<id>/', views.eliminarContacto, name='eliminarContacto'),
 ]

@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from transaccion_pago.models import Banco, Tarjetacredito
-from usuario.models import Comuna, Provincia, Region
+from usuario.models import Comuna, Provincia, Region, Contacto
 
 class BancoForm(forms.ModelForm):
     class Meta:
@@ -65,4 +65,10 @@ class RegionForm(forms.ModelForm):
 
     class Meta:
         model = Region
+        fields = "__all__"
+
+class ContactoForm(forms.ModelForm):
+
+    class Meta:
+        model = Contacto
         fields = "__all__"

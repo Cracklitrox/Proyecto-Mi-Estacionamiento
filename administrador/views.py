@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm
 from transaccion_pago.models import Banco, Tarjetacredito
-from usuario.models import Comuna, Provincia, Region
+from usuario.models import Comuna, Provincia, Region, Contacto
 
 
 # Funciones BANCO
@@ -250,3 +250,53 @@ def eliminarRegion(request, id):
     region = get_object_or_404(Region, id=id)
     region.delete()
     return redirect(to='listarRegion')
+
+
+# Funciones CONTACTO
+
+
+def agregarContacto(request):
+    context = {
+        'form':ContactoForm
+    }
+
+    if request.method == 'POST':
+        formulario = ContactoForm(data = request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            context["mensaje_correcto"] = "Contacto guardado."
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido guardar el contacto."
+    return render(request, 'contactos/agregarContacto.html', context)
+
+def listarContacto(request):
+    contactos = Contacto.objects.all()
+
+    context = {
+        'contactos': contactos
+    }
+    return render(request, 'contactos/listarContacto.html', context)
+
+def modificarContacto(request, id):
+    contactos = get_object_or_404(Contacto, id=id)
+
+    context = {
+        'form':ContactoForm(instance=contactos)
+    }
+
+    if request.method == 'POST':
+        formulario = ContactoForm(data = request.POST, instance=contactos)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect(to='listarContacto')
+        else:
+            context["form"] = formulario
+            context["mensaje_incorrecto"] = "No se ha podido modificar el contacto."
+
+    return render(request, 'contactos/modificarContacto.html', context)
+
+def eliminarContacto(request, id):
+    contacto = get_object_or_404(Contacto, id=id)
+    contacto.delete()
+    return redirect(to='listarContacto')
