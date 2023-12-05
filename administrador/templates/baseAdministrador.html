@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Panel de Administracion | Mi Estacionamiento</a>
+            <a class="navbar-brand" href="{% url 'indexAdministrador' %}">@{{ user.username }} | Panel Administracion</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -94,6 +94,13 @@
                             <li><a class="dropdown-item" href="{% url 'agregarContacto' %}">Agregar Contacto</a></li>
                         </ul>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'admin_login' %}">Cerrar Sesion</a>
+                    </li>
+                    {% else %}
+                    NO DEBERIAS VER ESTOOOOOOOOOOO, FALTAN PERMISOOOOOOOOOOOOOOOS
+                    {% endif %}
                 </ul>
             </div>
         </div>

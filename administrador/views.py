@@ -2,12 +2,29 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
 from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
 from cliente.models import Cliente
 from dueno.models import Dueno
 
+# Funciones LOGUEO ADMINISTRADOR
+def admin_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('listarBanco')
+    else:
+        form = AuthenticationForm(request)
+    return render(request, 'registration/login.html', {'form': form})
+
+# Funcion PAGINA PRINCIPAL
+def indexAdministrador(request):
+    return render(request, 'indexAdministrador.html')
 
 # Funciones BANCO
 def agregarBanco(request):

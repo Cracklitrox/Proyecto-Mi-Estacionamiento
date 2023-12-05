@@ -1,7 +1,11 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    # Ruta LOGUEO ADMINISTRADOR
+    path('registration/login/', views.admin_login, name='admin_login'),
+    # Ruta PAGINA PRINCIPAL ADMINISTRADOR
+    path('indexAdministrador/', views.indexAdministrador, name='indexAdministrador'),
     # Rutas BANCOS
     path('bancos/agregarBanco/', views.agregarBanco, name='agregarBanco'),
     path('bancos/listarBanco/', views.listarBanco, name='listarBanco'),
