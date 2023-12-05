@@ -20,6 +20,7 @@
                         <form action="" method="post">
                             {% csrf_token %}
                             {{ form | crispy }}
+                            <input type="submit" value="Registrarse" class="btn btn-info">
                             <input type="submit" value="Ingresar" class="btn btn-success">
                         </form>
                     </div>
