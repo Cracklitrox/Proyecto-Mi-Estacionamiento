@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.http import JsonResponse
 from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
@@ -7,21 +9,18 @@ from dueno.models import Dueno
 
 
 # Funciones BANCO
-
 def agregarBanco(request):
-    context = {
-        'form':BancoForm()
-    }
-
     if request.method == 'POST':
-        formulario = BancoForm(data = request.POST, files = request.FILES)
+        formulario = BancoForm(request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Banco guardado."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar el banco."
-    return render(request, 'bancos/agregarBanco.html', context)
+            formulario.full_clean()
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = BancoForm()
+    return render(request, 'bancos/agregarBanco.html', {'form': formulario})
 
 def listarBanco(request):
     bancos = Banco.objects.all()
@@ -42,6 +41,7 @@ def modificarBanco(request, id):
         formulario = BancoForm(data = request.POST, instance=banco, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Banco modificado correctamente.')
             return redirect(to='listarBanco')
         else:
             context["form"] = formulario
@@ -57,21 +57,17 @@ def eliminarBanco(request, id):
 
 # Funciones TARJETACREDITO
 
-
 def agregarTarjetacredito(request):
-    context = {
-        'form':TarjetacreditoForm()
-    }
-
     if request.method == 'POST':
-        formulario = TarjetacreditoForm(data = request.POST)
+        formulario = TarjetacreditoForm(request.POST)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Tarjeta de credito guardada."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar la tarjeta de credito."
-    return render(request, 'tarjetaCredito/agregarTarjetacredito.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = TarjetacreditoForm()
+    return render(request, 'tarjetaCredito/agregarTarjetacredito.html', {'form': formulario})
 
 def listarTarjetacredito(request):
     tarjetacreditos = Tarjetacredito.objects.all()
@@ -92,6 +88,7 @@ def modificarTarjetacredito(request, id):
         formulario = TarjetacreditoForm(data = request.POST, instance=tarjetacredito)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Tarjeta de credito modificada correctamente.')
             return redirect(to='listarTarjetacredito')
         else:
             context["form"] = formulario
@@ -109,19 +106,16 @@ def eliminarTarjetacredito(request, id):
 
 
 def agregarComuna(request):
-    context = {
-        'form':ComunaForm
-    }
-
     if request.method == 'POST':
-        formulario = ComunaForm(data = request.POST)
+        formulario = ComunaForm(request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Comuna guardada."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar la comuna."
-    return render(request, 'comunas/agregarComuna.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = ComunaForm()
+    return render(request, 'comunas/agregarComuna.html', {'form': formulario})
 
 def listarComuna(request):
     comunas = Comuna.objects.all()
@@ -142,6 +136,7 @@ def modificarComuna(request, id):
         formulario = ComunaForm(data = request.POST, instance=comunas)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Comuna modificado correctamente.')
             return redirect(to='listarComuna')
         else:
             context["form"] = formulario
@@ -159,18 +154,16 @@ def eliminarComuna(request, id):
 
 
 def agregarProvincia(request):
-    context = {
-        'form':ProvinciaForm
-    }
     if request.method == 'POST':
-        formulario = ProvinciaForm(data = request.POST)
+        formulario = ProvinciaForm(request.POST)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Provincia guardada."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar la provincia."
-    return render(request, 'provincias/agregarProvincia.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = ProvinciaForm()
+    return render(request, 'provincias/agregarProvincia.html', {'form': formulario})
 
 def listarProvincia(request):
     provincias = Provincia.objects.all()
@@ -191,6 +184,7 @@ def modificarProvincia(request, id):
         formulario = ProvinciaForm(data = request.POST, instance=provincias)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Provincia modificada correctamente.')
             return redirect(to='listarProvincia')
         else:
             context["form"] = formulario
@@ -206,21 +200,17 @@ def eliminarProvincia(request, id):
 
 # Funciones REGION
 
-
 def agregarRegion(request):
-    context = {
-        'form':RegionForm
-    }
-
     if request.method == 'POST':
-        formulario = RegionForm(data = request.POST)
+        formulario = RegionForm(request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Region guardada."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar la region."
-    return render(request, 'regiones/agregarRegion.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = RegionForm()
+    return render(request, 'regiones/agregarRegion.html', {'form': formulario})
 
 def listarRegion(request):
     regiones = Region.objects.all()
@@ -241,6 +231,7 @@ def modificarRegion(request, id):
         formulario = RegionForm(data = request.POST, instance=regiones)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Region modificada correctamente.')
             return redirect(to='listarRegion')
         else:
             context["form"] = formulario
@@ -256,21 +247,17 @@ def eliminarRegion(request, id):
 
 # Funciones CONTACTO
 
-
 def agregarContacto(request):
-    context = {
-        'form':ContactoForm
-    }
-
     if request.method == 'POST':
-        formulario = ContactoForm(data = request.POST)
+        formulario = ContactoForm(request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Contacto guardado."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar el contacto."
-    return render(request, 'contactos/agregarContacto.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = ContactoForm()
+    return render(request, 'contactos/agregarContacto.html', {'form': formulario})
 
 def listarContacto(request):
     contactos = Contacto.objects.all()
@@ -291,6 +278,7 @@ def modificarContacto(request, id):
         formulario = ContactoForm(data = request.POST, instance=contactos)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Contacto modificado correctamente.')
             return redirect(to='listarContacto')
         else:
             context["form"] = formulario
@@ -308,19 +296,16 @@ def eliminarContacto(request, id):
 
 
 def agregarCliente(request):
-    context = {
-        'form':ClienteForm
-    }
-
     if request.method == 'POST':
-        formulario = ClienteForm(data = request.POST, files = request.FILES)
+        formulario = ClienteForm(request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Cliente guardado."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar el cliente."
-    return render(request, 'clientes/agregarCliente.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = ClienteForm()
+    return render(request, 'clientes/agregarCliente.html', {'form': formulario})
 
 def listarCliente(request):
     clientes = Cliente.objects.all()
@@ -341,6 +326,7 @@ def modificarCliente(request, id):
         formulario = ClienteForm(data = request.POST, instance=clientes, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Cliente modificado correctamente.')
             return redirect(to='listarCliente')
         else:
             context["form"] = formulario
@@ -356,21 +342,17 @@ def eliminarCliente(request, id):
 
 # Funciones DUENO
 
-
 def agregarDueno(request):
-    context = {
-        'form':DuenoForm
-    }
-
     if request.method == 'POST':
-        formulario = DuenoForm(data = request.POST, files = request.FILES)
+        formulario = DuenoForm(request.POST, files=request.FILES)
         if formulario.is_valid():
             formulario.save()
-            context["mensaje_correcto"] = "Dueño guardado."
+            return JsonResponse({'success': True})
         else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido guardar el dueño."
-    return render(request, 'duenos/agregarDueno.html', context)
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = DuenoForm()
+    return render(request, 'duenos/agregarDueno.html', {'form': formulario})
 
 def listarDueno(request):
     duenos = Dueno.objects.all()

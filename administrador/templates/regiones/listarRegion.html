@@ -29,7 +29,7 @@ Lista de Regiones
                 <td>{{ r.nombre }}</td>
                 <td>
                     <a href="{% url 'modificarRegion' r.id %}" class="btn btn-info btn-sm">Modificar</a>
-                    <a href="{% url 'eliminarRegion' r.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="#" onclick="eliminarRegion({{ r.id }})" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -38,5 +38,42 @@ Lista de Regiones
 </div>
 {% endblock %}
 {% block js%}
-{# Scripts específicos para esta vista #}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    function eliminarRegion(id) {
+        swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, Elíminalo",
+            cancelButtonText: "No, Cancelar",
+            reverseButtons: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Eliminado",
+                    text: "La region ha sido eliminada.",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = "../eliminarRegion/" + id + "/";
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "La region está seguro :)",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
 {% endblock %}

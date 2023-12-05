@@ -31,7 +31,7 @@ Lista de Comunas
                 <td>{{ c.id_provincia.nombre }}</td>
                 <td>
                     <a href="{% url 'modificarComuna' c.id %}" class="btn btn-info btn-sm">Modificar</a>
-                    <a href="{% url 'eliminarComuna' c.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="#" onclick="eliminarComuna({{ c.id }})" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -40,5 +40,42 @@ Lista de Comunas
 </div>
 {% endblock %}
 {% block js%}
-{# Scripts específicos para esta vista #}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    function eliminarComuna(id) {
+        swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, Elíminalo",
+            cancelButtonText: "No, Cancelar",
+            reverseButtons: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Eliminado",
+                    text: "La comuna ha sido eliminada.",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = "../eliminarComuna/" + id + "/";
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "Tu comuna está seguro :)",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
 {% endblock %}

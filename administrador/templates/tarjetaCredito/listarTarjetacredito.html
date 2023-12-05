@@ -31,7 +31,7 @@ Lista de Tarjetas de Credito
                 <td>{{ tc.fechavencimiento }}</td>
                 <td>
                     <a href="{% url 'modificarTarjetacredito' tc.id %}" class="btn btn-info btn-sm">Modificar</a>
-                    <a href="{% url 'eliminarTarjetacredito' tc.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="#" onclick="eliminarTarjetacredito({{ tc.id }})" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -40,5 +40,42 @@ Lista de Tarjetas de Credito
 </div>
 {% endblock %}
 {% block js%}
-{# Scripts específicos para esta vista #}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    function eliminarTarjetacredito(id) {
+        swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, Elíminalo",
+            cancelButtonText: "No, Cancelar",
+            reverseButtons: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Eliminado",
+                    text: "La tarjeta de credito ha sido eliminada.",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = "../eliminarTarjetacredito/" + id + "/";
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "La tarjeta de credito está seguro :)",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
 {% endblock %}

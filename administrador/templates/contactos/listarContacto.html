@@ -43,7 +43,7 @@ Lista de Contactos
                 </td>
                 <td>
                     <a href="{% url 'modificarContacto' c.id %}" class="btn btn-info btn-sm">Modificar</a>
-                    <a href="{% url 'eliminarContacto' c.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a href="#" onclick="eliminarContacto({{ c.id }})" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
@@ -52,5 +52,42 @@ Lista de Contactos
 </div>
 {% endblock %}
 {% block js%}
-{# Scripts específicos para esta vista #}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    function eliminarContacto(id) {
+        swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, Elíminalo",
+            cancelButtonText: "No, Cancelar",
+            reverseButtons: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Eliminado",
+                    text: "El contacto ha sido eliminado.",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = "../eliminarContacto/" + id + "/";
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "Tu contacto está seguro :)",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
 {% endblock %}
