@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
+from django.core.paginator import Paginator
 from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
@@ -24,9 +25,15 @@ def agregarBanco(request):
 
 def listarBanco(request):
     bancos = Banco.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(bancos, 5)
+        bancos = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'bancos': bancos
+        'entity': bancos,
+        'paginator': paginator
     }
     return render(request, 'bancos/listarBanco.html', context)
 
@@ -71,9 +78,15 @@ def agregarTarjetacredito(request):
 
 def listarTarjetacredito(request):
     tarjetacreditos = Tarjetacredito.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(tarjetacreditos, 5)
+        tarjetacreditos = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'tarjetacreditos': tarjetacreditos
+        'entity': tarjetacreditos,
+        'paginator': paginator
     }
     return render(request, 'tarjetaCredito/listarTarjetacredito.html', context)
 
@@ -119,9 +132,15 @@ def agregarComuna(request):
 
 def listarComuna(request):
     comunas = Comuna.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(comunas, 5)
+        comunas = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'comunas': comunas
+        'entity': comunas,
+        'paginator': paginator
     }
     return render(request, 'comunas/listarComuna.html', context)
 
@@ -167,9 +186,15 @@ def agregarProvincia(request):
 
 def listarProvincia(request):
     provincias = Provincia.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(provincias, 5)
+        provincias = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'provincias': provincias
+        'entity': provincias,
+        'paginator': paginator
     }
     return render(request, 'provincias/listarProvincia.html', context)
 
@@ -214,9 +239,15 @@ def agregarRegion(request):
 
 def listarRegion(request):
     regiones = Region.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(regiones, 5)
+        regiones = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'regiones': regiones
+        'entity': regiones,
+        'paginator': paginator
     }
     return render(request, 'regiones/listarRegion.html', context)
 
@@ -261,9 +292,15 @@ def agregarContacto(request):
 
 def listarContacto(request):
     contactos = Contacto.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(contactos, 5)
+        contactos = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'contactos': contactos
+        'entity': contactos,
+        'paginator': paginator
     }
     return render(request, 'contactos/listarContacto.html', context)
 
@@ -309,9 +346,15 @@ def agregarCliente(request):
 
 def listarCliente(request):
     clientes = Cliente.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(clientes, 5)
+        clientes = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'clientes': clientes
+        'entity': clientes,
+        'paginator': paginator
     }
     return render(request, 'clientes/listarCliente.html', context)
 
@@ -356,9 +399,15 @@ def agregarDueno(request):
 
 def listarDueno(request):
     duenos = Dueno.objects.all()
-
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(duenos, 5)
+        duenos = paginator.page(page)
+    except:
+        raise Http404
     context = {
-        'duenos': duenos
+        'entity': duenos,
+        'paginator': paginator
     }
     return render(request, 'duenos/listarDueno.html', context)
 

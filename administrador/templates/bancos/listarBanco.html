@@ -24,7 +24,7 @@ Lista de Bancos
                 <th>Imagen</th>
                 <th>Opciones</th>
             </tr>
-            {% for b in bancos %}
+            {% for b in entity %}
             <tr class="table-default">
                 <th scope="row">{{ b.id }}</th>
                 <td>{{ b.nombre | title }}</td>

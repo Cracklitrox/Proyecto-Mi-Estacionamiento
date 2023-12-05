@@ -24,7 +24,7 @@ Lista de Tarjetas de Credito
                 <th>Fecha de Vencimiento</th>
                 <th>Opciones</th>
             </tr>
-            {% for tc in tarjetacreditos %}
+            {% for tc in entity %}
             <tr class="table-default">
                 <th scope="row">{{ tc.id }}</th>
                 <td>{{ tc.numero }}</td>
@@ -39,6 +39,7 @@ Lista de Tarjetas de Credito
     </div>
 </div>
 {% endblock %}
+
 {% block js%}
 <script>
     const swalWithBootstrapButtons = Swal.mixin({
