@@ -32,9 +32,3 @@ class Cliente(models.Model):
 
     def _str_(self):
         return self.nombreusuario + ' / Estado: ' + str(self.activo)
-
-    class Meta:
-        managed = False
-        db_table = 'cliente'
-        verbose_name = 'Cliente'
-        verbose_name_plural = 'Clientes'

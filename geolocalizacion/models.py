@@ -10,9 +10,3 @@ class Puntointeres(models.Model):
 
     def __str__(self):
         return f"{self.nombre} (Latitud: {self.latitud} - Longitud: {self.longitud})"
-
-    class Meta:
-        managed = False
-        db_table = 'puntointeres'
-        verbose_name = "Punto de Interes"
-        verbose_name_plural = "Punto de Intereses"

@@ -8,12 +8,6 @@ class Banco(models.Model):
     imagen = models.ImageField(upload_to='fotoBanco/', null=True, blank=True, verbose_name='Imagen del Banco')
     def __str__(self):
         return 'Nombre del Banco: ' + self.nombre
-    
-    class Meta:
-        managed = False
-        db_table = 'banco'
-        verbose_name = 'Banco'
-        verbose_name_plural = 'Bancos'
 
 class Tarjetacredito(models.Model):
     id = models.AutoField(primary_key=True)
@@ -23,9 +17,3 @@ class Tarjetacredito(models.Model):
 
     def __str__(self):
         return 'ID de la Tarjeta: ' + str(self.id) + ' / Numero de la Tarjeta: ' + str(self.numero)
-
-    class Meta:
-        managed = False
-        db_table = 'tarjetacredito'
-        verbose_name = 'Tarjeta de Credito'
-        verbose_name_plural = 'Tarjetas de Credito'

@@ -34,12 +34,6 @@ class Dueno(models.Model):
     def __str__(self):    
         return self.nombreusuario + ' / Estado: ' + str(self.activo)
 
-    class Meta:
-        managed = False
-        db_table = 'dueno'
-        verbose_name = 'Dueño'
-        verbose_name_plural = 'Dueños'
-
 class Puntointeres(models.Model):
     id = models.AutoField(primary_key=True)
     latitud = models.CharField(max_length=255)
@@ -48,9 +42,3 @@ class Puntointeres(models.Model):
 
     def __str__(self):
         return f"{self.nombre} (Latitud: {self.latitud} - Longitud: {self.longitud})"
-
-    class Meta:
-        managed = False
-        db_table = 'puntointeres'
-        verbose_name = "Punto de Interes"
-        verbose_name_plural = "Punto de Intereses"

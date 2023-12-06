@@ -18,8 +18,3 @@ class Arriendo(models.Model):
 
     def __str__(self):
         return ' Arriendo numero: ' + str(self.id)
-    class Meta:
-        managed = False
-        db_table = 'arriendo'
-        verbose_name = 'Arriendo'
-        verbose_name_plural = 'Arriendos'

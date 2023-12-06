@@ -15,12 +15,6 @@ class Vehiculo(models.Model):
     def __str__(self):
         return 'ID del vehiculo: ' + str(self.id)
 
-    class Meta:
-        managed = False
-        db_table = 'vehiculo'
-        verbose_name = 'Vehiculo'
-        verbose_name_plural = 'Vehiculos'
-
 class Estacionamiento(models.Model):
     id = models.AutoField(primary_key=True)
     id_dueno = models.ForeignKey(Dueno, models.DO_NOTHING, db_column='id_dueno', verbose_name='Dueño')
@@ -40,13 +34,6 @@ class Estacionamiento(models.Model):
         """
         self.disponible = not self.disponible
         self.save()
-
-    class Meta:
-        managed = False
-        db_table = 'estacionamiento'
-        verbose_name = 'Estacionamiento'
-        verbose_name_plural = 'Estacionamientos'
-
 class DuenoVehiculo(models.Model):
     id = models.AutoField(primary_key=True)
     id_dueno = models.ForeignKey(Dueno, models.DO_NOTHING, db_column='id_dueno', verbose_name='Dueño')
@@ -55,12 +42,6 @@ class DuenoVehiculo(models.Model):
     def __str__(self):
         return 'Dueño: ' + str(self.id) + ' / ' + str(self.id_vehiculo)
 
-    class Meta:
-        managed = False
-        db_table = 'dueno_vehiculo'
-        verbose_name = 'Vehiculo/Dueño'
-        verbose_name_plural = 'Vehiculos/Dueño'
-
 class ClienteVehiculo(models.Model):
     id = models.AutoField(primary_key=True)
     id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente', verbose_name='Cliente')
@@ -68,12 +49,6 @@ class ClienteVehiculo(models.Model):
 
     def __str__(self):
         return 'Cliente: ' + str(self.id) + ' / ' + str(self.id_vehiculo)
-
-    class Meta:
-        managed = False
-        db_table = 'cliente_vehiculo'
-        verbose_name = 'Vehiculo/Cliente'
-        verbose_name_plural = 'Vehiculos/Cliente'
 
 class Casilla(models.Model):
     id = models.AutoField(primary_key=True)
@@ -84,12 +59,6 @@ class Casilla(models.Model):
 
     def __str__(self):
         return 'ID Casilla: ' + str(self.id) 
-
-    class Meta:
-        managed = False
-        db_table = 'casilla'
-        verbose_name = 'Casilla'
-        verbose_name_plural = 'Casillas'
 
 class EstacionamientoCasilla(models.Model):
     id = models.AutoField(primary_key=True)
@@ -106,9 +75,3 @@ class EstacionamientoCasilla(models.Model):
 
     def __str__(self):
         return 'ID Estacionamiento: {} / ID Casilla: {}'.format(self.id_estacionamiento.id, self.id_casilla.id) + ' / Estado: ' + str(self.disponible)
-
-    class Meta:
-        managed = False
-        db_table = 'estacionamiento_casilla'
-        verbose_name = 'Estacionamiento/Casilla'
-        verbose_name_plural = 'Estacionamientos/Casillas'

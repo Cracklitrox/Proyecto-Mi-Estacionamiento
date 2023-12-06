@@ -4,27 +4,39 @@ from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
-from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm, AdminRegistrationForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
 from cliente.models import Cliente
 from dueno.models import Dueno
 
 # Funciones LOGUEO ADMINISTRADOR
-def admin_login(request):
+def loginAdministrador(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('listarBanco')
+            return redirect('dashboard')
     else:
         form = AuthenticationForm(request)
     return render(request, 'registration/login.html', {'form': form})
 
+def registerAdministrador(request):
+    if request.method == 'POST':
+        form = AdminRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('loginAdministrador')
+    else:
+        form = AdminRegistrationForm()
+    return render(request, 'registration/register.html', {'form':form})
+
+
 # Funcion PAGINA PRINCIPAL
-def indexAdministrador(request):
-    return render(request, 'indexAdministrador.html')
+def dashboard(request):
+    return render(request, 'dashboard.html')
 
 # Funciones BANCO
 def agregarBanco(request):

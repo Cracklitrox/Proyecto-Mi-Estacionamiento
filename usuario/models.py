@@ -10,12 +10,6 @@ class Region(models.Model):
     def __str__(self):
         return self.nombre
 
-    class Meta:
-        managed = False
-        db_table = "region"
-        verbose_name = "Región"
-        verbose_name_plural = "Regiones"
-
 
 class Provincia(models.Model):
     id = models.AutoField(primary_key=True)
@@ -25,12 +19,6 @@ class Provincia(models.Model):
     def __str__(self):
         return self.nombre
 
-    class Meta:
-        managed = False
-        db_table = "provincia"
-        verbose_name = "Provincia"
-        verbose_name_plural = "Provincias"
-
 
 class Comuna(models.Model):
     id = models.AutoField(primary_key=True)
@@ -39,13 +27,6 @@ class Comuna(models.Model):
 
     def __str__(self):
         return self.nombre
-
-
-    class Meta:
-        managed = False
-        db_table = "comuna"
-        verbose_name = "Comuna"
-        verbose_name_plural = "Comunas"
 
 opciones_consultas = [
     [0, "Consulta"],

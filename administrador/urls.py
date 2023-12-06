@@ -3,9 +3,10 @@ from . import views
 
 urlpatterns = [
     # Ruta LOGUEO ADMINISTRADOR
-    path('registration/login/', views.admin_login, name='admin_login'),
+    path('registration/login/', views.loginAdministrador, name='loginAdministrador'),
+    path('registration/register/', views.registerAdministrador, name='registerAdministrador'),
     # Ruta PAGINA PRINCIPAL ADMINISTRADOR
-    path('indexAdministrador/', views.indexAdministrador, name='indexAdministrador'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     # Rutas BANCOS
     path('bancos/agregarBanco/', views.agregarBanco, name='agregarBanco'),
     path('bancos/listarBanco/', views.listarBanco, name='listarBanco'),

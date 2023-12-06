@@ -33,6 +33,8 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+AUTH_USER_MODEL = 'administrador.CustomUser'
+
 # Application definition
 
 INSTALLED_APPS = [

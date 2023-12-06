@@ -1,10 +1,50 @@
 import re
 from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
 from cliente.models import Cliente
 from dueno.models import Dueno
+from .models import CustomUser
+
+class AdminRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    imagen = forms.ImageField(required=False)
+    nombre = forms.CharField(max_length=30, required=True, help_text='Nombre')
+    apellidos = forms.CharField(max_length=30, required=True, help_text='Apellidos')
+    nivel_permiso = forms.IntegerField(min_value=0, max_value=5, required=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['nombre', 'apellidos', 'username', 'email', 'password1', 'password2', 'nivel_permiso', 'imagen']
+    
+    def clean_username(self):
+        nombreusuario = self.cleaned_data.get('username')
+        if CustomUser.objects.filter(username=nombreusuario).exists():
+            raise ValidationError('Este nombre de usuario ya está registrado.')
+        return nombreusuario
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError('Este correo electrónico ya está registrado.')
+        return email
+
+    def clean_nivel_permiso(self):
+        nivel_permiso = self.cleaned_data.get('nivel_permiso')
+        if not (0 <= nivel_permiso <= 5):
+            raise ValidationError('El nivel de permiso debe estar entre 0 y 5.')
+        return nivel_permiso
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_staff = True
+        user.is_superuser = True
+        if commit:
+            user.save()
+        return user
 
 class BancoForm(forms.ModelForm):
     class Meta:
