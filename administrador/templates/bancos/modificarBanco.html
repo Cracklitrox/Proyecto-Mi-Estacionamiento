@@ -1,0 +1,49 @@
+{% extends 'baseAdministrador.html' %}
+
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Modiificar Banco
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 style="text-align: center;">Editar Banco</h2>
+                <hr>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="d-flex justify-content-start">
+                                <a href="{% url 'listarBanco' %}" class="btn btn-info">Volver</a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex justify-content-end">
+                                <input type="reset" value="Cancelar" class="btn btn-warning">
+                                &nbsp;
+                                <input type="submit" value="Editar" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {{mensaje_correcto}}
+                {{mensaje_incorrecto}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js%}
+{# Scripts específicos para esta vista #}
+{% endblock %}

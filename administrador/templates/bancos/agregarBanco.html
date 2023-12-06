@@ -1,39 +1,86 @@
+{% extends 'baseAdministrador.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'bloques/header_cliente.html' %}
-    <title>Agregar Banco</title>
-</head>
-
-<body>
-    {% load crispy_forms_tags %}
-    <br><br>
-    <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h2 style="text-align: center;">Nuevo Banco</h2>
-                    <hr>
-                    <form action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form | crispy }}
-                        <div class="d-flex justify-content-center">
-                            <input type="reset" value="Cancelar" class="btn btn-secondary">
-                            &nbsp;
-                            <input type="submit" value="Guardar" class="btn btn-primary">
+{% block title %}
+Agregar Banco
+{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 style="text-align: center;">Nuevo Banco</h2>
+                <hr>
+                <form action="" method="post" enctype="multipart/form-data" id="agregarBancoForm">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="d-flex justify-content-start">
+                                <a href="{% url 'listarBanco' %}" class="btn btn-info">Volver</a>
+                            </div>
                         </div>
-                    </form>
-                    {{mensaje_correcto}}
-                    {{mensaje_incorrecto}}
-                </div>
+                        <div class="col-6">
+                            <div class="d-flex justify-content-end">
+                                <input type="reset" value="Limpiar" class="btn btn-warning">
+                                &nbsp;
+                                <input type="submit" value="Agregar" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    {% include 'bloques/scripts_cliente.html' %}
-</body>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    const agregarBancoForm = document.getElementById("agregarBancoForm");
+    agregarBancoForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var formData = new FormData(agregarBancoForm);
+        fetch(agregarBancoForm.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
 
-</html>
+            if (data.success) {
+                Toast.fire({
+                    icon: "success",
+                    title: "El banco ha sido creado"
+                }).then(() => {
+                    window.location.href = "../listarBanco/";
+                });
+            } else {
+                const firstError = Object.keys(data.error)[0];
+                const errorMessage = `${firstError.charAt(0).toUpperCase() + firstError.slice(1)}: ${data.error[firstError]}`;
+                Toast.fire({
+                    icon: "error",
+                    title: "Hubo un error al crear la tarjeta de crédito",
+                    text: errorMessage,
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

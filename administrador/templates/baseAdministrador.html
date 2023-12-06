@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {% block css %}
+    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'indexAdministrador' %}">@{{ user.username }} | Panel Administracion</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarBancos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bancos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarBancos">
+                            <li><a class="dropdown-item" href="{% url 'listarBanco' %}">Mostrar Bancos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarBanco' %}">Agregar Banco</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarTarjetacredito" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Tarjetas de Credito
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarTarjetacredito">
+                            <li><a class="dropdown-item" href="{% url 'listarTarjetacredito' %}">Mostrar Tarjetas de Credito</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarTarjetacredito' %}">Agregar Tarjeta de Credito</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarRegion" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Regiones
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarRegion">
+                            <li><a class="dropdown-item" href="{% url 'listarRegion' %}">Mostrar Regiones</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarRegion' %}">Agregar Region</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarProvincias" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Provincias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarProvincias">
+                            <li><a class="dropdown-item" href="{% url 'listarProvincia' %}">Mostrar Provincias</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarProvincia' %}">Agregar Provincia</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarComunas" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Comunas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarComunas">
+                            <li><a class="dropdown-item" href="{% url 'listarComuna' %}">Mostrar Comunas</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarComuna' %}">Agregar Comuna</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarClientes" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Clientes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarClientes">
+                            <li><a class="dropdown-item" href="{% url 'listarCliente' %}">Mostrar Clientes</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarCliente' %}">Agregar Cliente</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDuenos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dueños
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDuenos">
+                            <li><a class="dropdown-item" href="{% url 'listarDueno' %}">Mostrar Dueños</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarDueno' %}">Agregar Dueño</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarContactos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Contactos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarContactos">
+                            <li><a class="dropdown-item" href="{% url 'listarContacto' %}">Mostrar Contactos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'agregarContacto' %}">Agregar Contacto</a></li>
+                        </ul>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'admin_login' %}">Cerrar Sesion</a>
+                    </li>
+                    {% else %}
+                    NO DEBERIAS VER ESTOOOOOOOOOOO, FALTAN PERMISOOOOOOOOOOOOOOOS
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Content -->
+    {% block content %}
+
+    {% endblock %}
+    <br>
+    <!-- Codigo para mover las paginas -->
+    {% if paginator.num_pages > 1%}
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            {% if entity.has_previous %}
+                <li class="page-item d-none d-sm-block"><a class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></li>
+            {% endif %}
+            {% for page in paginator.page_range %}
+                {% if forloop.last and page != entity.number and paginator.num_pages > 7 %} 
+                    {% if entity.next_page_number != paginator.num_pages%}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ entity.number | add:1}}#pagtable">...</a>
+                    </li>
+                    {% endif %}
+                <li class="page-item">
+                        <a class="page-link" href="?page={{paginator.num_pages}}#pagtable">{{paginator.num_pages}}</a>
+                </li>
+                {% endif %}
+                {% if page == entity.number and page > 7 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page | add:-1 }}#pagtable">...</a>
+                </li>    
+                {% endif %}
+                {% if page < 7 or page == entity.number %}
+                <li class="page-item {% if page == entity.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page }}#pagtable">{{ page }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            {% if entity.has_next %}
+                <li class="page-item d-none d-sm-block">
+                    <a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="d-flex justify-content-center d-sm-none">            
+        {% if entity.has_previous %}
+            <span class="page-item"><a  class="page-link" href="?page={{ entity.previous_page_number }}#pagtable">Anterior</a></span>
+        {% endif %}
+        {% if entity.has_next %}
+            <span class="page-item"><a class="page-link" href="?page={{ entity.next_page_number }}#pagtable">Siguiente</a></span>
+        {% endif %}
+        <br>
+        <br>
+    </div>
+    {% endif %}
+
+    <!-- Agregar el footer para administrador -->
+    <!-- Scripts Bootstrap 5.3.2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Mensaje -->
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "Felicitaciones",
+                    "text": "{{m}}",
+                    "icon": "success"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+    {% block js%} 
+    {% endblock%}
+</body>
+
+</html>

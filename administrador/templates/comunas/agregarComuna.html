@@ -1,0 +1,86 @@
+{% extends 'baseAdministrador.html' %}
+
+{% load static %}
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Agregar Comuna
+{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 style="text-align: center;">Nueva Comuna</h2>
+                <hr>
+                <form action="" method="post" enctype="multipart/form-data" id="agregarComunaForm">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="d-flex justify-content-start">
+                                <a href="{% url 'listarComuna' %}" class="btn btn-info">Volver</a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex justify-content-end">
+                                <input type="reset" value="Limpiar" class="btn btn-warning">
+                                &nbsp;
+                                <input type="submit" value="Agregar" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    const agregarComunaForm = document.getElementById("agregarComunaForm");
+    agregarComunaForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var formData = new FormData(agregarComunaForm);
+        fetch(agregarComunaForm.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            if (data.success) {
+                Toast.fire({
+                    icon: "success",
+                    title: "La comuna ha sido creada"
+                }).then(() => {
+                    window.location.href = "../listarComuna/";
+                });
+            } else {
+                const firstError = Object.keys(data.error)[0];
+                const errorMessage = `${firstError.charAt(0).toUpperCase() + firstError.slice(1)}: ${data.error[firstError]}`;
+                Toast.fire({
+                    icon: "error",
+                    title: "Hubo un error al crear la tarjeta de crédito",
+                    text: errorMessage,
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

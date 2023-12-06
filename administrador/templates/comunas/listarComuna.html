@@ -1,0 +1,81 @@
+{% extends 'baseAdministrador.html' %}
+
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Lista de Comunas
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h2 style="text-align: center;">Listado de Comunas</h2>
+        <hr>
+        <table class="table table-striped table-hover table-responsive-sm">
+            <tr class="table-active">
+                <th scope="col">#</th>
+                <th>Nombre</th>
+                <th>Perteneciente a la Provincia</th>
+                <th>Opciones</th>
+            </tr>
+            {% for c in entity %}
+            <tr class="table-default">
+                <th scope="row">{{ c.id }}</th>
+                <td>{{ c.nombre }}</td>
+                <td>{{ c.id_provincia.nombre }}</td>
+                <td>
+                    <a href="{% url 'modificarComuna' c.id %}" class="btn btn-info btn-sm">Modificar</a>
+                    <a href="#" onclick="eliminarComuna({{ c.id }})" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block js%}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    function eliminarComuna(id) {
+        swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, Elíminalo",
+            cancelButtonText: "No, Cancelar",
+            reverseButtons: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Eliminado",
+                    text: "La comuna ha sido eliminada.",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = "../eliminarComuna/" + id + "/";
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "Tu comuna está seguro :)",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
+{% endblock %}

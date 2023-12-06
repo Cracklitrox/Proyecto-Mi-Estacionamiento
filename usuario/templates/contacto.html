@@ -1,45 +1,42 @@
+{% extends 'baseCliente.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% include 'bloques/header_cliente.html' %}
-    <title>Contactos</title>
-</head>
+{% load humanize %}
 
-<body>
-    {% include 'bloques/natvar_cliente.html' %}
-    <br>
-    <br>
-    {% load crispy_forms_tags %}
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 style="text-align: center;">Contactanos!</h2>
+{% block css%}
+{% endblock%}
+
+{% block title %}
+Contacto
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+{% load crispy_forms_tags %}
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 style="text-align: center;">Contactanos!</h2>
+                <hr>
+                <form action="" class="" method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
                     <hr>
-                    <form action="" class="" method="post">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <hr>
-                        <div class="d-flex justify-content-end">
-                            <input type="reset" value="Cancelar" class="btn btn-dark">
-                            &nbsp;
-                            <button type="submit" id="btnEnviar" class="btn btn-success">Enviar</button>
-                        </div>
-                        {{ mensaje_correcto }}
-                        {{ mensaje_incorrecto }}
-                    </form>
-                </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="reset" value="Cancelar" class="btn btn-dark">
+                        &nbsp;
+                        <button type="submit" id="btnEnviar" class="btn btn-success">Enviar</button>
+                    </div>
+                    {{ mensaje_correcto }}
+                    {{ mensaje_incorrecto }}
+                </form>
             </div>
         </div>
     </div>
-    <br>
-    <br>
-    {% include 'bloques/footer_cliente.html' %}
-    {% include 'bloques/scripts_cliente.html' %}
-</body>
-
-</html>
+</div>
+<br>
+<br>
+{% endblock %}
