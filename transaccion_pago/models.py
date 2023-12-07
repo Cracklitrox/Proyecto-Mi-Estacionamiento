@@ -11,6 +11,7 @@ class Banco(models.Model):
 
 class Tarjetacredito(models.Model):
     id = models.AutoField(primary_key=True)
+    nombre_titular = models.CharField(max_length=20, default=None)
     numero = models.CharField(max_length=16, verbose_name='Numero de la Tarjeta')
     fechavencimiento = models.DateField(db_column='fechaVencimiento', verbose_name='Fecha de Vencimiento')
     cvv = models.IntegerField(db_column='CVV')

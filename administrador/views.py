@@ -4,11 +4,9 @@ from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
-from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, ClienteForm, DuenoForm, AdminRegistrationForm
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, AdminRegistrationForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
-from cliente.models import Cliente
-from dueno.models import Dueno
 
 # Funciones LOGUEO ADMINISTRADOR
 def loginAdministrador(request):

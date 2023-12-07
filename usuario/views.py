@@ -3,6 +3,9 @@ from .forms import ContactoForm
 
 # Create your views here.
 
+
+# Funcion CONTACTO
+
 def contacto(request):
     context = {
         'form': ContactoForm()

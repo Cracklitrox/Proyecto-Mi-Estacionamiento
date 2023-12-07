@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.contrib import admin
 from django.db.models import Count
-from .models import Region, Provincia, Comuna, Contacto
+from .models import Region, Provincia, Comuna, Contacto, Usuario
 
 # Register your models here.
 
@@ -57,3 +57,4 @@ admin.site.register(Region, RegionAtributos)
 admin.site.register(Provincia, ProvinciaAtributos)
 admin.site.register(Comuna, ComunaAtributos)
 admin.site.register(Contacto, ContactoAtributos)
+admin.site.register(Usuario)

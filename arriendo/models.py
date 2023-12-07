@@ -1,14 +1,11 @@
 from django.db import models
-from cliente.models import Cliente
-from dueno.models import Dueno
 from estacionamiento.models import Estacionamiento
 
 # Create your models here.
 
 class Arriendo(models.Model):
     id = models.AutoField(primary_key=True)
-    id_cliente = models.ForeignKey('cliente.Cliente', models.DO_NOTHING, db_column='id_cliente', verbose_name='Cliente')
-    id_dueno = models.ForeignKey('dueno.Dueno', models.DO_NOTHING, db_column='id_dueno', verbose_name='Dueño')
+    # is_usuario = models.ForeignKey('usuario.UsuarioSistema', models.DO_NOTHING, db_column='id_usuario', verbose_name='Usuario')
     id_estacionamiento = models.ForeignKey('estacionamiento.Estacionamiento', models.DO_NOTHING, db_column='id_estacionamiento', verbose_name='Estacionamiento')
     horainicio = models.DateTimeField(db_column='horaInicio', verbose_name='Hora de Inicio')
     horafin = models.DateTimeField(db_column='horaFin', verbose_name='Hora de Fin')

@@ -5,8 +5,39 @@ from estacionamiento.models import *
 from estacionamiento.forms import *
 from geolocalizacion.models import *
 from geolocalizacion.forms import *
+from usuario.forms import UsuarioRegistrationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 
 # Create your views here.
+
+# Funcion REGISTRO DUEÑO
+
+def registerDueno(request):
+    if request.method == 'POST':
+        form = UsuarioRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.es_dueno = True
+            user.save()
+            return redirect('loginCliente')
+    else:
+        form = UsuarioRegistrationForm()
+    return render(request, 'registration/registerDueno.html', {'form': form})
+
+def loginDueno(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('index')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/loginDueno.html', {'form': form})
+
+# FUnciones que faltan nombrar
+
 def indexDueno(request):    
     estacionamientos = Estacionamiento.objects.all()
     return render(request,'indexDueno.html', {'estacionamientos':estacionamientos})
