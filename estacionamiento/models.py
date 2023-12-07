@@ -25,7 +25,7 @@ class Estacionamiento(models.Model):
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')
     observaciones = models.CharField(max_length=255, blank=True, null=True)
     imagen = models.ImageField(upload_to='fotoEstacionamiento/', null=True, blank=True, verbose_name='Imagen del Estacionamiento')
-    # id_puntoInteres = models.ForeignKey('geolocalizacion.Puntointeres', models.DO_NOTHING, db_column='id_puntointeres', verbose_name='Punto de Interes')
+    id_puntoInteres = models.ForeignKey('geolocalizacion.Puntointeres', models.DO_NOTHING, db_column='id_puntointeres', verbose_name='Punto de Interes')
 
     def cambiar_estado(self):
         """
