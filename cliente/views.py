@@ -10,7 +10,6 @@ from arriendo.models import *
 from arriendo.form import *
 from usuario.forms import UsuarioRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
 
 # FUNCION REGISTRO CLIENTE
 def registerCliente(request):
@@ -25,7 +24,6 @@ def registerCliente(request):
         form = UsuarioRegistrationForm()
     return render(request, 'registration/registerCliente.html', {'form': form})
 
-from django.contrib.auth import authenticate
 
 def loginCliente(request):
     if request.method == 'POST':
@@ -90,44 +88,43 @@ def pagoCliente(request):
 #         return render(request, "loginCliente.html")
     
 
-# def estacionamientos(request, id):
-#     estacionamiento = get_object_or_404(Estacionamiento, id=id)
-#     casilla = Casilla.objects.all()
-#     # estacionamientoCasilla = EstacionamientoCasilla.objects.all()
+def estacionamientos(request, id):
+    estacionamiento = get_object_or_404(Estacionamiento, id=id)
+    casilla = Casilla.objects.all()
+    # estacionamientoCasilla = EstacionamientoCasilla.objects.all()
 
-#     # Obtiene el id del dueño asociado al estacionamiento
-#     id_dueno_id = estacionamiento.id_dueno.id
-#     tarifahora = estacionamiento.tarifahora
+    # Obtiene el id del dueño asociado al estacionamiento
+    id_usuario = estacionamiento.id
+    tarifahora = estacionamiento.tarifahora
 
-#     # Crea una instancia del formulario ArriendoForm
-#     # arriendo_form = ArriendoForm(id_estacionamiento=id, id_dueno=id_dueno_id, preciototal=tarifahora)
+    # Crea una instancia del formulario ArriendoForm
+    arriendo_form = ArriendoForm(id_estacionamiento=id, id_usuario=id, preciototal=tarifahora)
 
-#     if request.method == 'POST':
-#         # Procesar el formulario cuando se envíe
-#         # arriendo_form = ArriendoForm(request.POST)
+    if request.method == 'POST':
+        # Procesar el formulario cuando se envíe
+        arriendo_form = ArriendoForm(request.POST)
 
-#         if arriendo_form.is_valid():
-#             # Guarda el formulario y realiza las acciones necesarias
-#             arriendo = arriendo_form.save(commit=False)
-#             arriendo.save()
+        if arriendo_form.is_valid():
+            # Guarda el formulario y realiza las acciones necesarias
+            arriendo = arriendo_form.save(commit=False)
+            arriendo.save()
 
-#             # Resto del código para actualizar las casillas...
+            # Resto del código para actualizar las casillas...
             
-#             messages.success(request, 'Estacionamiento creado exitosamente.')
-#             return redirect('indexCliente')
-#         else:
-#             print(arriendo_form.errors)
-#             messages.error(request, 'Corrige los errores en el formulario.')
+            messages.success(request, 'Estacionamiento creado exitosamente.')
+            return redirect('indexCliente')
+        else:
+            print(arriendo_form.errors)
+            messages.error(request, 'Corrige los errores en el formulario.')
 
-#     # Método GET, renderiza la página con el formulario
-#     context = {
-#         'estacionamiento': estacionamiento,
-#         'casilla': casilla,
-#         'estacionamientoCasilla': estacionamientoCasilla,
-#         'arriendo_form': arriendo_form,
-#     }
+    # Método GET, renderiza la página con el formulario
+    context = {
+        'estacionamiento': estacionamiento,
+        'casilla': casilla,
+        'arriendo_form': arriendo_form,
+    }
 
-#     return render(request, 'estacionamientos.html', context)
+    return render(request, 'estacionamientos.html', context)
 
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):
