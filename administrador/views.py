@@ -1,35 +1,46 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.models import Group
 from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
-from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, AdminProfileForm
 from transaccion_pago.models import Banco, Tarjetacredito
+from usuario.forms import UsuarioRegistrationForm
 from usuario.models import Comuna, Provincia, Region, Contacto
 
-# Funciones LOGUEO ADMINISTRADOR
-# def loginAdministrador(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             user = form.get_user()
-#             login(request, user)
-#             return redirect('dashboard')
-#     else:
-#         form = AuthenticationForm(request)
-#     return render(request, 'registration/login.html', {'form': form})
+#Funciones LOGUEO ADMINISTRADOR
+def loginAdministrador(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('dashboard')
+    else:
+        form = AuthenticationForm(request)
+    return render(request, 'registration/login.html', {'form': form})
 
-# def registerAdministrador(request):
-#     if request.method == 'POST':
-#         form = AdminRegistrationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             return redirect('loginAdministrador')
-#     else:
-#         form = AdminRegistrationForm()
-#     return render(request, 'registration/register.html', {'form':form})
+def registerAdministrador(request):
+    if request.method == 'POST':
+        form_usuario = UsuarioRegistrationForm(request.POST, request.FILES)
+        form_admin = AdminProfileForm(request.POST, request.FILES)
+        if form_usuario.is_valid() and form_admin.is_valid():
+            user = form_usuario.save()
+            admin_profile = form_admin.save(commit=False)
+            admin_profile.user = user
+            admin_profile.is_staff = True
+            admin_profile.save()
+            grupo_admin, creado = Group.objects.get_or_create(name='Admin')
+            user.groups.add(grupo_admin)
+            login(request, user)
+            return redirect('loginAdministrador')
+    else:
+        form_usuario = UsuarioRegistrationForm()
+        form_admin = AdminProfileForm()
+    return render(request, 'registration/register.html', {'form_usuario': form_usuario, 'form_admin': form_admin})
+
 
 
 # Funcion PAGINA PRINCIPAL

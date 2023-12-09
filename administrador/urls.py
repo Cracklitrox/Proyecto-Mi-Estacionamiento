@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     # Ruta LOGUEO ADMINISTRADOR
-    # path('registration/login/', views.loginAdministrador, name='loginAdministrador'),
-    # path('registration/register/', views.registerAdministrador, name='registerAdministrador'),
+    path('registration/login/', views.loginAdministrador, name='loginAdministrador'),
+    path('registration/register/', views.registerAdministrador, name='registerAdministrador'),
     # Ruta PAGINA PRINCIPAL ADMINISTRADOR
     path('dashboard/', views.dashboard, name='dashboard'),
     # Rutas BANCOS

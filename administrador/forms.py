@@ -5,7 +5,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import Group
 from transaccion_pago.models import Banco, Tarjetacredito
-from usuario.models import Comuna, Provincia, Region, Contacto
+from usuario.models import Comuna, Provincia, Region, Contacto, AdminProfile
+
+class AdminProfileForm(forms.ModelForm):
+    class Meta:
+        model = AdminProfile
+        fields = ['permisos']
+
 
 class BancoForm(forms.ModelForm):
     class Meta:
