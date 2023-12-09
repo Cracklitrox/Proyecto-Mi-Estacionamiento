@@ -11,6 +11,7 @@ urlpatterns = [
     path('',views.indexCliente,name='indexCliente'),
     path('registration/loginCliente/', views.loginCliente, name='loginCliente'),
     path('registration/registerCliente/', views.registerCliente, name='registerCliente'),
+    path('logout_cliente/', views.logoutCliente, name='logoutCliente'),
     path('indexCliente/',views.indexCliente,name='indexCliente'),
     path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),

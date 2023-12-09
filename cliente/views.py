@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import AuthenticationForm
@@ -18,10 +18,18 @@ from geolocalizacion.forms import *
 from arriendo.models import *
 from arriendo.form import *
 
+##################################
+##        Grupo - permisos      ##
+##################################
+
 def es_cliente(user):
     return user.groups.filter(name='Cliente').exists()  
 
-# FUNCION REGISTRO CLIENTE
+##################################
+##           Registro           ##
+##################################
+
+@login_required
 def registerCliente(request):
     if request.method == 'POST':
         user_form = UsuarioRegistrationForm(request.POST)
@@ -41,6 +49,10 @@ def registerCliente(request):
         profile_form = ClienteProfileForm()
     return render(request, 'registration/registerCliente.html', {'user_form': user_form, 'profile_form': profile_form})
 
+##################################
+##            Login             ##
+##################################
+
 def loginCliente(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -54,6 +66,17 @@ def loginCliente(request):
     else:
         form = AuthenticationForm()
     return render(request, 'registration/loginCliente.html', {'form': form})
+
+
+##################################
+##            Logout            ##
+##################################
+@user_passes_test(es_cliente)
+def logoutCliente(request):
+    logout(request)
+    # Personaliza la redirección para los dueños
+    return redirect('indexCliente')
+
 
 # Create your views here.
 @user_passes_test(es_cliente)

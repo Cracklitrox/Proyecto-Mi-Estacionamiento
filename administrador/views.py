@@ -1,16 +1,53 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
 from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, AdminProfileForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.forms import UsuarioRegistrationForm
 from usuario.models import Comuna, Provincia, Region, Contacto
 
-#Funciones LOGUEO ADMINISTRADOR
+
+##################################
+##        Grupo - permisos      ##
+##################################
+
+def es_admin(user):
+    return user.groups.filter(name='Admin').exists()
+
+##################################
+##           Registro           ##
+##################################
+
+@login_required
+def registerAdministrador(request):
+    if request.method == 'POST':
+        form_usuario = UsuarioRegistrationForm(request.POST, request.FILES)
+        form_admin = AdminProfileForm(request.POST, request.FILES)
+        if form_usuario.is_valid() and form_admin.is_valid():
+            user = form_usuario.save(commit=False)
+            user.is_staff = True
+            user.save()
+            grupo_admin, creado = Group.objects.get_or_create(name='Admin')
+            user.groups.add(grupo_admin)
+            admin_profile = form_admin.save(commit=False)
+            admin_profile = user
+            admin_profile.save()            
+            login(request, user)
+            return redirect('loginAdministrador')
+    else:
+        form_usuario = UsuarioRegistrationForm()
+        form_admin = AdminProfileForm()
+    return render(request, 'registration/register.html', {'form_usuario': form_usuario, 'form_admin': form_admin})
+
+##################################
+##            Login             ##
+##################################
+
 def loginAdministrador(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -22,28 +59,19 @@ def loginAdministrador(request):
         form = AuthenticationForm(request)
     return render(request, 'registration/login.html', {'form': form})
 
-def registerAdministrador(request):
-    if request.method == 'POST':
-        form_usuario = UsuarioRegistrationForm(request.POST, request.FILES)
-        form_admin = AdminProfileForm(request.POST, request.FILES)
-        if form_usuario.is_valid() and form_admin.is_valid():
-            user = form_usuario.save()
-            admin_profile = form_admin.save(commit=False)
-            admin_profile.user = user
-            admin_profile.is_staff = True
-            admin_profile.save()
-            grupo_admin, creado = Group.objects.get_or_create(name='Admin')
-            user.groups.add(grupo_admin)
-            login(request, user)
-            return redirect('loginAdministrador')
-    else:
-        form_usuario = UsuarioRegistrationForm()
-        form_admin = AdminProfileForm()
-    return render(request, 'registration/register.html', {'form_usuario': form_usuario, 'form_admin': form_admin})
+##################################
+##            Logout            ##
+##################################
+@user_passes_test(es_admin)
+def logoutAdmin(request):
+    logout(request)
+    # Personaliza la redirección para los dueños
+    return redirect('loginAdministrador')
 
+##################################
+##           Index              ##
+##################################
 
-
-# Funcion PAGINA PRINCIPAL
 def dashboard(request):
     return render(request, 'dashboard.html')
 

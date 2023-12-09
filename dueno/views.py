@@ -31,6 +31,7 @@ def es_dueno(user):
 ##           Registro           ##
 ##################################
 
+@login_required
 def registerDueno(request):
     if request.method == 'POST':
         user_form = UsuarioRegistrationForm(request.POST)
