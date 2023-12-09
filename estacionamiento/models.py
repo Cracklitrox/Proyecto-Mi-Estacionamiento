@@ -19,7 +19,6 @@ class Vehiculo(models.Model):
         return 'ID del vehiculo: ' + str(self.id)
 
 class Estacionamiento(models.Model):
-    # id_usuario =
     direccion = models.CharField(max_length=255)
     disponible = models.BooleanField(default=False, verbose_name='Estado Estacionamiento')
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')

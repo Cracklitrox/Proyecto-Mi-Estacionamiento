@@ -4,32 +4,32 @@ from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
-from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, AdminRegistrationForm
+from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm
 from transaccion_pago.models import Banco, Tarjetacredito
 from usuario.models import Comuna, Provincia, Region, Contacto
 
 # Funciones LOGUEO ADMINISTRADOR
-def loginAdministrador(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('dashboard')
-    else:
-        form = AuthenticationForm(request)
-    return render(request, 'registration/login.html', {'form': form})
+# def loginAdministrador(request):
+#     if request.method == 'POST':
+#         form = AuthenticationForm(request, data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             return redirect('dashboard')
+#     else:
+#         form = AuthenticationForm(request)
+#     return render(request, 'registration/login.html', {'form': form})
 
-def registerAdministrador(request):
-    if request.method == 'POST':
-        form = AdminRegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('loginAdministrador')
-    else:
-        form = AdminRegistrationForm()
-    return render(request, 'registration/register.html', {'form':form})
+# def registerAdministrador(request):
+#     if request.method == 'POST':
+#         form = AdminRegistrationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('loginAdministrador')
+#     else:
+#         form = AdminRegistrationForm()
+#     return render(request, 'registration/register.html', {'form':form})
 
 
 # Funcion PAGINA PRINCIPAL
@@ -359,104 +359,104 @@ def eliminarContacto(request, id):
 # Funciones CLIENTE
 
 
-def agregarCliente(request):
-    if request.method == 'POST':
-        formulario = ClienteForm(request.POST, files=request.FILES)
-        if formulario.is_valid():
-            formulario.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
-    else:
-        formulario = ClienteForm()
-    return render(request, 'clientes/agregarCliente.html', {'form': formulario})
+# def agregarCliente(request):
+#     if request.method == 'POST':
+#         formulario = ClienteForm(request.POST, files=request.FILES)
+#         if formulario.is_valid():
+#             formulario.save()
+#             return JsonResponse({'success': True})
+#         else:
+#             return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+#     else:
+#         formulario = ClienteForm()
+#     return render(request, 'clientes/agregarCliente.html', {'form': formulario})
 
-def listarCliente(request):
-    clientes = Cliente.objects.all()
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(clientes, 5)
-        clientes = paginator.page(page)
-    except:
-        raise Http404
-    context = {
-        'entity': clientes,
-        'paginator': paginator
-    }
-    return render(request, 'clientes/listarCliente.html', context)
+# def listarCliente(request):
+#     clientes = Cliente.objects.all()
+#     page = request.GET.get('page', 1)
+#     try:
+#         paginator = Paginator(clientes, 5)
+#         clientes = paginator.page(page)
+#     except:
+#         raise Http404
+#     context = {
+#         'entity': clientes,
+#         'paginator': paginator
+#     }
+#     return render(request, 'clientes/listarCliente.html', context)
 
-def modificarCliente(request, id):
-    clientes = get_object_or_404(Cliente, id=id)
+# def modificarCliente(request, id):
+#     clientes = get_object_or_404(Cliente, id=id)
 
-    context = {
-        'form':ClienteForm(instance=clientes)
-    }
+#     context = {
+#         'form':ClienteForm(instance=clientes)
+#     }
 
-    if request.method == 'POST':
-        formulario = ClienteForm(data = request.POST, instance=clientes, files=request.FILES)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, 'Cliente modificado correctamente.')
-            return redirect(to='listarCliente')
-        else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido modificar el cliente."
+#     if request.method == 'POST':
+#         formulario = ClienteForm(data = request.POST, instance=clientes, files=request.FILES)
+#         if formulario.is_valid():
+#             formulario.save()
+#             messages.success(request, 'Cliente modificado correctamente.')
+#             return redirect(to='listarCliente')
+#         else:
+#             context["form"] = formulario
+#             context["mensaje_incorrecto"] = "No se ha podido modificar el cliente."
 
-    return render(request, 'clientes/modificarCliente.html', context)
+#     return render(request, 'clientes/modificarCliente.html', context)
 
-def eliminarCliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
-    cliente.delete()
-    return redirect(to='listarCliente')
+# def eliminarCliente(request, id):
+#     cliente = get_object_or_404(Cliente, id=id)
+#     cliente.delete()
+#     return redirect(to='listarCliente')
 
 
 # Funciones DUENO
 
-def agregarDueno(request):
-    if request.method == 'POST':
-        formulario = DuenoForm(request.POST, files=request.FILES)
-        if formulario.is_valid():
-            formulario.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
-    else:
-        formulario = DuenoForm()
-    return render(request, 'duenos/agregarDueno.html', {'form': formulario})
+# def agregarDueno(request):
+#     if request.method == 'POST':
+#         formulario = DuenoForm(request.POST, files=request.FILES)
+#         if formulario.is_valid():
+#             formulario.save()
+#             return JsonResponse({'success': True})
+#         else:
+#             return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+#     else:
+#         formulario = DuenoForm()
+#     return render(request, 'duenos/agregarDueno.html', {'form': formulario})
 
-def listarDueno(request):
-    duenos = Dueno.objects.all()
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(duenos, 5)
-        duenos = paginator.page(page)
-    except:
-        raise Http404
-    context = {
-        'entity': duenos,
-        'paginator': paginator
-    }
-    return render(request, 'duenos/listarDueno.html', context)
+# def listarDueno(request):
+#     duenos = Dueno.objects.all()
+#     page = request.GET.get('page', 1)
+#     try:
+#         paginator = Paginator(duenos, 5)
+#         duenos = paginator.page(page)
+#     except:
+#         raise Http404
+#     context = {
+#         'entity': duenos,
+#         'paginator': paginator
+#     }
+#     return render(request, 'duenos/listarDueno.html', context)
 
-def modificarDueno(request, id):
-    duenos = get_object_or_404(Dueno, id=id)
+# def modificarDueno(request, id):
+#     duenos = get_object_or_404(Dueno, id=id)
 
-    context = {
-        'form':DuenoForm(instance=duenos)
-    }
+#     context = {
+#         'form':DuenoForm(instance=duenos)
+#     }
 
-    if request.method == 'POST':
-        formulario = DuenoForm(data = request.POST, instance=duenos, files=request.FILES)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect(to='listarDueno')
-        else:
-            context["form"] = formulario
-            context["mensaje_incorrecto"] = "No se ha podido modificar el dueño."
+#     if request.method == 'POST':
+#         formulario = DuenoForm(data = request.POST, instance=duenos, files=request.FILES)
+#         if formulario.is_valid():
+#             formulario.save()
+#             return redirect(to='listarDueno')
+#         else:
+#             context["form"] = formulario
+#             context["mensaje_incorrecto"] = "No se ha podido modificar el dueño."
 
-    return render(request, 'duenos/modificarDueno.html', context)
+#     return render(request, 'duenos/modificarDueno.html', context)
 
-def eliminarDueno(request, id):
-    dueno = get_object_or_404(Dueno, id=id)
-    dueno.delete()
-    return redirect(to='listarDueno')
+# def eliminarDueno(request, id):
+#     dueno = get_object_or_404(Dueno, id=id)
+#     dueno.delete()
+#     return redirect(to='listarDueno')

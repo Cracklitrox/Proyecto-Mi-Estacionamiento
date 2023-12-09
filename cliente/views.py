@@ -1,29 +1,46 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import Group
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from estacionamiento.models import *
 from django.views import View
 from django.http import JsonResponse
-
+# Cliente
+from .form import ClienteProfileForm
+# Usuario
+from usuario.forms import UsuarioRegistrationForm
+#Estacionamiento
+from estacionamiento.models import *
+#Geolocalizacion
 from geolocalizacion.forms import *
+#Arriendo
 from arriendo.models import *
 from arriendo.form import *
-from usuario.forms import UsuarioRegistrationForm
-from django.contrib.auth.forms import AuthenticationForm
+
+def es_cliente(user):
+    return user.groups.filter(name='Cliente').exists()  
 
 # FUNCION REGISTRO CLIENTE
+@login_required
 def registerCliente(request):
     if request.method == 'POST':
-        form = UsuarioRegistrationForm(request.POST, files=request.FILES)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.es_cliente = True
+        user_form = UsuarioRegistrationForm(request.POST)
+        profile_form = ClienteProfileForm(request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save(commit=False)
+            user.is_cliente = True
             user.save()
+            grupo_cliente, creado = Group.objects.get_or_create(name='Cliente')
+            user.groups.add(grupo_cliente)
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
             return redirect('loginCliente')
     else:
-        form = UsuarioRegistrationForm()
-    return render(request, 'registration/registerCliente.html', {'form': form})
-
+        user_form = UsuarioRegistrationForm()
+        profile_form = ClienteProfileForm()
+    return render(request, 'registration/registerCliente.html', {'user_form': user_form, 'profile_form': profile_form})
 
 def loginCliente(request):
     if request.method == 'POST':
@@ -38,8 +55,6 @@ def loginCliente(request):
     else:
         form = AuthenticationForm()
     return render(request, 'registration/loginCliente.html', {'form': form})
-
-
 
 # Create your views here.
 def indexCliente(request):

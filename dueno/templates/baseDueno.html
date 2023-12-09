@@ -34,7 +34,26 @@
                         </li>
                     </ul>
                     <span class="navbar-text">
-                        <a href="">Cerrar Sesion</a>
+                    <!--boton login -->
+                        <ul class="navbar-nav">
+                            {% if user.is_authenticated %}
+                                {% if user.groups.all.0.name == 'Dueno' %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'logoutDueno' %}" class="nav-link active">Cerrar sesión</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'loginDueno' %}" class="nav-link active">Iniciar sesión</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'registerDueno' %}" class="nav-link active">Registrarse</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
                     </span>
                 </div>
             </div>

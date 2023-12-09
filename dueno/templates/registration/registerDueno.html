@@ -19,7 +19,8 @@
                         <hr>
                         <form action="{% url 'registerDueno' %}" method="post">
                             {% csrf_token %}
-                            {{ form | crispy }}
+                            {{ user_form | crispy }}
+                            {{ profile_form | crispy }}
                             <input type="submit" value="Registrarse" class="btn btn-info">
                         </form>
                     </div>

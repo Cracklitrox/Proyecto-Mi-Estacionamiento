@@ -1,19 +1,14 @@
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin, Group
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
-# Create your models here.
-
+from django.conf import settings
 
 class Region(models.Model):
-    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, verbose_name="nombre")
 
     def __str__(self):
         return self.nombre
 
-
 class Provincia(models.Model):
-    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
     id_region = models.ForeignKey("Region", models.DO_NOTHING, db_column="id_region", verbose_name='Region')
 
@@ -22,7 +17,6 @@ class Provincia(models.Model):
 
 
 class Comuna(models.Model):
-    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255)
     id_provincia = models.ForeignKey("Provincia", models.DO_NOTHING, db_column="id_provincia", verbose_name='Provincia')
 
@@ -46,23 +40,91 @@ class Contacto(models.Model):
     def __str__(self):
         return self.nombre
 
-class Usuario(AbstractUser):
-    run = models.IntegerField()
-    dv_run = models.CharField(max_length=1)
-    nombre = models.CharField(max_length=25)
-    appaterno = models.CharField(max_length=30)
-    apmaterno = models.CharField(max_length=30)
-    direccion = models.CharField(max_length=70)
-    telefono = models.IntegerField()
-    vehiculos = models.IntegerField(null=True, blank=True)
-    tarjetas_credito = models.IntegerField()
-    estacionamientos = models.IntegerField(null=True, blank=True)
-    imagen = models.ImageField(upload_to='usuarioImagen/', null=True, blank=True)
-    id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
-    calificacion_promedio_dueno = models.DecimalField(max_digits=3, decimal_places=2, null=True,  blank=True, default=None)
-    calificacion_promedio_cliente = models.DecimalField(max_digits=3, decimal_places=2, null=True,  blank=True, default=None)
-    es_dueno = models.BooleanField(default=False)
-    es_cliente = models.BooleanField(default=False)
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('El campo Email es obligatorio')
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
 
-    def __str__(self):
-        return f'{self.username} - {self.nombre} {self.appaterno} {self.apmaterno}'
+        # Crear el perfil según el tipo de usuario
+        if extra_fields.get('is_cliente'):
+            ClienteProfile.objects.create(user=user)
+            grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
+            user.groups.add(grupo_cliente)
+        elif extra_fields.get('is_dueno'):
+            DuenoProfile.objects.create(user=user)
+            grupo_dueno, _ = Group.objects.get_or_create(name='Dueno')
+            user.groups.add(grupo_dueno)
+        elif extra_fields.get('is_staff'):
+            AdminProfile.objects.create(user=user)
+
+        return user
+    
+    def create_cliente(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_cliente', True)
+        return self.create_user(username, email, password, **extra_fields)
+
+    def create_dueno(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_dueno', True)
+        return self.create_user(username, email, password, **extra_fields)
+
+    def create_admin(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        return self.create_user(username, email, password, **extra_fields)
+
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(username, email, password, **extra_fields)
+
+class ClienteProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    vehiculos = models.IntegerField()
+    tarjetas = models.IntegerField()
+    telefono = models.IntegerField('Teléfono', null=True)
+
+class DuenoProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    estacionamiento = models.IntegerField(default=0)
+    telefono = models.IntegerField('Teléfono', null=True)
+
+class AdminProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    permisos = models.IntegerField(default=0)  # O cualquier otro valor predeterminado que desees
+
+class User(AbstractUser, PermissionsMixin):
+    email = models.EmailField('Correo Electrónico', max_length=254, unique=True)
+    usuario_activo = models.BooleanField(default=True)
+    pnombre = models.CharField('Primer nombre', max_length=30, blank=True)
+    snombre = models.CharField('Segundo nombre', max_length=30, blank=True)
+    apellidos = models.CharField('Apellidos', max_length=200, blank=True, null=True)
+    is_cliente = models.BooleanField(default=False)
+    is_dueno = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'pnombre', 'snombre', 'apellidos']
+
+    objects = UserManager()
+
+    def get_full_name(self):
+        full_name = self.pnombre
+        if self.snombre:
+            full_name += ' ' + self.snombre
+        if self.apellidos:
+            full_name += ' ' + self.apellidos
+        return full_name
+
+    def get_short_name(self):
+        return self.pnombre
+
+    def get_profile(self):
+        if self.is_cliente:
+            return getattr(self, 'cliente_profile', None)
+        elif self.is_dueno:
+            return getattr(self, 'dueno_profile', None)
+        else:
+            return None

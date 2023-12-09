@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Calificacion
+# from .models import Calificacion
 
-admin.site.register(Calificacion)
+# admin.site.register(Calificacion)
