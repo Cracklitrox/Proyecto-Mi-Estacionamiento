@@ -30,7 +30,7 @@ def es_dueno(user):
 ##################################
 ##           Registro           ##
 ##################################
-@login_required
+
 def registerDueno(request):
     if request.method == 'POST':
         user_form = UsuarioRegistrationForm(request.POST)
@@ -44,7 +44,7 @@ def registerDueno(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
-            return redirect('loginCliente')  # Cambia esto según la ruta correcta
+            return redirect('loginDueno')  # Cambia esto según la ruta correcta
     else:
         user_form = UsuarioRegistrationForm()
         profile_form = DuenoProfileForm()
@@ -62,7 +62,7 @@ def loginDueno(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('index')
+            return redirect('indexDueno')
     else:
         form = AuthenticationForm()
 

@@ -1,4 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin, Group
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.conf import settings
 
@@ -83,18 +85,22 @@ class UserManager(BaseUserManager):
 
 class ClienteProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    rut = models.IntegerField(null=True)
-    dv_run = models.IntegerField(null=True)
-    vehiculos = models.IntegerField()
-    tarjetas = models.IntegerField()
-    telefono = models.IntegerField('Teléfono', null=True)
+    run = models.IntegerField(_('Run'), validators=[MinValueValidator(1000000), MaxValueValidator(99999999)])
+    dv_run = models.CharField(_('Digito Verificador'), max_length=1, validators=[RegexValidator(r'^[1-9K]$')])
+    vehiculos = models.IntegerField(_('Cantidad de Vehiculos'), null=True, blank=True, validators=[MinValueValidator(0)])
+    tarjetas_credito = models.IntegerField(_('Cantidad de Tarjetas de Credito'), null=True, blank=True, validators=[MinValueValidator(0)])
+    telefono = models.IntegerField(_('Telefono'), unique=True)
+    calificacion_promedio_cliente = models.DecimalField(_('Calificacion Promedio del Cliente'),max_digits=2, decimal_places=1, null=True, blank=True)
+    id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
 
 class DuenoProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    rut = models.IntegerField(null=True)
-    dv_run = models.IntegerField(null=True)
-    estacionamiento = models.IntegerField(default=0)
-    telefono = models.IntegerField('Teléfono', null=True)
+    run = models.IntegerField(_('Run'), validators=[MinValueValidator(1000000), MaxValueValidator(99999999)])
+    dv_run = models.CharField(_('Digito Verificador'), max_length=1, validators=[RegexValidator(r'^[1-9K]$')])
+    estacionamientos = models.IntegerField(_('Cantidad de Estacionamientos'), null=True, blank=True, validators=[MinValueValidator(0)])
+    calificacion_promedio_dueno = models.DecimalField(_('Calificacion Promedio del Dueño'),max_digits=2, decimal_places=1, null=True, blank=True)
+    telefono = models.IntegerField(_('Telefono'), unique=True)
+    id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
 
 class AdminProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
@@ -103,9 +109,9 @@ class AdminProfile(models.Model):
 class User(AbstractUser, PermissionsMixin):
     email = models.EmailField('Correo Electrónico', max_length=254, unique=True)
     usuario_activo = models.BooleanField(default=True)
-    pnombre = models.CharField('Primer nombre', max_length=30, blank=True)
-    snombre = models.CharField('Segundo nombre', max_length=30, blank=True)
-    apellidos = models.CharField('Apellidos', max_length=200, blank=True, null=True)
+    pnombre = models.CharField(_('Primer nombre'), max_length=30, validators=[RegexValidator(r'^[a-zA-Z]+$')])
+    snombre = models.CharField(_('Segundo nombre'),max_length=30, validators=[RegexValidator(r'^[a-zA-Z]+$')])
+    apellidos = models.CharField(_('Apellidos'), max_length=55, validators=[RegexValidator(r'^[a-zA-Z]+$')])
     is_cliente = models.BooleanField(default=False)
     is_dueno = models.BooleanField(default=False)
 
