@@ -83,12 +83,16 @@ class UserManager(BaseUserManager):
 
 class ClienteProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    rut = models.IntegerField(null=True)
+    dv_run = models.IntegerField(null=True)
     vehiculos = models.IntegerField()
     tarjetas = models.IntegerField()
     telefono = models.IntegerField('Teléfono', null=True)
 
 class DuenoProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    rut = models.IntegerField(null=True)
+    dv_run = models.IntegerField(null=True)
     estacionamiento = models.IntegerField(default=0)
     telefono = models.IntegerField('Teléfono', null=True)
 
