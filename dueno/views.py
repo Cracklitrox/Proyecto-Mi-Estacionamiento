@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
+from .forms import *
 from estacionamiento.models import *
 from estacionamiento.forms import *
 from geolocalizacion.models import *

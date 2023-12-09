@@ -4,6 +4,8 @@ from django.contrib import messages
 from estacionamiento.models import *
 from django.views import View
 from django.http import JsonResponse
+
+from geolocalizacion.forms import *
 from arriendo.models import *
 from arriendo.form import *
 from .forms import ClienteForm
@@ -32,14 +34,14 @@ def loginCliente(request):
 
 # Create your views here.
 def indexCliente(request):
-    # puntos_interes = Puntointeres.objects.all()
+    puntos_interes = Puntointeres.objects.all()
     estacionamientos = Estacionamiento.objects.all()
 
     for estacionamiento in estacionamientos:
         estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')
 
     context = {
-        # 'puntos_interes': puntos_interes,
+        'puntos_interes': puntos_interes,
         'estacionamientos': estacionamientos,
     }
     return render(request, 'indexCliente.html', context)
