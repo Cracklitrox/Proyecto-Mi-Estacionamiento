@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = [
     # Ruta LOGUEO ADMINISTRADOR
-    path('registration/login/', views.loginAdministrador, name='loginAdministrador'),
-    path('registration/register/', views.registerAdministrador, name='registerAdministrador'),
+    path('registration/loginAdministrador/', views.loginAdministrador, name='loginAdministrador'),
+    path('registration/registerAdministrador/', views.registerAdministrador, name='registerAdministrador'),
     # Ruta PAGINA PRINCIPAL ADMINISTRADOR
     path('dashboard/', views.dashboard, name='dashboard'),
     # Rutas BANCOS
@@ -37,14 +37,4 @@ urlpatterns = [
     path('contactos/listarContacto/', views.listarContacto, name='listarContacto'),
     path('contactos/modificarContacto/<id>/', views.modificarContacto, name='modificarContacto'),
     path('contactos/eliminarContacto/<id>/', views.eliminarContacto, name='eliminarContacto'),
-    # Rutas CLIENTE
-    path('clientes/agregarCliente/', views.agregarCliente, name='agregarCliente'),
-    path('clientes/listarCliente/', views.listarCliente, name='listarCliente'),
-    path('clientes/modificarCliente/<id>/', views.modificarCliente, name='modificarCliente'),
-    path('clientes/eliminarCliente/<id>/', views.eliminarCliente, name='eliminarCliente'),
-    # Rutas DUENO
-    path('duenos/agregarDueno/', views.agregarDueno, name='agregarDueno'),
-    path('duenos/listarDueno/', views.listarDueno, name='listarDueno'),
-    path('duenos/modificarCliente/<id>/', views.modificarDueno, name='modificarDueno'),
-    path('duenos/eliminarDueno/<id>/', views.eliminarDueno, name='eliminarDueno'),
 ]

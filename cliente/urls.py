@@ -3,13 +3,12 @@ from . import views
 from .views import GuardarEstadoCasillaView
 from geolocalizacion.models import *
 from estacionamiento.views import *
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.indexCliente,name='indexCliente'),
-    path('registration/loginCliente/', views.loginCliente, name='loginCliente'),
+    # Ruta LOGUEO CLIENTE
     path('registration/registerCliente/', views.registerCliente, name='registerCliente'),
+    path('registration/loginCliente/', views.loginCliente, name='loginCliente'),
     path('indexCliente/',views.indexCliente,name='indexCliente'),
     path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     # path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),

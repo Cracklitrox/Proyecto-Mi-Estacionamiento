@@ -33,7 +33,8 @@ MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-AUTH_USER_MODEL = 'administrador.CustomUser'
+# AUTH_USER_MODEL = 'administrador.CustomUser'
+# AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Application definition
 
@@ -65,6 +66,8 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+AUTH_USER_MODEL = 'administrador.Administrador'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

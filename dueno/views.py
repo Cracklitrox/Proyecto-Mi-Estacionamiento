@@ -1,42 +1,35 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from .models import *
 from estacionamiento.models import *
 from estacionamiento.forms import *
 from geolocalizacion.models import *
 from geolocalizacion.forms import *
-from usuario.forms import UsuarioRegistrationForm
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
+from django.contrib.auth import authenticate, login
+from .forms import DuenoForm
+from .models import Dueno
 
-# Create your views here.
-
-# Funcion REGISTRO DUEÑO
 
 def registerDueno(request):
     if request.method == 'POST':
-        form = UsuarioRegistrationForm(request.POST, request.FILES)
+        form = DuenoForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.es_dueno = True
-            user.save()
-            return redirect('loginCliente')
+            form.save()
+            return redirect('loginDueno')
     else:
-        form = UsuarioRegistrationForm()
-    return render(request, 'registration/registerDueno.html', {'form': form})
+        form = DuenoForm()
+    return render(request, 'registration/registerDueno.html', {'form':form})
 
 def loginDueno(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('index')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'registration/loginDueno.html', {'form': form})
+        nombre_usuario = request.POST['nombre_usuario']
+        contrasena = request.POST['contrasena']
+        dueno = Dueno.objects.filter(nombre_usuario=nombre_usuario).first()
+        if dueno is not None and dueno.check_password(contrasena):
+            login(request, dueno)
+            return redirect('indexDueno')
+    return render(request, 'registration/loginDueno.html')
 
-# FUnciones que faltan nombrar
+
 
 def indexDueno(request):    
     estacionamientos = Estacionamiento.objects.all()
@@ -47,28 +40,28 @@ def cargando(request):
     context = {'casilla': casilla}
     return render(request,'cargando.html', context)
 
-def addEstacionamiento(request):
-    if request.method == 'POST':
-        puntointeres_form = PuntointeresForm(request.POST)
-        estacionamiento_form = EstacionamientoForm(request.POST)
+# def addEstacionamiento(request):
+#     if request.method == 'POST':
+#         puntointeres_form = PuntointeresForm(request.POST)
+#         estacionamiento_form = EstacionamientoForm(request.POST)
 
-        if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
-            puntointeres = puntointeres_form.save()
-            estacionamiento = estacionamiento_form.save(commit=False)
-            estacionamiento.id_puntoInteres = puntointeres
-            estacionamiento.save()
-            messages.success(request, 'Estacionamiento creado exitosamente.')
-            return redirect('index')
-        else:
-            print(estacionamiento_form.errors)
-            messages.error(request, 'Corrige los errores en el formulario.')
+#         if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
+#             puntointeres = puntointeres_form.save()
+#             estacionamiento = estacionamiento_form.save(commit=False)
+#             estacionamiento.id_puntoInteres = puntointeres
+#             estacionamiento.save()
+#             messages.success(request, 'Estacionamiento creado exitosamente.')
+#             return redirect('index')
+#         else:
+#             print(estacionamiento_form.errors)
+#             messages.error(request, 'Corrige los errores en el formulario.')
 
-    else:
-        puntointeres_form = PuntointeresForm()
-        estacionamiento_form = EstacionamientoForm()
+#     else:
+#         puntointeres_form = PuntointeresForm()
+#         estacionamiento_form = EstacionamientoForm()
 
-    return render(request, 'addEstacionamiento.html', {'puntointeres_form': puntointeres_form, 
-                                                       'estacionamiento_form': estacionamiento_form})
+#     return render(request, 'addEstacionamiento.html', {'puntointeres_form': puntointeres_form, 
+#                                                        'estacionamiento_form': estacionamiento_form})
 
 
 def editEstacionamiento(request, id=id):
