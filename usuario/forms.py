@@ -8,17 +8,12 @@ class ContactoForm(forms.ModelForm):
         model = Contacto
         fields = '__all__'
 
-class UsuarioRegistrationForm(UserCreationForm):
-    # Añade campos adicionales según sea necesario
+class UserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = [
-            'username', 'email', 'password1', 'password2',
-            'pnombre', 'snombre', 'apellidos', 'is_cliente',
-            'is_dueno', 'is_staff'
-        ]
+        fields = ('first_name', 'last_name', 'apmaterno', 'telefono', 'email', 'username', 'password1', 'password2')
         widgets = {
-            'is_cliente': forms.HiddenInput(),
-            'is_dueno': forms.HiddenInput(),
-            'is_staff': forms.HiddenInput(),
+            'es_cliente': HiddenInput(),
+            'es_dueno': HiddenInput(),
+            'is_staff': HiddenInput(),
         }

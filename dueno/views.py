@@ -16,7 +16,7 @@ from estacionamiento.forms import *
 from geolocalizacion.models import *
 from geolocalizacion.forms import *
 # Usuario
-from usuario.forms import UsuarioRegistrationForm
+from usuario.forms import UserForm
 
 
 
@@ -33,8 +33,8 @@ def es_dueno(user):
 
 def registerDueno(request):
     if request.method == 'POST':
-        user_form = UsuarioRegistrationForm(request.POST)
-        profile_form = DuenoProfileForm(request.POST)
+        user_form = UserForm(request.POST)
+        profile_form = DuenoForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.is_dueno = True
@@ -50,8 +50,8 @@ def registerDueno(request):
             return redirect('loginDueno')  # Cambia esto según la ruta correcta
 
     else:
-        user_form = UsuarioRegistrationForm()
-        profile_form = DuenoProfileForm()
+        user_form = UserForm()
+        profile_form = DuenoForm()
     
     context = {'user_form': user_form, 
                'profile_form': profile_form}

@@ -52,25 +52,25 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
         # Crear el perfil según el tipo de usuario
-        if extra_fields.get('is_cliente'):
+        if extra_fields.get('es_cliente'):
             ClienteProfile.objects.create(user=user)
             grupo_cliente, _ = Group.objects.get_or_create(name='Cliente')
             user.groups.add(grupo_cliente)
-        elif extra_fields.get('is_dueno'):
+        elif extra_fields.get('es_dueno'):
             DuenoProfile.objects.create(user=user)
             grupo_dueno, _ = Group.objects.get_or_create(name='Dueno')
             user.groups.add(grupo_dueno)
         elif extra_fields.get('is_staff'):
-            AdminProfile.objects.create(user=user)
+            AdministradorProfile.objects.create(user=user)
 
         return user
     
     def create_cliente(self, username, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_cliente', True)
+        extra_fields.setdefault('es_cliente', True)
         return self.create_user(username, email, password, **extra_fields)
 
     def create_dueno(self, username, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_dueno', True)
+        extra_fields.setdefault('es_dueno', True)
         return self.create_user(username, email, password, **extra_fields)
 
     def create_admin(self, username, email, password=None, **extra_fields):
@@ -83,58 +83,50 @@ class UserManager(BaseUserManager):
 
         return self.create_user(username, email, password, **extra_fields)
 
-class ClienteProfile(models.Model):
+class UsuarioProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     run = models.IntegerField(_('Run'), validators=[MinValueValidator(1000000), MaxValueValidator(99999999)])
     dv_run = models.CharField(_('Digito Verificador'), max_length=1, validators=[RegexValidator(r'^[1-9K]$')])
     vehiculos = models.IntegerField(_('Cantidad de Vehiculos'), null=True, blank=True, validators=[MinValueValidator(0)])
-    tarjetas_credito = models.IntegerField(_('Cantidad de Tarjetas de Credito'), null=True, blank=True, validators=[MinValueValidator(0)])
-    telefono = models.IntegerField(_('Telefono'), unique=True)
-    calificacion_promedio_cliente = models.DecimalField(_('Calificacion Promedio del Cliente'),max_digits=2, decimal_places=1, null=True, blank=True)
     id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
 
-class DuenoProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    run = models.IntegerField(_('Run'), validators=[MinValueValidator(1000000), MaxValueValidator(99999999)])
-    dv_run = models.CharField(_('Digito Verificador'), max_length=1, validators=[RegexValidator(r'^[1-9K]$')])
+    class Meta:
+        abstract = True
+
+class ClienteProfile(UsuarioProfile):
+    calificacion_promedio_cliente = models.DecimalField(_('Calificacion Promedio del Cliente'), max_digits=2, decimal_places=1, null=True, blank=True)
+
+class DuenoProfile(UsuarioProfile):
     estacionamientos = models.IntegerField(_('Cantidad de Estacionamientos'), null=True, blank=True, validators=[MinValueValidator(0)])
-    calificacion_promedio_dueno = models.DecimalField(_('Calificacion Promedio del Dueño'),max_digits=2, decimal_places=1, null=True, blank=True)
-    telefono = models.IntegerField(_('Telefono'), unique=True)
-    id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
+    calificacion_promedio_dueno = models.DecimalField(_('Calificacion Promedio del Dueño'), max_digits=2, decimal_places=1, null=True, blank=True)
 
-class AdminProfile(models.Model):
+class AdministradorProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
-    permisos = models.IntegerField(default=0)  # O cualquier otro valor predeterminado que desees
+    permisos = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(3)])
 
 class User(AbstractUser, PermissionsMixin):
-    email = models.EmailField('Correo Electrónico', max_length=254, unique=True)
-    usuario_activo = models.BooleanField(default=True)
-    pnombre = models.CharField(_('Primer nombre'), max_length=30, validators=[RegexValidator(r'^[a-zA-Z]+$')])
-    snombre = models.CharField(_('Segundo nombre'),max_length=30, validators=[RegexValidator(r'^[a-zA-Z]+$')])
-    apellidos = models.CharField(_('Apellidos'), max_length=55, validators=[RegexValidator(r'^[a-zA-Z]+$')])
-    is_cliente = models.BooleanField(default=False)
-    is_dueno = models.BooleanField(default=False)
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', 'pnombre', 'snombre', 'apellidos']
+    first_name = models.CharField(_('Nombre'), max_length=30)
+    last_name = models.CharField(_('Apellido Paterno'), max_length=30)
+    apmaterno = models.CharField(_('Apellido Materno'), max_length=30)
+    telefono = models.CharField(_('Teléfono'), max_length=15, validators=[RegexValidator(r'^\+?1?\d{9,15}$')])
+    es_cliente = models.BooleanField(_('Es cliente'), default=False)
+    es_dueno = models.BooleanField(_('Es dueño'), default=False)
 
     objects = UserManager()
 
     def get_full_name(self):
-        full_name = self.pnombre
-        if self.snombre:
-            full_name += ' ' + self.snombre
-        if self.apellidos:
-            full_name += ' ' + self.apellidos
+        full_name = f'{self.first_name} {self.last_name}'
+        if self.apmaterno:
+            full_name += f' {self.apmaterno}'
         return full_name
 
     def get_short_name(self):
-        return self.pnombre
+        return self.first_name
 
     def get_profile(self):
-        if self.is_cliente:
+        if self.es_cliente:
             return getattr(self, 'cliente_profile', None)
-        elif self.is_dueno:
+        elif self.es_dueno:
             return getattr(self, 'dueno_profile', None)
         else:
             return None

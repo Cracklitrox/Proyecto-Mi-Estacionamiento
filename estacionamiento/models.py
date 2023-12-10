@@ -1,4 +1,5 @@
 from django.db import models
+from usuario.models import User, DuenoProfile
 
 # Create your models here.
 
@@ -9,7 +10,7 @@ class Marca(models.Model):
         return 'Nombre de la marca: ' + str(self.nombre)
 
 class Vehiculo(models.Model):
-    # id_usuario = models
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     patente = models.CharField(max_length=6)
     id_marca = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_marca', default=None)
     modelo = models.CharField(max_length=255)
@@ -19,6 +20,7 @@ class Vehiculo(models.Model):
         return 'ID del vehiculo: ' + str(self.id)
 
 class Estacionamiento(models.Model):
+    id_dueno = models.ForeignKey(DuenoProfile, on_delete=models.CASCADE)
     direccion = models.CharField(max_length=255)
     disponible = models.BooleanField(default=False, verbose_name='Estado Estacionamiento')
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')

@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import BancoForm, TarjetacreditoForm, ComunaForm, ProvinciaForm, RegionForm, ContactoForm, AdminProfileForm
 from transaccion_pago.models import Banco, Tarjetacredito
-from usuario.forms import UsuarioRegistrationForm
+from usuario.forms import UserForm
 from usuario.models import Comuna, Provincia, Region, Contacto
 
 
@@ -23,10 +23,9 @@ def es_admin(user):
 ##           Registro           ##
 ##################################
 
-@login_required
 def registerAdministrador(request):
     if request.method == 'POST':
-        form_usuario = UsuarioRegistrationForm(request.POST, request.FILES)
+        form_usuario = UserForm(request.POST, request.FILES)
         form_admin = AdminProfileForm(request.POST, request.FILES)
         if form_usuario.is_valid() and form_admin.is_valid():
             user = form_usuario.save(commit=False)
@@ -40,9 +39,9 @@ def registerAdministrador(request):
             login(request, user)
             return redirect('loginAdministrador')
     else:
-        form_usuario = UsuarioRegistrationForm()
+        form_usuario = UserForm()
         form_admin = AdminProfileForm()
-    return render(request, 'registration/register.html', {'form_usuario': form_usuario, 'form_admin': form_admin})
+    return render(request, 'registration/registerAdministrador.html', {'form_usuario': form_usuario, 'form_admin': form_admin})
 
 ##################################
 ##            Login             ##
@@ -57,7 +56,7 @@ def loginAdministrador(request):
             return redirect('dashboard')
     else:
         form = AuthenticationForm(request)
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'registration/loginAdministrador.html', {'form': form})
 
 ##################################
 ##            Logout            ##
@@ -72,10 +71,12 @@ def logoutAdmin(request):
 ##           Index              ##
 ##################################
 
+@login_required(login_url="loginAdministrador")
 def dashboard(request):
     return render(request, 'dashboard.html')
 
 # Funciones BANCO
+@login_required(login_url="loginAdministrador")
 def agregarBanco(request):
     if request.method == 'POST':
         formulario = BancoForm(request.POST, files=request.FILES)
@@ -89,6 +90,7 @@ def agregarBanco(request):
         formulario = BancoForm()
     return render(request, 'bancos/agregarBanco.html', {'form': formulario})
 
+@login_required(login_url="loginAdministrador")
 def listarBanco(request):
     bancos = Banco.objects.all()
     page = request.GET.get('page', 1)
@@ -103,6 +105,7 @@ def listarBanco(request):
     }
     return render(request, 'bancos/listarBanco.html', context)
 
+@login_required(login_url="loginAdministrador")
 def modificarBanco(request, id):
     banco = get_object_or_404(Banco, id=id)
 

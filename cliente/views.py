@@ -7,9 +7,9 @@ from django.contrib import messages
 from django.views import View
 from django.http import JsonResponse
 # Cliente
-from .form import ClienteProfileForm
+from .form import ClienteForm
 # Usuario
-from usuario.forms import UsuarioRegistrationForm
+from usuario.forms import UserForm
 #Estacionamiento
 from estacionamiento.models import *
 #Geolocalizacion
@@ -32,8 +32,8 @@ def es_cliente(user):
 @login_required
 def registerCliente(request):
     if request.method == 'POST':
-        user_form = UsuarioRegistrationForm(request.POST)
-        profile_form = ClienteProfileForm(request.POST)
+        user_form = UserForm(request.POST)
+        profile_form = ClienteForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.is_cliente = True
@@ -45,8 +45,8 @@ def registerCliente(request):
             profile.save()
             return redirect('loginCliente')
     else:
-        user_form = UsuarioRegistrationForm()
-        profile_form = ClienteProfileForm()
+        user_form = UserForm()
+        profile_form = ClienteForm()
     return render(request, 'registration/registerCliente.html', {'user_form': user_form, 'profile_form': profile_form})
 
 ##################################
