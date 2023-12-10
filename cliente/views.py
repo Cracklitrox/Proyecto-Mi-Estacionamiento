@@ -97,7 +97,7 @@ def indexCliente(request):
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
 
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
     casilla = Casilla.objects.all()
