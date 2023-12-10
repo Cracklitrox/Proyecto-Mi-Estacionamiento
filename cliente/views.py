@@ -22,14 +22,13 @@ from arriendo.form import *
 ##        Grupo - permisos      ##
 ##################################
 
-def es_cliente(user):
-    return user.groups.filter(name='Cliente').exists()  
+# def es_cliente(user):
+#     return user.groups.filter(name='Cliente').exists()  
 
 ##################################
 ##           Registro           ##
 ##################################
 
-@login_required
 def registerCliente(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -71,7 +70,7 @@ def loginCliente(request):
 ##################################
 ##            Logout            ##
 ##################################
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 def logoutCliente(request):
     logout(request)
     # Personaliza la redirección para los dueños
@@ -79,7 +78,7 @@ def logoutCliente(request):
 
 
 # Create your views here.
-@user_passes_test(es_cliente)
+
 def indexCliente(request):
     puntos_interes = Puntointeres.objects.all()
     estacionamientos = Estacionamiento.objects.all()
@@ -94,7 +93,7 @@ def indexCliente(request):
     return render(request, 'indexCliente.html', context)
 
 
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
 
@@ -127,7 +126,7 @@ def pagoCliente(request):
 #     else:
 #         return render(request, "loginCliente.html")
     
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
     casilla = Casilla.objects.all()
@@ -166,7 +165,7 @@ def estacionamientos(request, id):
 
     return render(request, 'estacionamientos.html', context)
 
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):
         id_casilla = request.POST.get('idCasilla')

@@ -16,8 +16,8 @@ from usuario.models import Comuna, Provincia, Region, Contacto
 ##        Grupo - permisos      ##
 ##################################
 
-def es_admin(user):
-    return user.groups.filter(name='Admin').exists()
+# def es_admin(user):
+#     return user.groups.filter(name='Admin').exists()
 
 ##################################
 ##           Registro           ##
@@ -61,10 +61,9 @@ def loginAdministrador(request):
 ##################################
 ##            Logout            ##
 ##################################
-@user_passes_test(es_admin)
+@login_required(login_url="loginAdministrador")
 def logoutAdmin(request):
     logout(request)
-    # Personaliza la redirección para los dueños
     return redirect('loginAdministrador')
 
 ##################################
@@ -76,6 +75,7 @@ def dashboard(request):
     return render(request, 'dashboard.html')
 
 # Funciones BANCO
+
 @login_required(login_url="loginAdministrador")
 def agregarBanco(request):
     if request.method == 'POST':
@@ -125,14 +125,15 @@ def modificarBanco(request, id):
 
     return render(request, 'bancos/modificarBanco.html', context)
 
+@login_required(login_url="loginAdministrador")
 def eliminarBanco(request, id):
     banco = get_object_or_404(Banco, id=id)
     banco.delete()
     return redirect(to='listarBanco')
 
-
 # Funciones TARJETACREDITO
 
+@login_required(login_url="loginAdministrador")
 def agregarTarjetacredito(request):
     if request.method == 'POST':
         formulario = TarjetacreditoForm(request.POST)
@@ -145,6 +146,7 @@ def agregarTarjetacredito(request):
         formulario = TarjetacreditoForm()
     return render(request, 'tarjetaCredito/agregarTarjetacredito.html', {'form': formulario})
 
+@login_required(login_url="loginAdministrador")
 def listarTarjetacredito(request):
     tarjetacreditos = Tarjetacredito.objects.all()
     page = request.GET.get('page', 1)
@@ -159,6 +161,7 @@ def listarTarjetacredito(request):
     }
     return render(request, 'tarjetaCredito/listarTarjetacredito.html', context)
 
+@login_required(login_url="loginAdministrador")
 def modificarTarjetacredito(request, id):
     tarjetacredito = get_object_or_404(Tarjetacredito, id=id)
 
@@ -178,6 +181,7 @@ def modificarTarjetacredito(request, id):
 
     return render(request, 'tarjetaCredito/modificarTarjetacredito.html', context)
 
+@login_required(login_url="loginAdministrador")
 def eliminarTarjetacredito(request, id):
     tarjetacredito = get_object_or_404(Tarjetacredito, id=id)
     tarjetacredito.delete()
@@ -186,7 +190,7 @@ def eliminarTarjetacredito(request, id):
 
 # Funciones COMUNA
 
-
+@login_required(login_url="loginAdministrador")
 def agregarComuna(request):
     if request.method == 'POST':
         formulario = ComunaForm(request.POST, files=request.FILES)
@@ -199,6 +203,7 @@ def agregarComuna(request):
         formulario = ComunaForm()
     return render(request, 'comunas/agregarComuna.html', {'form': formulario})
 
+@login_required(login_url="loginAdministrador")
 def listarComuna(request):
     comunas = Comuna.objects.all()
     page = request.GET.get('page', 1)
@@ -213,6 +218,7 @@ def listarComuna(request):
     }
     return render(request, 'comunas/listarComuna.html', context)
 
+@login_required(login_url="loginAdministrador")
 def modificarComuna(request, id):
     comunas = get_object_or_404(Comuna, id=id)
 
@@ -232,15 +238,15 @@ def modificarComuna(request, id):
 
     return render(request, 'comunas/modificarComuna.html', context)
 
+@login_required(login_url="loginAdministrador")
 def eliminarComuna(request, id):
     comuna = get_object_or_404(Comuna, id=id)
     comuna.delete()
     return redirect(to='listarComuna')
 
-
 # Funciones PROVINCIA
 
-
+@login_required(login_url="loginAdministrador")
 def agregarProvincia(request):
     if request.method == 'POST':
         formulario = ProvinciaForm(request.POST)
@@ -253,6 +259,7 @@ def agregarProvincia(request):
         formulario = ProvinciaForm()
     return render(request, 'provincias/agregarProvincia.html', {'form': formulario})
 
+@login_required(login_url="loginAdministrador")
 def listarProvincia(request):
     provincias = Provincia.objects.all()
     page = request.GET.get('page', 1)
@@ -267,6 +274,7 @@ def listarProvincia(request):
     }
     return render(request, 'provincias/listarProvincia.html', context)
 
+@login_required(login_url="loginAdministrador")
 def modificarProvincia(request, id):
     provincias = get_object_or_404(Provincia, id=id)
 
@@ -286,6 +294,7 @@ def modificarProvincia(request, id):
 
     return render(request, 'provincias/modificarProvincia.html', context)
 
+@login_required(login_url="loginAdministrador")
 def eliminarProvincia(request, id):
     provincia = get_object_or_404(Provincia, id=id)
     provincia.delete()
@@ -294,6 +303,7 @@ def eliminarProvincia(request, id):
 
 # Funciones REGION
 
+@login_required(login_url="loginAdministrador")
 def agregarRegion(request):
     if request.method == 'POST':
         formulario = RegionForm(request.POST, files=request.FILES)
@@ -306,6 +316,7 @@ def agregarRegion(request):
         formulario = RegionForm()
     return render(request, 'regiones/agregarRegion.html', {'form': formulario})
 
+@login_required(login_url="loginAdministrador")
 def listarRegion(request):
     regiones = Region.objects.all()
     page = request.GET.get('page', 1)
@@ -320,6 +331,7 @@ def listarRegion(request):
     }
     return render(request, 'regiones/listarRegion.html', context)
 
+@login_required(login_url="loginAdministrador")
 def modificarRegion(request, id):
     regiones = get_object_or_404(Region, id=id)
 
@@ -339,6 +351,7 @@ def modificarRegion(request, id):
 
     return render(request, 'regiones/modificarRegion.html', context)
 
+@login_required(login_url="loginAdministrador")
 def eliminarRegion(request, id):
     region = get_object_or_404(Region, id=id)
     region.delete()
@@ -347,6 +360,7 @@ def eliminarRegion(request, id):
 
 # Funciones CONTACTO
 
+@login_required(login_url="loginAdministrador")
 def agregarContacto(request):
     if request.method == 'POST':
         formulario = ContactoForm(request.POST, files=request.FILES)
@@ -359,6 +373,7 @@ def agregarContacto(request):
         formulario = ContactoForm()
     return render(request, 'contactos/agregarContacto.html', {'form': formulario})
 
+@login_required(login_url="loginAdministrador")
 def listarContacto(request):
     contactos = Contacto.objects.all()
     page = request.GET.get('page', 1)
@@ -373,6 +388,7 @@ def listarContacto(request):
     }
     return render(request, 'contactos/listarContacto.html', context)
 
+@login_required(login_url="loginAdministrador")
 def modificarContacto(request, id):
     contactos = get_object_or_404(Contacto, id=id)
 
@@ -392,11 +408,11 @@ def modificarContacto(request, id):
 
     return render(request, 'contactos/modificarContacto.html', context)
 
+@login_required(login_url="loginAdministrador")
 def eliminarContacto(request, id):
     contacto = get_object_or_404(Contacto, id=id)
     contacto.delete()
     return redirect(to='listarContacto')
-
 
 # Funciones CLIENTE
 

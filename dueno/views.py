@@ -24,8 +24,8 @@ from usuario.forms import UserForm
 ##        Grupo - permisos      ##
 ##################################
 
-def es_dueno(user):
-    return user.groups.filter(name='Dueno').exists()
+# def es_dueno(user):
+#     return user.groups.filter(name='Dueno').exists()
 
 ##################################
 ##           Registro           ##
@@ -44,11 +44,8 @@ def registerDueno(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
-
             #context = {'registrar_estacionamiento': True}
-            
             return redirect('loginDueno')  # Cambia esto según la ruta correcta
-
     else:
         user_form = UserForm()
         profile_form = DuenoForm()
@@ -60,6 +57,7 @@ def registerDueno(request):
 ##################################
 ##            Login             ##
 ##################################
+
 def loginDueno(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -78,7 +76,8 @@ def loginDueno(request):
 ##################################
 ##            Logout            ##
 ##################################
-@user_passes_test(es_dueno)
+
+@login_required(login_url="loginDueno")
 def logout_dueno(request):
     logout(request)
     # Personaliza la redirección para los dueños
@@ -88,12 +87,13 @@ def logout_dueno(request):
 ##           Index              ##
 ##################################
 
-@user_passes_test(es_dueno)
+@login_required(login_url="loginDueno")
 def indexDueno(request):    
     estacionamientos = Estacionamiento.objects.all()
     context = {'estacionamientos':estacionamientos}
     return render(request,'indexDueno.html', context)
 
+@login_required(login_url="loginDueno")
 def cargando(request):
     casilla = Casilla.objects.all()
     context = {'casilla': casilla}
@@ -103,7 +103,7 @@ def cargando(request):
 ##      Add-Estacionamiento     ##
 ##################################
 
-@user_passes_test(es_dueno)
+@login_required(login_url="loginDueno")
 def addEstacionamiento(request):
     if request.method == 'POST':
         puntointeres_form = PuntointeresForm(request.POST)
@@ -133,7 +133,7 @@ def addEstacionamiento(request):
 ##     Edit-Estacionamiento     ##
 ##################################
 
-@user_passes_test(es_dueno)
+@login_required(login_url="loginDueno")
 def editEstacionamiento(request, id=id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     formulario = EstacionamientoForm(request.POST or None,request.FILES or None,instance=estacionamiento)
@@ -143,7 +143,7 @@ def editEstacionamiento(request, id=id):
 ##     Del-Estacionamiento      ##
 ##################################
 
-@user_passes_test(es_dueno)
+@login_required(login_url="loginDueno")
 def eliminarEstacionamiento(request,id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     estacionamiento.delete()
@@ -153,7 +153,7 @@ def eliminarEstacionamiento(request,id):
 ##         Cambiar-Estado       ##
 ##################################
 @csrf_exempt
-@user_passes_test(es_dueno)
+@login_required(login_url="loginDueno")
 def cambiar_estado(request, estacionamiento_id):
     try:
         estacionamiento = Estacionamiento.objects.get(id=estacionamiento_id)
