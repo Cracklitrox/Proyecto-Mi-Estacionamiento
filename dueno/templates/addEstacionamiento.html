@@ -17,14 +17,9 @@ Añadir Estacionamiento
 
 
   <div class="mt-5">
-    <a href="{% url 'index' %}" class="btn btn-primary">Regresar</a>
+    <a href="{% url 'indexDueno' %}" class="btn btn-primary">Regresar</a>
     <form method="post" id="miFormulario" onsubmit="enviarFormulario()" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="form-group mb-2">
-        <label for="{{ estacionamiento_form.id_dueno.id_for_label }}">ID Dueño:</label>
-        {{ estacionamiento_form.id_dueno }}
-        {{ estacionamiento_form.id_dueno.errors }}
-      </div>
       <div class="row form-group mb-2">
         <div class="col-md-6">
           <label for="{{ estacionamiento_form.direccion.id_for_label }}">Dirección:</label>

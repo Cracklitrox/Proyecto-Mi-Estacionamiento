@@ -31,7 +31,6 @@ def es_dueno(user):
 ##           Registro           ##
 ##################################
 
-@login_required
 def registerDueno(request):
     if request.method == 'POST':
         user_form = UsuarioRegistrationForm(request.POST)
@@ -45,7 +44,11 @@ def registerDueno(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
+
+            #context = {'registrar_estacionamiento': True}
+            
             return redirect('loginDueno')  # Cambia esto según la ruta correcta
+
     else:
         user_form = UsuarioRegistrationForm()
         profile_form = DuenoProfileForm()
@@ -64,6 +67,8 @@ def loginDueno(request):
             user = form.get_user()
             login(request, user)
             return redirect('indexDueno')
+        else:
+            messages.error(request, "Intentelo denuevo")
     else:
         form = AuthenticationForm()
 
@@ -110,7 +115,7 @@ def addEstacionamiento(request):
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
             messages.success(request, 'Estacionamiento creado exitosamente.')
-            return redirect('index')
+            return redirect('indexDueno')
         else:
             print(estacionamiento_form.errors)
             messages.error(request, 'Corrige los errores en el formulario.')
