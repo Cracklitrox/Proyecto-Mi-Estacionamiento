@@ -5,7 +5,7 @@ urlpatterns = [
     # Ruta LOGUEO ADMINISTRADOR
     path('registration/loginAdministrador/', views.loginAdministrador, name='loginAdministrador'),
     path('registration/registerAdministrador/', views.registerAdministrador, name='registerAdministrador'),
-    path('logout_admin/', views.logoutAdmin, name='logoutAdmin'),
+    path('logoutAdmin/', views.logoutAdmin, name='logoutAdmin'),
     # Ruta PAGINA PRINCIPAL ADMINISTRADOR
     path('dashboard/', views.dashboard, name='dashboard'),
     # Rutas BANCOS

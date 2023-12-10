@@ -22,8 +22,8 @@ from arriendo.form import *
 ##        Grupo - permisos      ##
 ##################################
 
-def es_cliente(user):
-    return user.groups.filter(name='Cliente').exists()  
+# def es_cliente(user):
+#     return user.groups.filter(name='Cliente').exists()  
 
 ##################################
 ##           Registro           ##
@@ -71,7 +71,7 @@ def loginCliente(request):
 ##################################
 ##            Logout            ##
 ##################################
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 def logoutCliente(request):
     logout(request)
     # Personaliza la redirección para los dueños
@@ -93,7 +93,7 @@ def indexCliente(request):
     return render(request, 'indexCliente.html', context)
 
 
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
 
@@ -136,7 +136,7 @@ def estacionamientos(request, id):
 
     return render(request, 'estacionamientos.html', context)
 
-@user_passes_test(es_cliente)
+@login_required(login_url="loginCliente")
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):
         id_casilla = request.POST.get('idCasilla')
