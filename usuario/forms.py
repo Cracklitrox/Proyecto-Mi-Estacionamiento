@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import HiddenInput
-from .models import Contacto, User
+from .models import Contacto, User, DuenoProfile
 
 class ContactoForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,12 @@ class UserForm(UserCreationForm):
             'es_dueno': HiddenInput(),
             'is_staff': HiddenInput(),
         }
+
+class UsuarioProfileForm (forms.ModelForm):
+    class Meta:
+        model = DuenoProfile
+        fields = ('run','dv_run','id_comuna')
+        widgets = {
+            'calificacion': HiddenInput(),
+        }
+        

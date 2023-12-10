@@ -1,20 +1,38 @@
 from django import forms
-from usuario.models import DuenoProfile
-from usuario.forms import UserForm
+from django.contrib.auth.forms import UserCreationForm
+from usuario.models import UsuarioProfile, User
 
-class DuenoForm(UserForm):
-    estacionamientos = forms.IntegerField(required=True)
-    class Meta(UserForm.Meta):
+class DuenoForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'apmaterno', 'telefono', 'email', 'username', 'password1', 'password2')
         widgets = {
             'es_cliente': forms.HiddenInput(),
             'es_dueno': forms.HiddenInput(),
             'is_staff': forms.HiddenInput(),
+            'calificacion_promedio_dueno': forms.HiddenInput(),
         }
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.es_dueno = True
-        if commit:
-            user.save()
-            DuenoProfile.objects.create(user=user, estacionamientos=self.cleaned_data['estacionamientos'])
-        return user
+class UsuarioProfileForm(forms.ModelForm):
+    class Meta:
+        model = UsuarioProfile
+        fields = ('run', 'dv_run', 'id_comuna')
+
+# class DuenoForm(UserCreationForm):
+    
+#     class Meta:
+#         model : User  
+#         fields = []
+#         widgets = {
+#             'es_cliente': forms.HiddenInput(),
+#             'es_dueno': forms.HiddenInput(),
+#             'is_staff': forms.HiddenInput(),
+#         }
+
+#     def save(self, commit=True):
+#         user = super().save(commit=False)
+#         user.es_dueno = True
+#         if commit:
+#             user.save()
+#             DuenoProfile.objects.create(user=user)
+#         return user

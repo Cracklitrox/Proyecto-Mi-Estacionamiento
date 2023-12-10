@@ -6,10 +6,6 @@ class EstacionamientoForm(forms.ModelForm):
         model = Estacionamiento
         fields = ['direccion', 'disponible', 'tarifahora', 'observaciones']
 
-    # id_dueno = forms.ModelChoiceField(
-    #     queryset=Dueno.objects.all(),
-    #     widget=forms.Select(attrs={'class': 'form-control'})
-    # )
     direccion = forms.CharField(min_length=3, max_length=10, required=True)
     tarifahora = forms.IntegerField(min_value=1, required=True)
     observaciones = forms.CharField(min_length=5, max_length=250, required=False)

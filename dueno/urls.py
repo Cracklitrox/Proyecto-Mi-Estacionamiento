@@ -12,7 +12,7 @@ urlpatterns = [
     path('logout_dueno/', views.logout_dueno, name='logoutDueno'),
     path('indexDueno/cambiar_estado/<int:estacionamiento_id>/', views.cambiar_estado, name='cambiar_estado'),
     path('cargando/',views.cargando,name='cargando'),
-    path('indexDueno/addEstacionamiento/',views.addEstacionamiento,name='addEstacionamiento'),
+    path('indexDueno/addEstacionamiento/<int:id>',views.addEstacionamiento,name='addEstacionamiento'),
     path('eliminarEstacionamiento/<int:id>',views.eliminarEstacionamiento,name='eliminarEstacionamiento'),
     path('editEstacionamiento/<int:id>',views.editEstacionamiento,name='editEstacionamiento'),
     

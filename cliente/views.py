@@ -29,25 +29,25 @@ def es_cliente(user):
 ##           Registro           ##
 ##################################
 
-@login_required
+
 def registerCliente(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-        profile_form = ClienteForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        #profile_form = ClienteForm(request.POST)
+        if user_form.is_valid():
             user = user_form.save(commit=False)
-            user.is_cliente = True
+            user.es_cliente = True
             user.save()
             grupo_cliente, creado = Group.objects.get_or_create(name='Cliente')
             user.groups.add(grupo_cliente)
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
+            #profile = profile_form.save(commit=False)
+            #profile.user = user
+            #profile.save()
             return redirect('loginCliente')
     else:
         user_form = UserForm()
-        profile_form = ClienteForm()
-    return render(request, 'registration/registerCliente.html', {'user_form': user_form, 'profile_form': profile_form})
+        #profile_form = ClienteForm()
+    return render(request, 'registration/registerCliente.html', {'user_form': user_form})
 
 ##################################
 ##            Login             ##
@@ -58,11 +58,11 @@ def loginCliente(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
+            if user.groups.filter(name='Cliente').exists():
                 login(request, user)
                 return redirect('indexCliente')
             else:
-                print(form.errors)
+                messages.error(request, "No tienes permisos")
     else:
         form = AuthenticationForm()
     return render(request, 'registration/loginCliente.html', {'form': form})
@@ -79,7 +79,6 @@ def logoutCliente(request):
 
 
 # Create your views here.
-@user_passes_test(es_cliente)
 def indexCliente(request):
     puntos_interes = Puntointeres.objects.all()
     estacionamientos = Estacionamiento.objects.all()
@@ -98,35 +97,6 @@ def indexCliente(request):
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
 
-# def loginCliente(request):
-#     if request.method == "POST":
-#         campoNombre = request.POST["campoNombre"]
-#         campoContrasena = request.POST["campoContrasena"]
-#         flagCorreo = False
-#         if campoNombre.endswith("@gmail.com"):
-#             flagCorreo = True
-#         try:
-#             if flagCorreo:
-#                 cliente = Cliente.objects.get(
-#                     correoelectronico = campoNombre,
-#                     contrasena = campoContrasena
-#                 )
-#             else:
-#                 cliente = Cliente.objects.get(
-#                     nombreusuario = campoNombre,
-#                     contrasena = campoContrasena
-#                 )
-#             user = authenticate(request, username=cliente.nombreusuario, password=campoContrasena)
-#             if user:
-#                 login(request, user)
-#                 return redirect('indexCliente')
-#         except Cliente.DoesNotExist:
-#             mensajeAdvertencia = "No se ha encontrado el nombre de usuario, correo o la contraseña. Por favor, inténtelo nuevamente."
-#             messages.warning(request, mensajeAdvertencia)
-#             return render(request, "loginCliente.html")
-#     else:
-#         return render(request, "loginCliente.html")
-    
 @user_passes_test(es_cliente)
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)

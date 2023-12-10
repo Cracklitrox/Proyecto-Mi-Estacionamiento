@@ -43,7 +43,29 @@
                     </ul>
                   </li>
                 </ul>
-                <button class="btn btn-outline-success" type="submit">Cerrar Sesión</button>
+                <span class="navbar-text">
+                  <!--boton login -->
+                      <ul class="navbar-nav">
+                          {% if user.is_authenticated %}
+                              {% if user.groups.all.0.name == 'Cliente' %}
+                                  <li class="nav-item">
+                                      <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                                  </li>
+                                {% endif %}
+                            {% else %}
+                                <li class="nav-item">
+                                    <a href="{% url 'loginCliente' %}" class="nav-link active">Iniciar sesión</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'registerCliente' %}" class="nav-link active">Registrarse</a>
+                                </li>
+                            
+                          {% endif %}
+                      </ul>
+                  </span>
               </div>
             </div>
           </nav>

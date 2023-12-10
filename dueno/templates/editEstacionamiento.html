@@ -14,7 +14,7 @@ Formulario
 
 {% block content %}
     <div class="container mt-5">
-        <a href="{% url 'index' %}" class="btn btn-secondary">Volver</a>
+        <a href="{% url 'indexDueno' %}" class="btn btn-secondary">Volver</a>
         <form method="post">
             {% csrf_token %}
             <div class="mb-3">

@@ -30,7 +30,7 @@
                             <a class="nav-link active" aria-current="page" href="{% url 'indexDueno' %}">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'addEstacionamiento' %}">Crear estacionamiento</a>
+                            <a class="nav-link" href="{% url 'addEstacionamiento' user.id %}">Crear estacionamiento</a>
                         </li>
                     </ul>
                     <span class="navbar-text">

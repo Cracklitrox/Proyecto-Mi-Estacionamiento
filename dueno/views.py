@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -16,7 +16,7 @@ from estacionamiento.forms import *
 from geolocalizacion.models import *
 from geolocalizacion.forms import *
 # Usuario
-from usuario.forms import UserForm
+from usuario.forms import UserForm, UsuarioProfileForm
 
 
 
@@ -33,28 +33,31 @@ def es_dueno(user):
 
 def registerDueno(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = DuenoForm(request.POST)
+        user_form = DuenoForm(request.POST)
+        profile_form = UsuarioProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
-            user.is_dueno = True
+            user.es_dueno = True
             user.save()
+
             grupo_dueno, creado = Group.objects.get_or_create(name='Dueno')
             user.groups.add(grupo_dueno)
+
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
 
-            #context = {'registrar_estacionamiento': True}
+            
+            # Iniciar sesión automáticamente después del registro
+            login(request, user)
             
             return redirect('loginDueno')  # Cambia esto según la ruta correcta
 
     else:
-        user_form = UserForm()
-        profile_form = DuenoForm()
+        user_form = DuenoForm()
+        profile_form = UsuarioProfileForm()
     
-    context = {'user_form': user_form, 
-               'profile_form': profile_form}
+    context = {'user_form': user_form, 'profile_form': profile_form}
     return render(request, 'registration/registerDueno.html', context)
 
 ##################################
@@ -65,8 +68,11 @@ def loginDueno(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)
-            return redirect('indexDueno')
+            if user.groups.filter(name='Dueno').exists():
+                login(request, user)
+                return redirect('indexDueno')
+            else:
+                messages.error(request, "No tienes permisos")
         else:
             messages.error(request, "Intentelo denuevo")
     else:
@@ -104,14 +110,16 @@ def cargando(request):
 ##################################
 
 @user_passes_test(es_dueno)
-def addEstacionamiento(request):
+def addEstacionamiento(request, id):
+    dueno_profile = get_object_or_404(DuenoProfile, pk=id)
     if request.method == 'POST':
         puntointeres_form = PuntointeresForm(request.POST)
         estacionamiento_form = EstacionamientoForm(request.POST)
 
         if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
-            puntointeres = puntointeres_form.save()
             estacionamiento = estacionamiento_form.save(commit=False)
+            puntointeres = puntointeres_form.save()
+            estacionamiento.id_dueno = dueno_profile
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
             messages.success(request, 'Estacionamiento creado exitosamente.')
