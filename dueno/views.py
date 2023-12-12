@@ -9,6 +9,8 @@ from django.http import JsonResponse
 #Dueno
 from .models import *
 from .forms import *
+#Arriendo
+from arriendo.models import Arriendo
 #Estacionamiento
 from estacionamiento.models import *
 from estacionamiento.forms import *
@@ -17,6 +19,7 @@ from geolocalizacion.models import *
 from geolocalizacion.forms import *
 # Usuario
 from usuario.forms import UserForm, UsuarioProfileForm
+
 
 
 
@@ -97,7 +100,8 @@ def logout_dueno(request):
 
 @login_required(login_url="loginDueno")
 def indexDueno(request):    
-    estacionamientos = Estacionamiento.objects.all()
+    id = request.user.id
+    estacionamientos = Estacionamiento.objects.filter(id_dueno=id)
     puntos_interes = Puntointeres.objects.all()
     context = {'estacionamientos':estacionamientos,
                 'puntos_interes': puntos_interes,}
@@ -122,10 +126,11 @@ def addEstacionamiento(request, id):
 
         if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
             estacionamiento = estacionamiento_form.save(commit=False)
-            puntointeres = puntointeres_form.save()
             estacionamiento.id_dueno = dueno_profile
+            puntointeres = puntointeres_form.save()
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
+            
             messages.success(request, 'Estacionamiento creado exitosamente.')
             return redirect('indexDueno')
         else:
@@ -173,3 +178,15 @@ def cambiar_estado(request, estacionamiento_id):
         return JsonResponse({'estado': estacionamiento.disponible})
     except Estacionamiento.DoesNotExist:
         return JsonResponse({'error': 'Estacionamiento no encontrado'}, status=404)
+    
+##################################
+##       Arriendo-list          ##
+##################################
+
+@login_required(login_url="loginDueno")
+def arriendo(request):
+    estacionamiento_arriendo = Arriendo.objects.all
+    estacionamiento = Estacionamiento.objects.all
+    context = {'arriendo': estacionamiento_arriendo,
+               'estacionamientos': estacionamiento}
+    return render(request,'arriendoDueno.html', context)

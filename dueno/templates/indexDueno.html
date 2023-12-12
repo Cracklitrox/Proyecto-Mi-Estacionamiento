@@ -40,6 +40,9 @@ Index
             {% for estacionamiento in estacionamientos %}
             <div class="col">
                 <div class="card h-100">
+                    <div class="card-header text-center {% if estacionamiento.disponible %}bg-success{% else %}bg-danger{% endif %}">
+                        <h5 class="card-title">{{ estacionamiento.direccion }}</h5>
+                    </div>
                     {% if estacionamiento.imagen %}
                     <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
                     {% else %}
@@ -47,7 +50,6 @@ Index
                     {% endif %}
                     <ul class="list-group list-group-flush text-center">
                         <li class="list-group-item">
-                            <h5 class="card-title">Dirección: {{ estacionamiento.direccion }}</h5>
                             <p class="card-text">Tarifa H/R: ${{ estacionamiento.tarifahora }}</p>
                             <p class="card-text">
                                 {% if estacionamiento.disponible %}
@@ -59,7 +61,7 @@ Index
                         </li>
                     </ul>
                     <div class="card-body d-flex align-items-center justify-content-center">
-                        <a href="#" class="btn btn-outline-light btn-dark product-add btn-cambiar-estado"
+                        <a href="#" class="btn btn-outline-light btn-dark product-add btn-cambiar-estado "
                             data-estacionamiento-id="{{ estacionamiento.id }}">
                             {% if estacionamiento.disponible %}
                             Deshabilitado
@@ -67,8 +69,7 @@ Index
                             Habilitado
                             {% endif %}
                         </a>
-                        <a onclick="mostrarPopup('popup')" class=""></a>
-                        <a onclick="mostrarAlerta()" class="btn btn-outline-light btn-dark product-add">Ver más</a>
+                        <a onclick="mostrarAlerta('{{ estacionamiento.id }}')" class="btn btn-outline-light btn-dark product-add">Ver más</a>
                     </div>
                     <td>
                         <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' estacionamiento.id %}"
@@ -84,25 +85,35 @@ Index
 </div>
 <!-- Cambiar a js Propios -->
 <script>
-    // Función para mostrar la alerta con SweetAlert
-    function mostrarAlerta() {
+   async function mostrarAlerta(id) {
+    debugger;
+        console.log(id);  // Imprime el valor de id en la consola
+        const idEstacionamiento = id;
+        {% for est in estacionamientos %}
+            {% if est.id == 4 %}
         Swal.fire({
             title: 'Información Detallada',
-            html: `
-                {% for estacionamiento in estacionamientos %}
-                <p>Número de Vehículo: 123</p>
-                <p>Número de Cliente: 456</p>
-                <p>Tarifa: ${{ estacionamiento.tarifahora }}</p>
-                <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
-                {% endfor %}`,
+            html: `<p>Número de Vehículo: 123</p>
+                    <p>ID : {{est.id}}</p>
+                    {% if est.tarifahora %}
+                        <p>Tarifa: ${{ est.tarifahora }}</p>
+                    {% else %}
+                        <p>Tarifa: No disponible</p>
+                    {% endif %}
+                    <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
+                
+            `,
             showCloseButton: true,
             showConfirmButton: false,
             customClass: {
-                closeButton: 'cerrar-popup'  // Usa la misma clase de cierre que en tu código
+                closeButton: 'cerrar-popup'
             }
         });
+            {% endif %}
+        {% endfor %}
     }
 </script>
+
 <script>
     $(document).ready(function () {
         $('.btn-cambiar-estado').click(function (e) {

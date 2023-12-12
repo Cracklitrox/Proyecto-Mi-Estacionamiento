@@ -1,0 +1,57 @@
+{% extends 'baseDueno.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block css%}
+<link rel="stylesheet" href="{% static 'css/arriendoDueno.css' %}">
+{% endblock%}
+
+{% block title %}
+Arriendos
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2 class="text-center mt-5 "> Arriendos </h2>        
+
+        <table class="table table-secondary table-bordered table-striped-columns mt-4">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col" class="text-center">Tarifa Hora</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" class="text-center">Imagen</th>
+                <th scope="col" class="text-center">Opciones</th>
+              </tr>
+            </thead>
+            <tbody class="align-middle">
+                {% for estacionamiento in estacionamientos %}
+                <tr>
+                <th scope="row">{{ estacionamiento.direccion }}</th>
+                <td class="text-center"> ${{ estacionamiento.tarifahora }}</td>
+                <td>
+                    {% if estacionamiento.observaciones %}
+                        {{ estacionamiento.observaciones }}
+                    {% else %}
+                        No hay observaciones disponibles
+                    {% endif %}
+                </td>
+                <td class="text-center">{% if estacionamiento.imagen %}
+                    <img class="product-img-table" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
+                    {% else %}
+                    <img class="product-img-table" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
+                    {% endif %}</td>
+                <td class="text-center">
+                  <a href="#" class="btn btn-success btn-sm">Generar Reporte</a>
+                </td>
+            </tr>
+              {% endfor %}
+            </tbody>
+        </table>  
+    </div>
+</div>
+
+{% endblock %}
