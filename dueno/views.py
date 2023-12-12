@@ -98,7 +98,9 @@ def logout_dueno(request):
 @login_required(login_url="loginDueno")
 def indexDueno(request):    
     estacionamientos = Estacionamiento.objects.all()
-    context = {'estacionamientos':estacionamientos}
+    puntos_interes = Puntointeres.objects.all()
+    context = {'estacionamientos':estacionamientos,
+                'puntos_interes': puntos_interes,}
     return render(request,'indexDueno.html', context)
 
 @login_required(login_url="loginDueno")

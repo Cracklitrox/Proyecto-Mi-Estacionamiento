@@ -26,7 +26,7 @@ class Estacionamiento(models.Model):
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')
     observaciones = models.CharField(max_length=255, blank=True, null=True)
     imagen = models.ImageField(upload_to='fotoEstacionamiento/', null=True, blank=True, verbose_name='Imagen del Estacionamiento')
-    id_puntoInteres = models.ForeignKey('geolocalizacion.Puntointeres', models.DO_NOTHING, db_column='id_puntointeres', verbose_name='Punto de Interes')
+    id_puntoInteres = models.ForeignKey('geolocalizacion.Puntointeres', on_delete=models.CASCADE, db_column='id_puntointeres', verbose_name='Punto de Interes')
 
     def cambiar_estado(self):
         """
@@ -35,19 +35,8 @@ class Estacionamiento(models.Model):
         self.disponible = not self.disponible
         self.save()
 
-
-# class Casilla(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     id_estacionamiento = models.ForeignKey(Estacionamiento, models.DO_NOTHING, db_column='id_estacionamiento')
-#     casilla = models.CharField(max_length=30)
-#     disponible = models.BooleanField(default=True)
-
-#     def __str__(self):
-#         return 'ID Casilla: ' + str(self.id) 
-
 class Casilla(models.Model):
-    id = models.AutoField(primary_key=True)
-    id_estacionamiento = models.ForeignKey(Estacionamiento, models.DO_NOTHING, db_column='id_estacionamiento', default=None)
+    id_estacionamiento = models.ForeignKey(Estacionamiento, on_delete=models.CASCADE, db_column='id_estacionamiento', default=None)
     casilla = models.CharField(max_length=30)
     disponible = models.BooleanField(default=True)
 
@@ -60,3 +49,13 @@ class Casilla(models.Model):
 
     def __str__(self):
         return 'ID Casilla: ' + str(self.id) 
+    
+# class Casilla(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     id_estacionamiento = models.ForeignKey(Estacionamiento, models.DO_NOTHING, db_column='id_estacionamiento')
+#     casilla = models.CharField(max_length=30)
+#     disponible = models.BooleanField(default=True)
+
+#     def __str__(self):
+#         return 'ID Casilla: ' + str(self.id) 
+

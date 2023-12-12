@@ -22,8 +22,8 @@ from arriendo.form import *
 ##        Grupo - permisos      ##
 ##################################
 
-# def es_cliente(user):
-#     return user.groups.filter(name='Cliente').exists()  
+def es_cliente(user):
+    return user.groups.filter(name='Cliente').exists()  
 
 ##################################
 ##           Registro           ##
@@ -78,7 +78,9 @@ def logoutCliente(request):
     return redirect('indexCliente')
 
 
-# Create your views here.
+##################################
+##            Index             ##
+##################################
 def indexCliente(request):
     puntos_interes = Puntointeres.objects.all()
     estacionamientos = Estacionamiento.objects.all()
