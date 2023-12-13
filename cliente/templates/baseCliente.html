@@ -52,29 +52,33 @@
             <!--boton login -->
             <ul class="navbar-nav">
               {% if user.is_authenticated %}
-              {% if user.groups.all.0.name == 'Cliente' %}
-              <li class="nav-item">
-                <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
-              </li>
-              {% elif user.groups.all.0.name == 'Dueno' %}
-              <li class="nav-item">
-                <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
-              </li>
-              {% elif user.groups.all.0.name == 'AdministradorNivelPermiso3' %}
-              <li class="nav-item">
-                <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username
-                  }}/Administrador</a>
-              </li>
-              {% endif %}
+                {% if user.groups.all.0.name == 'Cliente' %}
+                  <li class="nav-item">
+                    <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                  </li>
+                {% elif user.groups.all.0.name == 'Dueno' %}
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @{{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{% url 'cambiar_rol'%}">Cliente</a></li>                                 
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'logoutDueno' %}">Cerrar sesión</a></li>
+                    </ul>
+                  </li>
+                {% elif user.groups.all.0.name == 'AdministradorNivelPermiso3' %}
+                <li class="nav-item">
+                  <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username
+                    }}/Administrador</a>
+                </li>
+                {% endif %}
               {% else %}
               <li class="nav-item">
                 <a href="{% url 'loginCliente' %}" class="nav-link active btn btn-success">Iniciar sesión</a>

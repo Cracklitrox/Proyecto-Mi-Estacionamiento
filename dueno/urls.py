@@ -6,13 +6,16 @@ from django.conf.urls.static import static
 # from estacionamiento.views import cambiar_estado
 
 urlpatterns = [
+    #index
     path('indexDueno/',views.indexDueno,name='indexDueno'),
+    #Registro
     path('registration/loginDueno/', views.loginDueno, name='loginDueno'),
     path('registration/registerDueno/', views.registerDueno, name='registerDueno'),
     path('logout_dueno/', views.logout_dueno, name='logoutDueno'),
-    #index
+    #Cambiar estado estacionamiento
     path('indexDueno/cambiar_estado/<int:estacionamiento_id>/', views.cambiar_estado, name='cambiar_estado'),
-    path('cargando/',views.cargando,name='cargando'),
+    #Cambiar a cliente
+    path('cambiar-rol/', views.cambiar_rol, name='cambiar_rol'),
     #Estacionamiento
     path('indexDueno/addEstacionamiento/<int:id>',views.addEstacionamiento,name='addEstacionamiento'),
     path('eliminarEstacionamiento/<int:id>',views.eliminarEstacionamiento,name='eliminarEstacionamiento'),

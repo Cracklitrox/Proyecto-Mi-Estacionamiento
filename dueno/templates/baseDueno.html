@@ -47,11 +47,22 @@
                         <ul class="navbar-nav">
                             {% if user.is_authenticated %}
                                 {% if user.groups.all.0.name == 'Dueno' %}
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a href="{% url 'logoutDueno' %}" class="nav-link active">Cerrar sesión</a>
+                                    </li> -->
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @{{ user.username }}
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="{% url 'cambiar_rol'%}">Cliente</a></li>                                 
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{% url 'logoutDueno' %}">Cerrar sesión</a></li>
+                                        </ul>
                                     </li>
+                                    
                                     <li class="nav-item">
-                                        <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                                        <a href="#" class="btn btn-secondary btn-sm fw-bold nav-link active text-white-50">@{{ user.username }}</a>
                                     </li>
                                 {% else %}
                                     <li class="nav-item">
@@ -91,6 +102,7 @@
     
     <!-- JS validaciones-->
     <script src="{% static 'js/validacionAddEstacionamiento.js' %}"></script>
+    
 </body>
 
 </html>

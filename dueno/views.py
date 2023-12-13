@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 from django.db.models import F, ExpressionWrapper, fields, Avg
 from django.db.models.functions import Cast
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from reportlab.pdfgen import canvas
@@ -36,8 +36,8 @@ from usuario.forms import UserForm, UsuarioProfileForm
 ##        Grupo - permisos      ##
 ##################################
 
-# def es_dueno(user):
-#     return user.groups.filter(name='Dueno').exists()
+def es_dueno(user):
+    return user.groups.filter(name='Dueno').exists()
 
 ##################################
 ##           Registro           ##
@@ -107,7 +107,9 @@ def logout_dueno(request):
 ##           Index              ##
 ##################################
 
+
 @login_required(login_url="loginDueno")
+@user_passes_test(es_dueno)
 def indexDueno(request):    
     id = request.user.id
     estacionamientos = Estacionamiento.objects.filter(id_dueno=id)
@@ -115,12 +117,6 @@ def indexDueno(request):
     context = {'estacionamientos':estacionamientos,
                 'puntos_interes': puntos_interes,}
     return render(request,'indexDueno.html', context)
-
-@login_required(login_url="loginDueno")
-def cargando(request):
-    casilla = Casilla.objects.all()
-    context = {'casilla': casilla}
-    return render(request,'cargando.html', context)
 
 ##################################
 ##      Add-Estacionamiento     ##
@@ -153,7 +149,7 @@ def addEstacionamiento(request, id):
     context= {'puntointeres_form' : puntointeres_form,
              'estacionamiento_form' : estacionamiento_form}
 
-    return render(request, 'addEstacionamiento.html', context)
+    return render(request, 'estacionamiento/addEstacionamiento.html', context)
 
 ##################################
 ##     Edit-Estacionamiento     ##
@@ -163,7 +159,7 @@ def addEstacionamiento(request, id):
 def editEstacionamiento(request, id=id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     formulario = EstacionamientoForm(request.POST or None,request.FILES or None,instance=estacionamiento)
-    return render(request,'editEstacionamiento.html', {'formulario':formulario})
+    return render(request,'estacionamiento/editEstacionamiento.html', {'formulario':formulario})
 
 ##################################
 ##     Del-Estacionamiento      ##
@@ -198,7 +194,7 @@ def arriendo(request):
     estacionamiento = Estacionamiento.objects.all
     context = {'arriendo': estacionamiento_arriendo,
                'estacionamientos': estacionamiento}
-    return render(request,'arriendoDueno.html', context)
+    return render(request,'arriendo/arriendoDueno.html', context)
 
 ##################################
 ##       Generar-image          ##
@@ -220,9 +216,6 @@ def link_callback(uri, rel):
         return path if os.path.isfile(path) else uri
 
     return uri
-
-
-
 
 ##################################
 ##       Generar-PDF            ##
@@ -249,7 +242,7 @@ def generar_pdf(request, id_estacionamiento):
         )['promedio_duracion']
 
         # Renderiza la plantilla HTML con el contexto
-        template_path = 'pdf.html'
+        template_path = 'arriendo/pdf.html'
         context = {
             'usuario': usuario, 
             'estacionamiento': estacionamiento, 
@@ -279,4 +272,34 @@ def generar_pdf(request, id_estacionamiento):
         pass
     return redirect('listarArriendo')
 
+##################################
+##       Dueno a Cliente        ##
+##################################
+@login_required(login_url="loginDueno")
+def cambiar_rol(request):
+    # Obtener el usuario actual
+    user = request.user
+
+    # Verificar si el usuario es un Dueno
+    if user.groups.filter(name='Dueno').exists():
+        # Cambiar el grupo del usuario a Cliente
+        cliente_group = Group.objects.get(name='Cliente')
+        user.groups.add(cliente_group)
+
+        messages.success(request, 'Ahora eres un cliente.')
+        return redirect('indexCliente')  # Reemplaza 'indexCliente' con la URL a la que deseas redirigir a los clientes
+
+    # Verificar si el usuario es un Cliente
+    elif user.groups.filter(name='Cliente').exists():
+        # Cambiar el grupo del usuario a Dueno
+        dueno_group = Group.objects.get(name='Dueno')
+        user.groups.add(dueno_group)
+
+        messages.success(request, 'Ahora eres un dueno.')
+        return redirect('indexDueno')  # Reemplaza 'indexDueno' con la URL a la que deseas redirigir a los dueños
+
+    else:
+        # El usuario no tiene un rol válido
+        messages.warning(request, 'No tienes un rol válido para realizar esta acción.')
+        return redirect('indexCliente')  # O a otra página según sea necesario
 
