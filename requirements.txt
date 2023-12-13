@@ -3,3 +3,5 @@ crispy-bootstrap5==0.7
 django-crispy-forms
 pillow
 django-admin-interface
+reportlab
+xhtml2pdf

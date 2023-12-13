@@ -14,6 +14,7 @@ Arriendos
 
 {% block content %}
 <div class="container">
+  
     <div class="row">
         <h2 class="text-center mt-5 "> Arriendos </h2>        
 
@@ -45,12 +46,13 @@ Arriendos
                     <img class="product-img-table" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
                     {% endif %}</td>
                 <td class="text-center">
-                  <a href="#" class="btn btn-success btn-sm">Generar Reporte</a>
+                  <a href="{% url 'generar_pdf' estacionamiento.id %}" class="btn btn-success btn-sm">Generar Reporte</a>
                 </td>
             </tr>
               {% endfor %}
             </tbody>
         </table>  
+        
     </div>
 </div>
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arriendo General PDF</title>
+</head>
+<style>
+     @page {
+        size: letter portrait;
+        @frame content_frame {
+            left: 50pt;
+            width: 512pt;
+            top: 50pt;
+            height: 692pt;
+            
+        }
+    }
+    .img-invoice {
+    width: 100px;
+    text-align: center;
+    margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    #invoice tbody tr {
+        padding: 0;
+    }
+
+    .text-center{
+        text-align: center;
+    }
+    body {
+        font-size: 12pt;  /* Ajusta el tamaño de la letra según tus preferencias */
+    }
+    /* Agrega más estilos CSS según sea necesario */
+</style>
+<body>
+    <img src="{% static 'images/logo_mi_estacionamiento.png' %}" alt="" class="img-invoice">
+
+    <h4 class="head">
+        Mi estacionamiento<br>
+        {{usuario.username }}<br>
+        {{estacionamiento.direccion }}
+    </h4>
+    <br>
+    <div>
+        <h1 class="text-center">Informe de ganancias generales</h1> <br>
+        <p style="font-size: 14pt;">¡Hola, {{usuario.username}}! Este es un PDF del estacionamiento "{{estacionamiento.direccion}}", aquí podrás encontrar toda la información resumida de este estacionamiento."</p>
+        <p>Se han contabilizado un total de {{arriendoTotal}} arriendos. </p>
+        <p>Generan una ganancia total de ${{precio_total}}, con una duración aproximada de {{duracion_promedio}}</p>
+    </div>
+    <table style="margin-top: 250px;">
+        <thead>
+        <tr>
+            <th>****GRACIAS POR TRABAJAR CON NOSOTROS****</th>
+        </tr>
+        </thead>
+    </table>
+</body>
+</html>

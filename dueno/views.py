@@ -1,11 +1,20 @@
+import os
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
+from django.db.models import F, ExpressionWrapper, fields, Avg
+from django.db.models.functions import Cast
 from django.contrib import messages
 from django.http import JsonResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4, letter
+from django.http import HttpResponse
 #Dueno
 from .models import *
 from .forms import *
@@ -190,3 +199,84 @@ def arriendo(request):
     context = {'arriendo': estacionamiento_arriendo,
                'estacionamientos': estacionamiento}
     return render(request,'arriendoDueno.html', context)
+
+##################################
+##       Generar-image          ##
+##################################
+
+
+def link_callback(uri, rel):
+    sUrl = settings.STATIC_URL
+    sRoot = settings.STATIC_ROOT
+    mUrl = settings.MEDIA_URL
+    mRoot = settings.MEDIA_ROOT
+
+    if uri.startswith(sUrl):
+        path = os.path.join(sRoot, uri.replace(sUrl, ""))
+        return path if os.path.isfile(path) else uri
+
+    if uri.startswith(mUrl):
+        path = os.path.join(mRoot, uri.replace(mUrl, ""))
+        return path if os.path.isfile(path) else uri
+
+    return uri
+
+
+
+
+##################################
+##       Generar-PDF            ##
+##################################
+
+@login_required(login_url="loginDueno")
+def generar_pdf(request, id_estacionamiento):
+    try:
+        # Obtén el usuario autenticado y el estacionamiento asociado
+        id_usuario = request.user.id
+        usuario = User.objects.get(id=id_usuario)
+        estacionamiento = get_object_or_404(Estacionamiento, id=id_estacionamiento)
+        arriendos = Arriendo.objects.filter(id_estacionamiento=estacionamiento)
+
+        # Precio Total
+        precio_total = sum(arriendo.preciototal for arriendo in arriendos)
+
+        # Contador de estacionamientos
+        arriendoTotal = arriendos.count()
+
+        # Calcula la duración promedio en minutos
+        duracion_promedio = arriendos.aggregate(
+            promedio_duracion=Avg(F('horafin') - F('horainicio'))
+        )['promedio_duracion']
+
+        # Renderiza la plantilla HTML con el contexto
+        template_path = 'pdf.html'
+        context = {
+            'usuario': usuario, 
+            'estacionamiento': estacionamiento, 
+            'arriendos': arriendos,
+            'precio_total': precio_total,
+            'arriendoTotal': arriendoTotal,
+            'duracion_promedio': duracion_promedio,
+            'icon': os.path.join(settings.STATIC_URL, 'img/logo_mi_estacionamiento.jpg'),
+        }
+        template = get_template(template_path)
+        html_content = template.render(context)
+
+        # Configura la respuesta HTTP con el tipo de contenido y el nombre del archivo
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'filename="{usuario.username}_{estacionamiento.direccion}.pdf"'
+
+        # Convierte la plantilla HTML a PDF y envía la respuesta
+        pisa_status = pisa.CreatePDF(
+            html_content, 
+            dest=response,
+            link_callback=link_callback)
+        if pisa_status.err:
+            return HttpResponse('Error al generar el PDF', status=500)
+        return response
+    
+    except:
+        pass
+    return redirect('listarArriendo')
+
+

@@ -18,7 +18,9 @@ urlpatterns = [
     path('eliminarEstacionamiento/<int:id>',views.eliminarEstacionamiento,name='eliminarEstacionamiento'),
     path('editEstacionamiento/<int:id>',views.editEstacionamiento,name='editEstacionamiento'),
     #Arriendo
-    path('indexDueno/arriendo',views.arriendo, name="listarArriendo")
+    path('indexDueno/arriendo',views.arriendo, name="listarArriendo"),
+    #PDF
+    path('indexDueno/arriendo/pdf/<int:id_estacionamiento>', views.generar_pdf, name="generar_pdf"),
 ]
 
 if settings.DEBUG:
