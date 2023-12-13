@@ -29,7 +29,7 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'indexCliente' %}">Inicio</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Reserva</a>
+                    <a class="nav-link" href="{% url 'listar' %}">Reserva</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,13 +47,27 @@
                   <!--boton login -->
                       <ul class="navbar-nav">
                           {% if user.is_authenticated %}
-                              {% if user.groups.all.0.name == 'Cliente' %}
+                                {% if user.groups.all.0.name == 'Cliente' %}
                                   <li class="nav-item">
                                       <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
                                   </li>
                                   <li class="nav-item">
                                       <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
                                   </li>
+                                {% elif user.groups.all.0.name == 'Dueno' %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                                    </li>
+                                {% elif user.groups.all.0.name == 'AdministradorNivelPermiso3' %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}/Administrador</a>
+                                    </li>
                                 {% endif %}
                             {% else %}
                                 <li class="nav-item">

@@ -15,10 +15,8 @@ from estacionamiento.models import *
 #Geolocalizacion
 from geolocalizacion.forms import *
 #Arriendo
-from arriendo.models import *
-from arriendo.form import *
-
 from arriendo.models import Arriendo
+from arriendo.form import *
 
 ##################################
 ##        Grupo - permisos      ##
@@ -27,14 +25,6 @@ from arriendo.models import Arriendo
 def es_cliente(user):
     return user.groups.filter(name='Cliente').exists()  
 
-##################################
-##           Listar             ##
-##################################
-@login_required(login_url="loginCliente")
-def listar(request):
-    arriendos = Arriendo.objects.all()
-    contexto = {'arriendos' : arriendos}
-    return render(request, 'listar/listar.html',contexto)
 
 ##################################
 ##           Registro           ##
@@ -163,3 +153,13 @@ class GuardarEstadoCasillaView(View):
 
         # Responde con un JSON para indicar el éxito de la operación si es necesario
         return JsonResponse({'success': True})
+    
+
+##################################
+##      Listar-Arriendos        ##
+##################################
+@login_required(login_url="loginCliente")
+def listarArriendos(request):
+    arriendos = Arriendo.objects.all()
+    contexto = {'arriendos' : arriendos}
+    return render(request, 'listarReserva/listar.html',contexto)
