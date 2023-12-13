@@ -1,0 +1,19 @@
+{% extends 'baseCliente.html' %}
+
+{% block contenido %}
+{% load humanize %}
+<table class="table table-striped table-hover table-responsive-sn">
+    <tr>
+        <th>horaInicio</th>
+        <th>horaFin</th>
+        <th>precioTotal</th>
+    </tr>
+    {% for r in arriendos %}
+    <tr>
+        <td>{{ r.horaInicio | title }}</td>
+        <td>{{ r.horaFin | title }}</td>
+        <td>${{ r.precioTotal | intcomma }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
