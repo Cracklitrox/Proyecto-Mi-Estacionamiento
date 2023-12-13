@@ -163,3 +163,19 @@ def listarArriendos(request):
     arriendos = Arriendo.objects.all()
     contexto = {'arriendos' : arriendos}
     return render(request, 'listarReserva/listar.html',contexto)
+
+
+##################################
+##          Vehículos           ##
+##################################
+@login_required(login_url="loginCliente")
+def vehiculosCliente(request):
+    return render(request, 'vehiculos/vehiculosCliente.html')
+
+
+##################################
+##          Tarjetas            ##
+##################################
+@login_required(login_url="loginCliente")
+def tarjetaCliente(request):
+    return render(request, 'tarjeta/tarjetaCliente.html')

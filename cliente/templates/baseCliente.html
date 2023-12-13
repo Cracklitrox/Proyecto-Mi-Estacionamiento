@@ -3,135 +3,109 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {% block title %} {% endblock %} </title>
-    <link rel="stylesheet" href="{% static 'css/bloques.css' %}" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        
-    {% block css%} {% endblock%}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/baseCliente.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  {% block css%}{% endblock%}
 </head>
 
 <body>
-    <!-- Header + Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'indexCliente' %}">Mi estacionamiento</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'indexCliente' %}">Inicio</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'listar' %}">Reserva</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                  </li>
-                </ul>
-                <span class="navbar-text">
-                  <!--boton login -->
-                      <ul class="navbar-nav">
-                          {% if user.is_authenticated %}
-                                {% if user.groups.all.0.name == 'Cliente' %}
-                                  <li class="nav-item">
-                                      <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
-                                  </li>
-                                {% elif user.groups.all.0.name == 'Dueno' %}
-                                    <li class="nav-item">
-                                        <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
-                                    </li>
-                                {% elif user.groups.all.0.name == 'AdministradorNivelPermiso3' %}
-                                    <li class="nav-item">
-                                        <a href="{% url 'logoutCliente' %}" class="nav-link active">Cerrar sesión</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}/Administrador</a>
-                                    </li>
-                                {% endif %}
-                            {% else %}
-                                <li class="nav-item">
-                                    <a href="{% url 'loginCliente' %}" class="nav-link active">Iniciar sesión</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'registerCliente' %}" class="nav-link active">Registrarse</a>
-                                </li>
-                            
-                          {% endif %}
-                      </ul>
-                  </span>
-              </div>
-            </div>
-          </nav>
-    </header>
+  <!-- Header + Navbar -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+      <div class="container-fluid">
+        <a class="navbar-brand rounded" href="{% url 'indexCliente' %}">Mi estacionamiento</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'indexCliente' %}">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'listar' %}">Reserva</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Opciones
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'vehiculos' %}">Vehículos</a></li>
+                <li><a class="dropdown-item" href="{% url 'tarjeta' %}">Tarjetas</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Algo Adicional Aquí</a></li>
+              </ul>
+            </li>
+          </ul>
+          <span class="navbar-text">
+            <!--boton login -->
+            <ul class="navbar-nav">
+              {% if user.is_authenticated %}
+              {% if user.groups.all.0.name == 'Cliente' %}
+              <li class="nav-item">
+                <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+              </li>
+              {% elif user.groups.all.0.name == 'Dueno' %}
+              <li class="nav-item">
+                <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+              </li>
+              {% elif user.groups.all.0.name == 'AdministradorNivelPermiso3' %}
+              <li class="nav-item">
+                <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username
+                  }}/Administrador</a>
+              </li>
+              {% endif %}
+              {% else %}
+              <li class="nav-item">
+                <a href="{% url 'loginCliente' %}" class="nav-link active btn btn-success">Iniciar sesión</a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'registerCliente' %}" class="nav-link active btn btn-warning">Registrarse</a>
+              </li>
 
-    <!-- Content -->
-    {% block content %}
 
-    {% endblock %}
-
-    <!-- Footer -->
-    <footer class="Piedepagina">
-        <div class="grupo1 container-fluid">
-            <div class="box">
-                <h2>MI ESTACIONAMIENTO</h2>
-                <p>
-                    NUESTRO OBJETIVO ES OFRECER SERVICIOS DE ESTACIONAMIENTOS MEDIANTE
-                    SU UBICACIÓN
-                </p>
-            </div>
-            <div class="box">
-                <h2>SÍGUENOS</h2>
-                <div class="red-social">
-                    <a href="https://www.instagram.com/" class="bi bi-instagram" target="_blank">
-                        <img src="{% static 'img/rrss/instagram.png' %}" width="45" height="45" alt="" />
-                    </a>
-                    <a href="https://es-la.facebook.com/" class="bi bi-facebook" target="_blank">
-                        <img src="{% static 'img/rrss/facebook.png' %}" width="45" height="45" alt="" />
-                    </a>
-                    <a href="https://twitter.com/?lang=es" class="bi bi-twitter" target="_blank">
-                        <img src="{% static 'img/rrss/twitter.png' %}" width="45" height="45" alt="" />
-                    </a>
-                </div>
-            </div>
+              {% endif %}
+            </ul>
+          </span>
         </div>
-        <div class="grupo2">
-            <small>&copy; 2023 <b>MI ESTACIONAMIENTO</b> - Todos los Derechos
-                Reservados.</small>
-        </div>
-    </footer>
+      </div>
+    </nav>
+  </header>
 
-    <!-- Funciones Propias -->
-    <script src="{% static 'js/indexCliente.js' %}"></script>
-    
-    <!-- Scripts -->
+  <!-- Content -->
+  {% block content %}
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-</body>
+  {% endblock %}
+  <!-- Footer -->
+  <footer>
+    <p>&copy; {{ 2023 }} Mi Estacionamiento - Todos Los Derechos Reservados.</p>
+  </footer>
 
-</html>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+</body

@@ -21,6 +21,11 @@ urlpatterns = [
     path('logout_cliente/', views.logoutCliente, name='logoutCliente'),
     #Arriendo
     path('indexCliente/listar/',views.listarArriendos,name='listar'),
+    #Vehículos
+    path('indexCliente/tarjetaCliente/',views.tarjetaCliente,name='tarjeta'),
+     #Tarjetas
+    path('indexCliente/vehiculosCliente/',views.vehiculosCliente,name='vehiculos'),
+
     path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     #Estacionamiento / Arriendo
     path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),

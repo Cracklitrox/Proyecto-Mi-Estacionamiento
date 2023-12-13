@@ -7,21 +7,31 @@
 {% block content %}
 
 <div class="container">
-    <h1>ajsdjdas</h1>
-    <table class="table table-striped table-hover table-responsive-sn">
-        <tr>
-            <th>horaInicio</th>
-            <th>horaFin</th>
-            <th>precioTotal</th>
-        </tr>
-        {% for r in arriendos %}
-        <tr>
-            <td>{{ r.horainicio | title }}</td>
-            <td>{{ r.horafin | title }}</td>
-            <td>${{ r.preciototal | intcomma }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <h1 class="text-primary">Reservas</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">Nro</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora Inicio</th>
+                    <th scope="col">Hora Fin</th>
+                    <th scope="col">Precio Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in arriendos %}
+                <tr>
+                    <td>{{ r.id | intcomma }}</td>
+                    <td>{{ r.horainicio|date:"d F Y" }}</td>
+                    <td>{{ r.horainicio|time:"H:i" }}</td>
+                    <td>{{ r.horafin|time:"H:i" }}</td>
+                    <td>${{ r.preciototal | intcomma }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %}
