@@ -5,6 +5,10 @@ from . import views
 #from .views import GuardarEstadoCasillaView
 from geolocalizacion.models import *
 from estacionamiento.views import *
+from arriendo.models import *
+from arriendo.models import Arriendo
+from arriendo.views import *
+
 
 
 urlpatterns = [
@@ -13,6 +17,7 @@ urlpatterns = [
     path('registration/registerCliente/', views.registerCliente, name='registerCliente'),
     path('logout_cliente/', views.logoutCliente, name='logoutCliente'),
     path('indexCliente/',views.indexCliente,name='indexCliente'),
+    path('listar/listar/',views.listar,name='listar'),
     path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),
     #path('indexCliente/estacionamientos/cambiar_casilla/<int:casilla_id>',cambiar_casilla,name='cambiar_casilla'),

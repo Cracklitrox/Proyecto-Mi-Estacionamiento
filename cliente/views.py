@@ -18,12 +18,23 @@ from geolocalizacion.forms import *
 from arriendo.models import *
 from arriendo.form import *
 
+from arriendo.models import Arriendo
+
 ##################################
 ##        Grupo - permisos      ##
 ##################################
 
 def es_cliente(user):
     return user.groups.filter(name='Cliente').exists()  
+
+##################################
+##           Listar             ##
+##################################
+@login_required(login_url="loginCliente")
+def listar(request):
+    arriendos = Arriendo.objects.all()
+    contexto = {'arriendos' : arriendos}
+    return render(request, 'listar/listar.html',contexto)
 
 ##################################
 ##           Registro           ##
@@ -48,6 +59,7 @@ def registerCliente(request):
         user_form = UserForm()
         #profile_form = ClienteForm()
     return render(request, 'registration/registerCliente.html', {'user_form': user_form})
+
 
 ##################################
 ##            Login             ##
