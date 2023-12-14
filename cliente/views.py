@@ -87,6 +87,7 @@ def logoutCliente(request):
 ##################################
 ##            Index             ##
 ##################################
+
 def indexCliente(request):
 
     if request.user.is_authenticated:

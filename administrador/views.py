@@ -16,8 +16,8 @@ from usuario.models import Comuna, Provincia, Region, Contacto
 ##        Grupo - permisos      ##
 ##################################
 
-# def es_admin(user):
-#     return user.groups.filter(name='Admin').exists()
+def in_administrador_group(user):
+    return user.groups.filter(name__in=['AdministradorNivelPermiso1', 'AdministradorNivelPermiso2', 'AdministradorNivelPermiso3']).exists()
 
 ##################################
 ##           Registro           ##
@@ -61,7 +61,9 @@ def loginAdministrador(request):
 ##################################
 ##            Logout            ##
 ##################################
+
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def logoutAdmin(request):
     logout(request)
     return redirect('loginAdministrador')
@@ -71,12 +73,14 @@ def logoutAdmin(request):
 ##################################
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def dashboard(request):
     return render(request, 'dashboard.html')
 
 # Funciones BANCO
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def agregarBanco(request):
     if request.method == 'POST':
         formulario = BancoForm(request.POST, files=request.FILES)
@@ -91,6 +95,7 @@ def agregarBanco(request):
     return render(request, 'bancos/agregarBanco.html', {'form': formulario})
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def listarBanco(request):
     bancos = Banco.objects.all()
     page = request.GET.get('page', 1)
@@ -106,6 +111,7 @@ def listarBanco(request):
     return render(request, 'bancos/listarBanco.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def modificarBanco(request, id):
     banco = get_object_or_404(Banco, id=id)
 
@@ -126,6 +132,7 @@ def modificarBanco(request, id):
     return render(request, 'bancos/modificarBanco.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def eliminarBanco(request, id):
     banco = get_object_or_404(Banco, id=id)
     banco.delete()
@@ -134,6 +141,7 @@ def eliminarBanco(request, id):
 # Funciones TARJETACREDITO
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def agregarTarjetacredito(request):
     if request.method == 'POST':
         formulario = TarjetacreditoForm(request.POST)
@@ -147,6 +155,7 @@ def agregarTarjetacredito(request):
     return render(request, 'tarjetaCredito/agregarTarjetacredito.html', {'form': formulario})
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def listarTarjetacredito(request):
     tarjetacreditos = Tarjetacredito.objects.all()
     page = request.GET.get('page', 1)
@@ -162,6 +171,7 @@ def listarTarjetacredito(request):
     return render(request, 'tarjetaCredito/listarTarjetacredito.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def modificarTarjetacredito(request, id):
     tarjetacredito = get_object_or_404(Tarjetacredito, id=id)
 
@@ -182,6 +192,7 @@ def modificarTarjetacredito(request, id):
     return render(request, 'tarjetaCredito/modificarTarjetacredito.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def eliminarTarjetacredito(request, id):
     tarjetacredito = get_object_or_404(Tarjetacredito, id=id)
     tarjetacredito.delete()
@@ -191,6 +202,7 @@ def eliminarTarjetacredito(request, id):
 # Funciones COMUNA
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def agregarComuna(request):
     if request.method == 'POST':
         formulario = ComunaForm(request.POST, files=request.FILES)
@@ -204,6 +216,7 @@ def agregarComuna(request):
     return render(request, 'comunas/agregarComuna.html', {'form': formulario})
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def listarComuna(request):
     comunas = Comuna.objects.all()
     page = request.GET.get('page', 1)
@@ -219,6 +232,7 @@ def listarComuna(request):
     return render(request, 'comunas/listarComuna.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def modificarComuna(request, id):
     comunas = get_object_or_404(Comuna, id=id)
 
@@ -239,6 +253,7 @@ def modificarComuna(request, id):
     return render(request, 'comunas/modificarComuna.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def eliminarComuna(request, id):
     comuna = get_object_or_404(Comuna, id=id)
     comuna.delete()
@@ -247,6 +262,7 @@ def eliminarComuna(request, id):
 # Funciones PROVINCIA
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def agregarProvincia(request):
     if request.method == 'POST':
         formulario = ProvinciaForm(request.POST)
@@ -260,6 +276,7 @@ def agregarProvincia(request):
     return render(request, 'provincias/agregarProvincia.html', {'form': formulario})
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def listarProvincia(request):
     provincias = Provincia.objects.all()
     page = request.GET.get('page', 1)
@@ -275,6 +292,7 @@ def listarProvincia(request):
     return render(request, 'provincias/listarProvincia.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def modificarProvincia(request, id):
     provincias = get_object_or_404(Provincia, id=id)
 
@@ -295,6 +313,7 @@ def modificarProvincia(request, id):
     return render(request, 'provincias/modificarProvincia.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def eliminarProvincia(request, id):
     provincia = get_object_or_404(Provincia, id=id)
     provincia.delete()
@@ -304,6 +323,7 @@ def eliminarProvincia(request, id):
 # Funciones REGION
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def agregarRegion(request):
     if request.method == 'POST':
         formulario = RegionForm(request.POST, files=request.FILES)
@@ -317,6 +337,7 @@ def agregarRegion(request):
     return render(request, 'regiones/agregarRegion.html', {'form': formulario})
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def listarRegion(request):
     regiones = Region.objects.all()
     page = request.GET.get('page', 1)
@@ -332,6 +353,7 @@ def listarRegion(request):
     return render(request, 'regiones/listarRegion.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def modificarRegion(request, id):
     regiones = get_object_or_404(Region, id=id)
 
@@ -352,6 +374,7 @@ def modificarRegion(request, id):
     return render(request, 'regiones/modificarRegion.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def eliminarRegion(request, id):
     region = get_object_or_404(Region, id=id)
     region.delete()
@@ -361,6 +384,7 @@ def eliminarRegion(request, id):
 # Funciones CONTACTO
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def agregarContacto(request):
     if request.method == 'POST':
         formulario = ContactoForm(request.POST, files=request.FILES)
@@ -374,6 +398,7 @@ def agregarContacto(request):
     return render(request, 'contactos/agregarContacto.html', {'form': formulario})
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def listarContacto(request):
     contactos = Contacto.objects.all()
     page = request.GET.get('page', 1)
@@ -389,6 +414,7 @@ def listarContacto(request):
     return render(request, 'contactos/listarContacto.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def modificarContacto(request, id):
     contactos = get_object_or_404(Contacto, id=id)
 
@@ -409,112 +435,8 @@ def modificarContacto(request, id):
     return render(request, 'contactos/modificarContacto.html', context)
 
 @login_required(login_url="loginAdministrador")
+@user_passes_test(in_administrador_group, login_url='loginDueno')
 def eliminarContacto(request, id):
     contacto = get_object_or_404(Contacto, id=id)
     contacto.delete()
     return redirect(to='listarContacto')
-
-# Funciones CLIENTE
-
-
-# def agregarCliente(request):
-#     if request.method == 'POST':
-#         formulario = ClienteForm(request.POST, files=request.FILES)
-#         if formulario.is_valid():
-#             formulario.save()
-#             return JsonResponse({'success': True})
-#         else:
-#             return JsonResponse({'success': False, 'error': dict(formulario.errors)})
-#     else:
-#         formulario = ClienteForm()
-#     return render(request, 'clientes/agregarCliente.html', {'form': formulario})
-
-# def listarCliente(request):
-#     clientes = Cliente.objects.all()
-#     page = request.GET.get('page', 1)
-#     try:
-#         paginator = Paginator(clientes, 5)
-#         clientes = paginator.page(page)
-#     except:
-#         raise Http404
-#     context = {
-#         'entity': clientes,
-#         'paginator': paginator
-#     }
-#     return render(request, 'clientes/listarCliente.html', context)
-
-# def modificarCliente(request, id):
-#     clientes = get_object_or_404(Cliente, id=id)
-
-#     context = {
-#         'form':ClienteForm(instance=clientes)
-#     }
-
-#     if request.method == 'POST':
-#         formulario = ClienteForm(data = request.POST, instance=clientes, files=request.FILES)
-#         if formulario.is_valid():
-#             formulario.save()
-#             messages.success(request, 'Cliente modificado correctamente.')
-#             return redirect(to='listarCliente')
-#         else:
-#             context["form"] = formulario
-#             context["mensaje_incorrecto"] = "No se ha podido modificar el cliente."
-
-#     return render(request, 'clientes/modificarCliente.html', context)
-
-# def eliminarCliente(request, id):
-#     cliente = get_object_or_404(Cliente, id=id)
-#     cliente.delete()
-#     return redirect(to='listarCliente')
-
-
-# Funciones DUENO
-
-# def agregarDueno(request):
-#     if request.method == 'POST':
-#         formulario = DuenoForm(request.POST, files=request.FILES)
-#         if formulario.is_valid():
-#             formulario.save()
-#             return JsonResponse({'success': True})
-#         else:
-#             return JsonResponse({'success': False, 'error': dict(formulario.errors)})
-#     else:
-#         formulario = DuenoForm()
-#     return render(request, 'duenos/agregarDueno.html', {'form': formulario})
-
-# def listarDueno(request):
-#     duenos = Dueno.objects.all()
-#     page = request.GET.get('page', 1)
-#     try:
-#         paginator = Paginator(duenos, 5)
-#         duenos = paginator.page(page)
-#     except:
-#         raise Http404
-#     context = {
-#         'entity': duenos,
-#         'paginator': paginator
-#     }
-#     return render(request, 'duenos/listarDueno.html', context)
-
-# def modificarDueno(request, id):
-#     duenos = get_object_or_404(Dueno, id=id)
-
-#     context = {
-#         'form':DuenoForm(instance=duenos)
-#     }
-
-#     if request.method == 'POST':
-#         formulario = DuenoForm(data = request.POST, instance=duenos, files=request.FILES)
-#         if formulario.is_valid():
-#             formulario.save()
-#             return redirect(to='listarDueno')
-#         else:
-#             context["form"] = formulario
-#             context["mensaje_incorrecto"] = "No se ha podido modificar el dueño."
-
-#     return render(request, 'duenos/modificarDueno.html', context)
-
-# def eliminarDueno(request, id):
-#     dueno = get_object_or_404(Dueno, id=id)
-#     dueno.delete()
-#     return redirect(to='listarDueno')
