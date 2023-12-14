@@ -89,7 +89,6 @@ def logoutCliente(request):
 ##################################
 
 def indexCliente(request):
-
     if request.user.is_authenticated:
         id_usuario = request.user.id
         usuario = User.objects.get(id=id_usuario)

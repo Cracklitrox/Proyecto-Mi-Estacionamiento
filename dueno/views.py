@@ -225,7 +225,7 @@ def arriendo(request):
     estacionamiento = Estacionamiento.objects.all
     context = {'arriendo': estacionamiento_arriendo,
                'estacionamientos': estacionamiento}
-    return render(request,'arriendo/arriendoDueno.html', context)
+    return render(request,'estacionamiento/arriendo/arriendoDueno.html', context)
 
 ##################################
 ##       Generar-image          ##
