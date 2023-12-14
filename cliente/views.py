@@ -14,6 +14,7 @@ from .form import ClienteForm
 from usuario.forms import ClienteProfileForm
 #Estacionamiento
 from estacionamiento.models import *
+from estacionamiento.forms import VehiculoForm
 #Geolocalizacion
 from geolocalizacion.forms import *
 #Arriendo
@@ -215,10 +216,51 @@ def listarArriendos(request):
 ##################################
 ##          Vehículos           ##
 ##################################
-@login_required(login_url="loginCliente")
-def vehiculosCliente(request):
-    return render(request, 'vehiculos/vehiculosCliente.html')
 
+# Funciones Vehiculo
+
+@login_required(login_url="loginCliente")
+def listarVehiculo(request):
+    vehiculos = Vehiculo.objects.filter(id_usuario_id=request.user.id)
+    context = {'vehiculos':vehiculos}
+    return render(request, 'vehiculos/listarVehiculo.html', context)
+
+@login_required(login_url="loginCliente")
+def agregarVehiculo(request):
+    if request.method == 'POST':
+        formulario = VehiculoForm(request.POST)
+        if formulario.is_valid():
+            vehiculo = formulario.save(commit=False)
+            vehiculo.id_usuario_id = request.user.id
+            formulario.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = VehiculoForm()
+    return render(request, 'vehiculos/agregarVehiculo.html', {'form':formulario})
+
+@login_required(login_url="loginCliente")
+def editarVehiculo(request, id):
+    vehiculos = get_object_or_404(Vehiculo, id=id)
+    context = {
+        'form':VehiculoForm(instance=vehiculos)
+    }
+    if request.method == 'POST':
+        formulario = VehiculoForm(data = request.POST, instance=vehiculos)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Vehiculo modificado correctamente.')
+            return redirect(to='listarVehiculo')
+        else:
+            context['form'] = formulario
+    return render(request, 'vehiculos/editarVehiculo.html', context)
+
+@login_required(login_url="loginCliente")
+def eliminarVehiculo(request, id):
+    vehiculo = get_object_or_404(Vehiculo, id=id)
+    vehiculo.delete()
+    return redirect(to='listarVehiculo')
 
 ##################################
 ##          Tarjetas            ##
