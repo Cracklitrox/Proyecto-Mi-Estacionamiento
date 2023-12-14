@@ -128,7 +128,10 @@ def indexDueno(request):
     estacionamientos = Estacionamiento.objects.filter(id_dueno=id)
 
     casillas = []
-
+    casillas_total = 0
+    casillas_disponibles = 0
+    casillas_ocupadas = 0
+    
     for estacionamiento in estacionamientos:
         casillas_estacionamiento = Casilla.objects.filter(id_estacionamiento=estacionamiento)
         casillas.extend(casillas_estacionamiento)

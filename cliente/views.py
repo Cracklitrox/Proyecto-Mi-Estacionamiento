@@ -88,19 +88,33 @@ def logoutCliente(request):
 ##            Index             ##
 ##################################
 def indexCliente(request):
-    id_usuario = request.user.id
-    usuario = User.objects.get(id=id_usuario)
-    puntos_interes = Puntointeres.objects.all()
-    estacionamientos = Estacionamiento.objects.all()
 
-    for estacionamiento in estacionamientos:
-        estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')
+    if request.user.is_authenticated:
+        id_usuario = request.user.id
+        usuario = User.objects.get(id=id_usuario)
+        puntos_interes = Puntointeres.objects.all()
+        estacionamientos = Estacionamiento.objects.all()
 
-    context = {
-        'usuario': usuario,
-        'puntos_interes': puntos_interes,
-        'estacionamientos': estacionamientos,
-    }
+        for estacionamiento in estacionamientos:
+            estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')
+
+        context = {
+            'usuario': usuario,
+            'puntos_interes': puntos_interes,
+            'estacionamientos': estacionamientos,
+        }
+        return render(request, 'indexCliente.html', context)
+    else:
+        puntos_interes = Puntointeres.objects.all()
+        estacionamientos = Estacionamiento.objects.all()
+
+        for estacionamiento in estacionamientos:
+            estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')
+
+        context = {
+            'puntos_interes': puntos_interes,
+            'estacionamientos': estacionamientos,
+        }
     return render(request, 'indexCliente.html', context)
 
 
