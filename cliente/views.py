@@ -6,10 +6,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.views import View
 from django.http import JsonResponse, HttpResponse
+from django.db import connection
+
 # Cliente
 from .form import ClienteForm
 # Usuario
-from usuario.forms import UserForm, ClienteProfileForm
+from usuario.forms import ClienteProfileForm
 #Estacionamiento
 from estacionamiento.models import *
 #Geolocalizacion
@@ -76,9 +78,6 @@ def loginCliente(request):
 ##################################
 @login_required(login_url="loginCliente")
 def logoutCliente(request):
-
-
-      
     logout(request)
     # Personaliza la redirección para los dueños
     return redirect('indexCliente')
@@ -203,12 +202,15 @@ class GuardarEstadoCasillaView(View):
 ##################################
 ##      Listar-Arriendos        ##
 ##################################
+
 @login_required(login_url="loginCliente")
 def listarArriendos(request):
-    arriendos = Arriendo.objects.all()
-    contexto = {'arriendos' : arriendos}
-    return render(request, 'listarReserva/listar.html',contexto)
-
+    arriendos = Arriendo.objects.filter(id_cliente_id=request.user.id)
+    mensaje = ''
+    if not arriendos:
+        mensaje = 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento'
+    contexto = {'arriendos' : arriendos, 'mensaje': mensaje}
+    return render(request, 'reserva/listarReserva.html', contexto)
 
 ##################################
 ##          Vehículos           ##

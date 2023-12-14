@@ -1,11 +1,13 @@
 {% extends 'baseCliente.html' %}
+{% load static %}
 
 {% load humanize %}
 
 {% block title %} Arriendos {% endblock %}
-{% block css%} {% endblock%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/reserva/listarReserva.css' %}"/>
+{% endblock %}
 {% block content %}
-
 <div class="container">
     <h1 class="text-primary">Reservas</h1>
     <div class="table-responsive">
@@ -33,5 +35,29 @@
         </table>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if mensaje %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% if mensaje %}
+        Swal.fire({
+          title: 'Error!',
+          text: '{{ mensaje }}',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          willOpen: () => {
+            document.body.classList.add('blur-effect');
+          },
+          willClose: () => {
+            document.body.classList.remove('blur-effect');
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "{% url 'indexCliente' %}";
+          }
+        });
+        {% endif %}
+    });
+</script>    
+{% endif %}
 {% endblock %}
