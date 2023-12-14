@@ -4,7 +4,7 @@ from .models import *
 class EstacionamientoForm(forms.ModelForm):
     class Meta:
         model = Estacionamiento
-        fields = ['direccion', 'disponible', 'tarifahora', 'observaciones']
+        fields = ['direccion', 'disponible', 'imagen', 'tarifahora', 'observaciones']
 
     direccion = forms.CharField(min_length=3, max_length=10, required=True)
     tarifahora = forms.IntegerField(min_value=1, required=True)

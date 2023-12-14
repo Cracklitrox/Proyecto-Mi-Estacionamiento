@@ -158,7 +158,7 @@ def addEstacionamiento(request, id):
     dueno_profile = get_object_or_404(DuenoProfile, pk=id)
     if request.method == 'POST':
         puntointeres_form = PuntointeresForm(request.POST)
-        estacionamiento_form = EstacionamientoForm(request.POST)
+        estacionamiento_form = EstacionamientoForm(request.POST, files=request.FILES)
 
         if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
             estacionamiento = estacionamiento_form.save(commit=False)
@@ -189,7 +189,7 @@ def addEstacionamiento(request, id):
 @login_required(login_url="loginDueno")
 def editEstacionamiento(request, id=id):
     estacionamiento = Estacionamiento.objects.get(id=id)
-    formulario = EstacionamientoForm(request.POST or None,request.FILES or None,instance=estacionamiento)
+    formulario = EstacionamientoForm(request.POST, instance=estacionamiento, files=request.FILES)
     return render(request,'estacionamiento/editEstacionamiento.html', {'formulario':formulario})
 
 ##################################
