@@ -273,7 +273,7 @@ def generar_pdf(request, id_estacionamiento):
         )['promedio_duracion']
 
         # Renderiza la plantilla HTML con el contexto
-        template_path = 'arriendo/pdf.html'
+        template_path = 'estacionamiento/arriendo/pdf.html'
         context = {
             'usuario': usuario, 
             'estacionamiento': estacionamiento, 
