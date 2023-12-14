@@ -19,7 +19,7 @@ nav {
     align-items: center;
 }
 
-navbar-brand {
+/* navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
 }
@@ -31,7 +31,7 @@ navbar-toggler {
 navbar-text {
     display: flex;
     align-items: center;
-}
+} */
 
 main {
     flex: 1;

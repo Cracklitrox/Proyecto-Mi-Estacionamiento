@@ -69,7 +69,9 @@ Index
                             Habilitado
                             {% endif %}
                         </a>
-                        <a onclick="mostrarAlerta('{{ estacionamiento.id }}')" class="btn btn-outline-light btn-dark product-add">Ver más</a>
+                        <button type="button" class="btn btn-outline-light btn-dark product-add" data-bs-toggle="modal" data-bs-target="#miPopupModal{{estacionamiento.id}}">
+                            Ver más
+                        </button>
                     </div>
                     <td>
                         <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' estacionamiento.id %}"
@@ -79,40 +81,37 @@ Index
                     </td>
                 </div>
             </div>
+            <!-- Model (Alerta Ver más) -->
+            {% for casilla in casillas %}
+            {% if casilla.id_estacionamiento.id == estacionamiento.id %}
+                <div class="modal fade" id="miPopupModal{{estacionamiento.id}}" tabindex="-1" role="dialog" aria-labelledby="miPopupModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="miPopupModalLabel">{{ estacionamiento.direccion }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Casillas totales: {{ casillas_total }}</p>
+                                <p>Casillas disponibles: {{ casillas_disponibles }}</p>
+                                <p>Casillas ocupadas: {{casillas_ocupadas}}</p>
+                                <p>Tarifa H/R: {{estacionamiento.tarifahora}}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
             {% endfor %}
         </div>
     </section>
 </div>
 <!-- Cambiar a js Propios -->
-<script>
-   async function mostrarAlerta(id) {
-    debugger;
-        console.log(id);  // Imprime el valor de id en la consola
-        const idEstacionamiento = id;
-        {% for est in estacionamientos %}
-            {% if est.id == 4 %}
-        Swal.fire({
-            title: 'Información Detallada',
-            html: `<p>Número de Vehículo: 123</p>
-                    <p>ID : {{est.id}}</p>
-                    {% if est.tarifahora %}
-                        <p>Tarifa: ${{ est.tarifahora }}</p>
-                    {% else %}
-                        <p>Tarifa: No disponible</p>
-                    {% endif %}
-                    <p>Más Información: Detalles adicionales sobre el estacionamiento...</p>
-                
-            `,
-            showCloseButton: true,
-            showConfirmButton: false,
-            customClass: {
-                closeButton: 'cerrar-popup'
-            }
-        });
-            {% endif %}
-        {% endfor %}
-    }
-</script>
 
 <script>
     $(document).ready(function () {

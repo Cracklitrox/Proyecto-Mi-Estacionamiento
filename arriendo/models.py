@@ -7,7 +7,7 @@ from usuario.models import ClienteProfile
 
 class Arriendo(models.Model):
     id_cliente = models.ForeignKey(ClienteProfile,  on_delete=models.CASCADE, null=True)
-    id_estacionamiento = models.ForeignKey('estacionamiento.Estacionamiento', models.DO_NOTHING, db_column='id_estacionamiento', verbose_name='Estacionamiento')
+    id_estacionamiento = models.ForeignKey('estacionamiento.Estacionamiento', on_delete=models.CASCADE, db_column='id_estacionamiento', verbose_name='Estacionamiento')
     horainicio = models.DateTimeField(db_column='horaInicio', verbose_name='Hora de Inicio')
     horafin = models.DateTimeField(db_column='horaFin', verbose_name='Hora de Fin')
     preciototal = models.IntegerField(db_column='precioTotal', verbose_name='Precio Total')

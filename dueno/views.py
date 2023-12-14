@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
-from django.db.models import F, ExpressionWrapper, fields, Avg
+from django.db.models import F, ExpressionWrapper, fields, Avg, Count
 from django.db.models.functions import Cast
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseForbidden
@@ -54,6 +54,8 @@ def registerDueno(request):
 
             grupo_dueno, creado = Group.objects.get_or_create(name='Dueno')
             user.groups.add(grupo_dueno)
+            grupo_cliente, creado = Group.objects.get_or_create(name='Cliente')
+            user.groups.add(grupo_cliente)
 
             profile = profile_form.save(commit=False)
             profile.user = user
@@ -99,7 +101,18 @@ def loginDueno(request):
 
 @login_required(login_url="loginDueno")
 def logout_dueno(request):
+    user = request.user
+    
+    grupo_cliente = Group.objects.get(name='Cliente')
+    user.groups.remove(grupo_cliente)
+
+    grupo_dueno, creado = Group.objects.get_or_create(name='Dueno')
+    user.groups.add(grupo_dueno)
+
+    user.save()
+    
     logout(request)
+    
     # Personaliza la redirección para los dueños
     return redirect('loginDueno')
 
@@ -113,9 +126,24 @@ def logout_dueno(request):
 def indexDueno(request):    
     id = request.user.id
     estacionamientos = Estacionamiento.objects.filter(id_dueno=id)
+
+    casillas = []
+
+    for estacionamiento in estacionamientos:
+        casillas_estacionamiento = Casilla.objects.filter(id_estacionamiento=estacionamiento)
+        casillas.extend(casillas_estacionamiento)
+        casillas_total = casillas_estacionamiento.count()
+        casillas_disponibles = casillas_estacionamiento.filter(disponible=True).count()
+        casillas_ocupadas = casillas_estacionamiento.filter(disponible=False).count()
+
     puntos_interes = Puntointeres.objects.all()
     context = {'estacionamientos':estacionamientos,
-                'puntos_interes': puntos_interes,}
+               'casillas': casillas,
+                'puntos_interes': puntos_interes,
+                'casillas_total': casillas_total,
+                'casillas_disponibles':casillas_disponibles,
+                'casillas_ocupadas':casillas_ocupadas
+                }
     return render(request,'indexDueno.html', context)
 
 ##################################
@@ -169,7 +197,7 @@ def editEstacionamiento(request, id=id):
 def eliminarEstacionamiento(request,id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     estacionamiento.delete()
-    return redirect('index')
+    return redirect('indexDueno')
 
 ##################################
 ##         Cambiar-Estado       ##
@@ -276,30 +304,15 @@ def generar_pdf(request, id_estacionamiento):
 ##       Dueno a Cliente        ##
 ##################################
 @login_required(login_url="loginDueno")
-def cambiar_rol(request):
+def cambiar_a_cliente(request):
     # Obtener el usuario actual
     user = request.user
+    
+    grupo_dueno = Group.objects.get(name='Dueno')
+    user.groups.remove(grupo_dueno)
+    
+    grupo_cliente, creado = Group.objects.get_or_create(name='Cliente')
+    user.groups.add(grupo_cliente)
 
-    # Verificar si el usuario es un Dueno
-    if user.groups.filter(name='Dueno').exists():
-        # Cambiar el grupo del usuario a Cliente
-        cliente_group = Group.objects.get(name='Cliente')
-        user.groups.add(cliente_group)
-
-        messages.success(request, 'Ahora eres un cliente.')
-        return redirect('indexCliente')  # Reemplaza 'indexCliente' con la URL a la que deseas redirigir a los clientes
-
-    # Verificar si el usuario es un Cliente
-    elif user.groups.filter(name='Cliente').exists():
-        # Cambiar el grupo del usuario a Dueno
-        dueno_group = Group.objects.get(name='Dueno')
-        user.groups.add(dueno_group)
-
-        messages.success(request, 'Ahora eres un dueno.')
-        return redirect('indexDueno')  # Reemplaza 'indexDueno' con la URL a la que deseas redirigir a los dueños
-
-    else:
-        # El usuario no tiene un rol válido
-        messages.warning(request, 'No tienes un rol válido para realizar esta acción.')
-        return redirect('indexCliente')  # O a otra página según sea necesario
-
+    user.save()
+    return redirect('indexCliente')

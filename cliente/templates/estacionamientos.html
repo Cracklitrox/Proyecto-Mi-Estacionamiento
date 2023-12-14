@@ -14,132 +14,98 @@ Mi Estacionamiento | Reserva
 {% endblock %}
 
 {% block content %}
-<div class="container-sm">
-    <div class="dashboard">
-        <div class="parking-manager">
-            <div class="new-car-btn">Seleccionar Estacionamientos</div>
-            <div class="new-car-entry d-flex">
-                {% comment %} {% for estacasilla in estacionamientoCasilla %}
-                    {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
-                        <div onclick="carenter({{ estacasilla.id_casilla.posicion }})" id="slot{{ estacasilla.id_casilla.posicion }}"
-                            class="btn {% if estacasilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %} casilla-btn"
-                            data-casilla-id="{{ estacasilla.id }}">
-                            {{ estacasilla.id_casilla.id }}
-                        </div>
-                    {% endif %}
-                {% endfor %} {% endcomment %}
-            </div>
-            
-            <div class="new-car-btn">Tarifa: </div>
-            <br>
-            <div class="new-car-btn">Cliente: 10</div>
-            <form method="post" enctype="multipart/form-data" class="text-white m-5 mt-4 ">
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h4>Seleccionar Estacionamientos</h4>
+        </div>
+
+        <div class="col-12">
+            {% for estacasilla in casilla %}
+                {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
+                    <div id="slot{{ estacasilla.id }}" class="btn {% if estacasilla.disponible %}btn-success{% else %}btn-danger disabled{% endif %} casilla-btn" data-casilla-id="{{ estacasilla.id }}">
+                        {{ estacasilla.id }}
+                        <p>{{estacasilla.casilla}}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="col-12 mt-4">
+            <h4>Tarifa: {{ estacionamiento.tarifahora }}</h4>
+        </div>
+
+        <div class="col-12 mt-4">
+            <h4>Cliente: {{user.username}}</h4>
+        </div>
+
+        <div class="col-12 mt-4">
+            <form method="post" enctype="multipart/form-data" class="text-black">
                 {% csrf_token %}
                 {{ arriendo_form.non_field_errors }}
+                
                 <input type="hidden" name="{{ arriendo_form.id_dueno.name }}" value="{{ arriendo_form.id_dueno.value }}">
                 <input type="hidden" name="{{ arriendo_form.id_estacionamiento.name }}" value="{{ arriendo_form.id_estacionamiento.value }}">
-                <div class="mb-3">
-                    {{ arriendo_form.id_cliente.label_tag }}
-                    {{ arriendo_form.id_cliente }}
-                </div>
+
+                <!-- Nuevo campo oculto para el ID del cliente -->
+                <input type="hidden" name="id_cliente" value="{{ user.id }}">
+
                 <div class="mb-3">
                     {{ arriendo_form.horainicio.label_tag }}
                     {{ arriendo_form.horainicio }}
                 </div>
+
                 <div class="mb-3">
                     {{ arriendo_form.horafin.label_tag }}
                     {{ arriendo_form.horafin }}
                 </div>
+
                 <div class="mb-3">
                     {{ arriendo_form.preciototal.label_tag }}
                     {{ arriendo_form.preciototal }}
                 </div>
+
                 <input type="hidden" name="casilla_seleccionada" id="casilla_seleccionada" value="">
-                <div>
-                    <button class="align-items-center btn-cambiar-estado btn btn-outline-light btn-lg btn-dark" type="submit">Guardar</button>
+
+                <div class="mb-3">
+                    <button class="btn btn-outline-light btn-lg btn-dark" type="submit">Guardar</button>
                 </div>
-                
             </form>
         </div>
-        <div class="parking-container" id="parkingspace">
-            <div class="parking-slots-holder">
-                <div class="parking-slot" id="slot-1">1</div>
-                <div class="parking-slot" id="slot-2">2</div>
-                <div class="parking-slot" id="slot-3">3</div>
-                <div class="parking-slot" id="slot-4">4</div>
-                <div class="parking-slot" id="slot-5">5</div>
-            </div>
-            <div class="parking-way" id="entry-way"></div>
-            <div class="parking-way"></div>
-            <div class="parking-slots-holder">
-                <div class="parking-slot" id="slot-6">6</div>
-                <div class="parking-slot" id="slot-7">7</div>
-                <div class="parking-slot" id="slot-8">8</div>
-                <div class="parking-slot" id="slot-9">9</div>
-                <div class="parking-slot" id="slot-10">10</div>
-            </div>
-        </div>
-        <div class="outside">Entry / Exit</div>
     </div>
 </div>
-    <script>
-        function inicializarVehiculos() {
-            var casillasNoDisponibles = [];
 
-            {% for estacasilla in estacionamientoCasilla %}
-                {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
-                    {% if not estacasilla.disponible %}
-                    // Agrega la casilla a un array de casillas no disponibles
-                        casillasNoDisponibles.push({{ estacasilla.id_casilla.posicion }});
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
+<script>
+$(document).ready(function () {
+    $('.casilla-btn').click(function () {
+        var casillaId = $(this).data('casilla-id');
+        console.log('Casilla ID:', casillaId);
+        var casillaId = $(this).data('casilla-id');
+        var botonCasilla = $(this);  // Almacena una referencia al botón
+        console.log(casillaId);
+        // Actualiza el valor del campo oculto en el formulario
+        $('#casilla_seleccionada').val(casillaId);
 
-    
-            // Función para inicializar vehículos en casillas no disponibles
-            function inicializarCasillasNoDisponibles(index) {
-                if (index < casillasNoDisponibles.length) {
-                    carenter(casillasNoDisponibles[index]);
-                    setTimeout(function () {
-                        inicializarCasillasNoDisponibles(index + 1);
-                    }, 2000); // Puedes ajustar el tiempo de espera entre inicializaciones si es necesario
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            type: 'POST',
+            url: '/cliente/indexCliente/estacionamientos/cambiar_casilla/' + casillaId,
+            headers: {'X-CSRFToken': csrftoken},
+            success: function (data) {
+                // Utiliza la referencia almacenada al botón
+                if (data.estado) {
+                    botonCasilla.text('Deshabilitado');
+                } else {
+                    botonCasilla.text('Habilitado');
                 }
+            },
+            error: function (error) {
+                console.log('Error al cambiar el estado del estacionamiento:', error);
             }
-    
-            // Inicia la inicialización de casillas no disponibles
-            inicializarCasillasNoDisponibles(0);
-        }
-
-        $(document).ready(function () {
-            setupparkingmanager();
-            inicializarVehiculos();
-            $('.casilla-btn').click(function () {
-                var casillaId = $(this).data('casilla-id');
-                console.log(casillaId);
-                // Actualiza el valor del campo oculto en el formulario
-                $('#casilla_seleccionada').val(casillaId);
-
-                var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/cliente/indexCliente/estacionamientos/cambiar_casilla/' + casillaId,
-                    headers: {'X-CSRFToken': csrftoken},
-                    success: function (data) {
-                        // Actualiza el texto del botón según el nuevo estado
-                        if (data.estado) {
-                            $(this).text('Deshabilitado');
-                        } else {
-                            $(this).text('Habilitado');
-                        }
-                    },
-                    error: function (error) {
-                        console.log('Error al cambiar el estado del estacionamiento:', error);
-                    }
-                    
-                });
-            });
         });
-    </script>
+    });
+    });
+</script>
     <script src="{% static 'js/estacionamientos.js' %}"></script>
 
 {% endblock %}

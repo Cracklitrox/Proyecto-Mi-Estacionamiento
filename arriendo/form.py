@@ -8,7 +8,7 @@ class ArriendoForm(forms.ModelForm):
 
     class Meta:
         model = Arriendo
-        fields = ['id_estacionamiento', 'horainicio', 'horafin', 'preciototal','calificacioncliente','calificaciondueno']
+        fields = ['id_estacionamiento','id_cliente', 'horainicio', 'horafin', 'preciototal','calificacioncliente','calificaciondueno']
         widgets = {
             'horainicio': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'horafin': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -17,7 +17,7 @@ class ArriendoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # Obtiene y elimina los valores personalizados del diccionario kwargs
         id_estacionamiento = kwargs.pop('id_estacionamiento', None)
-        # id_dueno = kwargs.pop('id_dueno', None)
+        id_cliente = kwargs.pop('id_cliente', None)
         preciototal = kwargs.pop('preciototal', None)
 
         # Llama al constructor del formulario con los argumentos restantes
@@ -26,6 +26,8 @@ class ArriendoForm(forms.ModelForm):
         # Configura los valores en los campos personalizados
         if id_estacionamiento:
             self.fields['id_estacionamiento'].initial = id_estacionamiento
+        if id_cliente:
+            self.fields['id_cliente'].initial = id_cliente
         if preciototal:
             self.fields['preciototal'].initial = preciototal
 

@@ -5,11 +5,11 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.views import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 # Cliente
 from .form import ClienteForm
 # Usuario
-from usuario.forms import UserForm
+from usuario.forms import UserForm, ClienteProfileForm
 #Estacionamiento
 from estacionamiento.models import *
 #Geolocalizacion
@@ -25,7 +25,6 @@ from arriendo.form import *
 def es_cliente(user):
     return user.groups.filter(name='Cliente').exists()  
 
-
 ##################################
 ##           Registro           ##
 ##################################
@@ -33,22 +32,24 @@ def es_cliente(user):
 
 def registerCliente(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        #profile_form = ClienteForm(request.POST)
+        user_form = ClienteForm(request.POST)
+        profile_form = ClienteProfileForm(request.POST)
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user.es_cliente = True
             user.save()
             grupo_cliente, creado = Group.objects.get_or_create(name='Cliente')
             user.groups.add(grupo_cliente)
-            #profile = profile_form.save(commit=False)
-            #profile.user = user
-            #profile.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
             return redirect('loginCliente')
     else:
-        user_form = UserForm()
-        #profile_form = ClienteForm()
-    return render(request, 'registration/registerCliente.html', {'user_form': user_form})
+        user_form = ClienteForm()
+        profile_form = ClienteProfileForm()
+    
+    context = {'user_form': user_form, 'profile_form': profile_form}
+    return render(request, 'registration/registerCliente.html', context)
 
 
 ##################################
@@ -75,6 +76,9 @@ def loginCliente(request):
 ##################################
 @login_required(login_url="loginCliente")
 def logoutCliente(request):
+
+
+      
     logout(request)
     # Personaliza la redirección para los dueños
     return redirect('indexCliente')
@@ -84,6 +88,8 @@ def logoutCliente(request):
 ##            Index             ##
 ##################################
 def indexCliente(request):
+    id_usuario = request.user.id
+    usuario = User.objects.get(id=id_usuario)
     puntos_interes = Puntointeres.objects.all()
     estacionamientos = Estacionamiento.objects.all()
 
@@ -91,28 +97,37 @@ def indexCliente(request):
         estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')
 
     context = {
+        'usuario': usuario,
         'puntos_interes': puntos_interes,
         'estacionamientos': estacionamientos,
     }
     return render(request, 'indexCliente.html', context)
 
 
+##################################
+##       Pago-Cliente           ##
+##################################
+
 @login_required(login_url="loginCliente")
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
+
+
+##################################
+##           Arriendo           ##
+##################################
 
 @login_required(login_url="loginCliente")
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
     casilla = Casilla.objects.all()
-    # estacionamientoCasilla = EstacionamientoCasilla.objects.all()
 
     # Obtiene el id del dueño asociado al estacionamiento
-    id_usuario = estacionamiento.id
+    id_usuario = estacionamiento.id_dueno_id
     tarifahora = estacionamiento.tarifahora
 
     # Crea una instancia del formulario ArriendoForm
-    arriendo_form = ArriendoForm(id_estacionamiento=id, id_usuario=id, preciototal=tarifahora)
+    arriendo_form = ArriendoForm(id_estacionamiento=id, id_cliente=id_usuario, preciototal=tarifahora)
 
     if request.method == 'POST':
         # Procesar el formulario cuando se envíe
@@ -140,6 +155,22 @@ def estacionamientos(request, id):
 
     return render(request, 'estacionamientos.html', context)
 
+##################################
+##   Función cambiar Casilla    ##
+##################################
+def cambiar_casilla(request, casilla_id):
+    try:
+        casilla = Casilla.objects.get(id=casilla_id)
+        casilla.cambiar_casilla()
+        return JsonResponse({'estado': casilla.disponible})
+    except Casilla.DoesNotExist:
+        return JsonResponse({'error': 'casilla no encontrada'}, status=404)
+
+
+
+##################################
+##   Función guardar Casilla    ##
+##################################
 @login_required(login_url="loginCliente")
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):
@@ -179,3 +210,22 @@ def vehiculosCliente(request):
 @login_required(login_url="loginCliente")
 def tarjetaCliente(request):
     return render(request, 'tarjeta/tarjetaCliente.html')
+
+@login_required(login_url="loginCliente")
+def cambiar_a_dueno(request):
+    try:
+        # Obtener el usuario actual
+        user = request.user
+
+        # Eliminar al usuario del grupo 'Cliente'
+        grupo_cliente = Group.objects.get(name='Cliente')
+        user.groups.remove(grupo_cliente)
+
+        grupo_dueno, creado = Group.objects.get_or_create(name='Dueno')
+        user.groups.add(grupo_dueno)
+
+        user.save()
+        return redirect('indexDueno')
+
+    except Group.DoesNotExist:
+        return HttpResponse("Error: Los grupos no están configurados correctamente. Contacta al administrador.")

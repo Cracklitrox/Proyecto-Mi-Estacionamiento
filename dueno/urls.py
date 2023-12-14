@@ -3,10 +3,9 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-# from estacionamiento.views import cambiar_estado
-
 urlpatterns = [
     #index
+    path('',views.indexDueno,name='indexDueno'),
     path('indexDueno/',views.indexDueno,name='indexDueno'),
     #Registro
     path('registration/loginDueno/', views.loginDueno, name='loginDueno'),
@@ -15,7 +14,7 @@ urlpatterns = [
     #Cambiar estado estacionamiento
     path('indexDueno/cambiar_estado/<int:estacionamiento_id>/', views.cambiar_estado, name='cambiar_estado'),
     #Cambiar a cliente
-    path('cambiar-rol/', views.cambiar_rol, name='cambiar_rol'),
+    path('cambiar_a_cliente/', views.cambiar_a_cliente, name='cambiar_a_cliente'),
     #Estacionamiento
     path('indexDueno/addEstacionamiento/<int:id>',views.addEstacionamiento,name='addEstacionamiento'),
     path('eliminarEstacionamiento/<int:id>',views.eliminarEstacionamiento,name='eliminarEstacionamiento'),

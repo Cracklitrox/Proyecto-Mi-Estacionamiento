@@ -11,14 +11,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   {% block css%}{% endblock%}
 </head>
 
 <body>
   <!-- Header + Navbar -->
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light nav-content rounded">
       <div class="container-fluid">
         <a class="navbar-brand rounded" href="{% url 'indexCliente' %}">Mi estacionamiento</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -52,44 +52,50 @@
             <!--boton login -->
             <ul class="navbar-nav">
               {% if user.is_authenticated %}
-                {% if user.groups.all.0.name == 'Cliente' %}
-                  <li class="nav-item">
-                    <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
-                  </li>
-                {% elif user.groups.all.0.name == 'Dueno' %}
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    @{{ user.username }}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{% url 'cambiar_rol'%}">Cliente</a></li>                                 
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'logoutDueno' %}">Cerrar sesión</a></li>
-                    </ul>
-                  </li>
-                {% elif user.groups.all.0.name == 'AdministradorNivelPermiso3' %}
-                <li class="nav-item">
-                  <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username
-                    }}/Administrador</a>
-                </li>
-                {% endif %}
+                {% if user.es_dueno %}
+                      <!-- Código para dueño -->
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              @{{ user.username }}
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <li><a class="dropdown-item" href="{% url 'cambiar_a_dueno' %}">Cambiar a Dueno</a></li>                                 
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="{% url 'logoutDueno' %}">Cerrar sesión</a></li>
+                          </ul>
+                      </li>
+                  {% elif user.es_cliente %}
+                      <!-- Código para cliente -->
+                      <li class="nav-item">
+                          <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                      </li>
+                  {% elif user.es_cliente %}    
+                      <!-- Código para administrador -->
+                      <li class="nav-item">
+                        <a href="{% url 'logoutCliente' %}" class="nav-link active btn btn-danger">Cerrar sesión</a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="#" class="btn btn-primary btn-sm fw-bold nav-link active">@{{ user.username }}</a>
+                      </li>
+                  {% else %}
+                      <!-- Código para otros usuarios (sin grupo) -->
+                      <li class="nav-item">
+                          <a href="#" class="nav-link">Opciones para usuarios sin grupo</a>
+                      </li>
+                  {% endif %}
               {% else %}
-              <li class="nav-item">
-                <a href="{% url 'loginCliente' %}" class="nav-link active btn btn-success">Iniciar sesión</a>
-              </li>
-              <li class="nav-item">
-                <a href="{% url 'registerCliente' %}" class="nav-link active btn btn-warning">Registrarse</a>
-              </li>
-
-
+                  <!-- Código para usuarios no autenticados -->
+                  <li class="nav-item">
+                      <a href="{% url 'loginCliente' %}" class="nav-link active btn btn-success">Iniciar sesión</a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{% url 'registerCliente' %}" class="nav-link active btn btn-warning">Registrarse</a>
+                  </li>
               {% endif %}
-            </ul>
+          </ul>
           </span>
         </div>
       </div>
