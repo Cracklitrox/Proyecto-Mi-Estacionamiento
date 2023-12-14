@@ -14,33 +14,26 @@ Mi Estacionamiento | Reserva
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12 mb-3">
-            <h4>Seleccionar Estacionamientos</h4>
-        </div>
-
-        <div class="col-12">
-            {% for estacasilla in casilla %}
-                {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
-                    <div id="slot{{ estacasilla.id }}" class="btn {% if estacasilla.disponible %}btn-success{% else %}btn-danger disabled{% endif %} casilla-btn" data-casilla-id="{{ estacasilla.id }}">
-                        {{ estacasilla.id }}
-                        <p>{{estacasilla.casilla}}</p>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        <div class="col-12 mt-4">
-            <h4>Tarifa: {{ estacionamiento.tarifahora }}</h4>
-        </div>
-
-        <div class="col-12 mt-4">
-            <h4>Cliente: {{user.username}}</h4>
-        </div>
-
-        <div class="col-12 mt-4">
-            <form method="post" enctype="multipart/form-data" class="text-black">
+<div class="container">
+    <div class="dashboard">
+        <div class="parking-manager">
+            <div class="new-car-btn">Seleccionar Estacionamientos</div>
+            <div class="new-car-entry d-flex">
+                {% for estacasilla in estacionamientoCasilla %}
+                    {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
+                        <div onclick="carenter({{ estacasilla.id_casilla.posicion }})" id="slot{{ estacasilla.id_casilla.posicion }}"
+                            class="btn {% if estacasilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %} casilla-btn"
+                            data-casilla-id="{{ estacasilla.id }}">
+                            {{ estacasilla.id_casilla.id }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <div class="new-car-btn">Tarifa: </div>
+            <br>
+            <div class="new-car-btn">Cliente: 10</div>
+            <form method="post" enctype="multipart/form-data" class="text-white m-5 mt-4 ">
                 {% csrf_token %}
                 {{ arriendo_form.non_field_errors }}
                 
