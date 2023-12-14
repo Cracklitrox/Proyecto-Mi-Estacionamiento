@@ -116,7 +116,7 @@ def indexCliente(request):
             'puntos_interes': puntos_interes,
             'estacionamientos': estacionamientos,
         }
-    return render(request, 'indexCliente.html',context)
+    return render(request, 'indexCliente.html', context)
 
 
 ##################################
