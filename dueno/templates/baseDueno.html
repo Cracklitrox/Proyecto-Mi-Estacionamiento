@@ -14,6 +14,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -21,13 +22,19 @@
 <body>
     <!-- Header + NavBar -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light nav-content p-5 pt-0 pb-0">
+        <nav class="container-fluid navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'indexDueno' %}">Mi estacionamiento</a>
+                <!-- Nombre APP -->
+                <a class="navbar-brand" href="{% url 'indexDueno' %}">
+                    <i class="bi bi-car-front"></i>
+                    <span class="text-warning">Mi estacionamiento</span>
+                </a>
+                <!-- Boton del menu (Pantalla Small) -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <!-- Elementos del menu colapsable -->
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -37,48 +44,55 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                               Opciones
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <li> <a class="dropdown-item" href="{% url 'addEstacionamiento' user.id %}">Crear estacionamiento</a></li>
-                              <li><a class="dropdown-item" href="{% url 'listarArriendo'%}">Arriendos</a></li>
+                            <ul class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                              <li> <a class="dropdown-item" href="{% url 'addEstacionamiento' user.id %}"><i class="bi bi-car-front-fill"></i> Crear estacionamiento</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="{% url 'listarArriendo'%}"><i class="bi bi-card-checklist"></i> Arriendos</a></li>
                               <!-- <li><hr class="dropdown-divider"></li>
                               <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                             </ul>
                           </li>
                     </ul>
-                    <span class="navbar-text">
                     <!--boton login -->
-                        <ul class="navbar-nav">
-                            {% if user.is_authenticated %}
-                                {% if user.groups.all.0.name == 'Dueno' %}
-                                    <!-- <li class="nav-item">
-                                        <a href="{% url 'logoutDueno' %}" class="nav-link active">Cerrar sesión</a>
-                                    </li> -->
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        @{{ user.username }}
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a class="dropdown-item" href="{% url 'cambiar_a_cliente'%}">Pasar a cliente</a></li>                                 
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="{% url 'logoutDueno' %}">Cerrar sesión</a></li>
-                                        </ul>
-                                    </li>
-                                    
-                                {% else %}
-                                    <li class="nav-item">
-                                        <a href="{% url 'loginDueno' %}" class="nav-link active">Iniciar sesión</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{% url 'registerDueno' %}" class="nav-link active">Registrarse</a>
-                                    </li>
-                                {% endif %}
+                    <ul class="navbar-nav">
+                        {% if user.is_authenticated %}
+                            {% if user.groups.all.0.name == 'Dueno' %}
+                                <!-- <li class="nav-item">
+                                    <a href="{% url 'logoutDueno' %}" class="nav-link active">Cerrar sesión</a>
+                                </li> -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @{{ user.username }}
+                                    </a>
+                                    <ul class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'cambiar_a_cliente'%}">Pasar a cliente</a></li>                                 
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'logoutDueno' %}">Cerrar sesión</a></li>
+                                    </ul>
+                                </li>
+                                
+                            {% else %}
+                                <li class="nav-item">
+                                    <a href="{% url 'loginDueno' %}" class="nav-link active">Iniciar sesión</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{% url 'registerDueno' %}" class="nav-link active">Registrarse</a>
+                                </li>
                             {% endif %}
-                        </ul>
-                    </span>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </nav>
-        
+        {% for message in messages %}
+        <script>
+            Swal.fire({
+                title: "{% if message.tags == 'success' %}Felicitaciones{% elif message.tags == 'error' %}Error{% endif %}",
+                text: "{{ message }}",
+                icon: "{% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% endif %}",
+            });
+        </script>
+    {% endfor %}
     </header>
     <!-- Content -->
     {% block content %}
@@ -86,11 +100,9 @@
     {% endblock %}
 
     <!-- Footer -->
-    <div class="footer bg-dark mt-5 text-center py-1">
-        <div class="container">
-            <h5 class="text-white">MiEstacionamiento@gmail.com</h5>
-        </div>
-    </div>
+    <footer>
+        <p>&copy; {{ 2023 }} Mi Estacionamiento - Todos Los Derechos Reservados.</p>
+      </footer>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

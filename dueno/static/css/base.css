@@ -1,16 +1,25 @@
 body {
-    background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
-    min-height: 100vh; /* Establece el alto mínimo del cuerpo al 100% de la altura de la ventana */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-footer{
-    margin-top: auto; /* Empuja el pie de página hacia la parte inferior */
-    background-color: #f1f1f1; /* Cambia esto según el color que desees */
-    padding: 10px;
+nav {
+    font-family: sans-serif;
+}
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #000000;
+    color: white;
+    padding: 15px;
+    margin-top: auto;
     text-align: center;
+    
 }
 
 .content {
