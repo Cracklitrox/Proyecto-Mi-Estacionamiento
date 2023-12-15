@@ -30,7 +30,6 @@ Agregar tarjeta para el usuario {{request.user.username}}
                         <div class="col-6">
                             <div class="d-flex justify-content-end">
                                 <input type="reset" value="Limpiar" class="btn btn-warning">
-                                 
                                 <input type="submit" value="Agregar" class="btn btn-primary">
                             </div>
                         </div>
@@ -54,6 +53,8 @@ Agregar tarjeta para el usuario {{request.user.username}}
     agregarTarjetacreditoForm.addEventListener("submit", function (event) {
         event.preventDefault();
         var formData = new FormData(agregarTarjetacreditoForm);
+        var numero = formData.get('numero').replace(/-/g, '');
+        formData.set('numero', numero);
         fetch(agregarTarjetacreditoForm.action, {
             method: 'POST',
             body: formData

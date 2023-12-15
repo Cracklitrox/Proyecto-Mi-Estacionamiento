@@ -28,9 +28,9 @@ Vehiculos de {{request.user.username}}
                 {% for tj in tarjetas %}
                 <tr class="table-default">
                     <td>{{ tj.nombre_titular }}</td>
-                    <td>{{ v.numero }}</td>
-                    <td>{{ v.fechavencimiento }}</td>
-                    <td>{{ v.id_banco_id.nombre }}</td>
+                    <td>{{ tj.numero }}</td>
+                    <td>{{ tj.fechavencimiento }}</td>
+                    <td>{{ tj.id_banco.nombre }}</td>
                     <td>
                         <a href="{% url 'editarTarjetacreditoCliente' tj.id %}" class="btn btn-info btn-sm">Editar</a>
                         <a href="#" onclick="eliminarTarjetacreditoCliente({{ tj.id }})" class="btn btn-danger btn-sm">Eliminar</a>
@@ -50,9 +50,8 @@ Vehiculos de {{request.user.username}}
 {% if tarjetas %}
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <p>¿Quiere agregar otra tarjeta?</p>
-    <a href="{% url 'agregarVehiculo' %}" class="btn btn-primary">Agregar Tarjeta</a>
+    <a href="{% url 'agregarTarjetacreditoCliente' %}" class="btn btn-primary">Agregar Tarjeta</a>
 </div>
-{% else %}
 {% endif %}
 {% endblock %}
 {% block js%}

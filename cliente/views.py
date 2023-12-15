@@ -273,7 +273,7 @@ def agregarTarjetacreditoCliente(request):
         formulario = TarjetacreditoForm(request.POST)
         if formulario.is_valid():
             tarjetacredito = formulario.save(commit=False)
-            tarjetacredito.id_usuario.id = request.user.id
+            tarjetacredito.id_usuario_id = request.user.id
             formulario.save()
             return JsonResponse({'success': True})
         else:
@@ -281,6 +281,29 @@ def agregarTarjetacreditoCliente(request):
     else:
         formulario = TarjetacreditoForm()
     return render(request, 'tarjeta/agregarTarjetacreditoCliente.html', {'form':formulario})
+
+
+@login_required(login_url="loginCliente")
+def editarTarjetacreditoCliente(request, id):
+    tarjetas = get_object_or_404(Tarjetacredito, id=id)
+    context = {
+        'form':TarjetacreditoForm(instance=tarjetas)
+    }
+    if request.method == 'POST':
+        formulario = TarjetacreditoForm(data = request.POST, instance=tarjetas)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Tarjeta de Credito modificada correctamente.')
+            return redirect(to='listarTarjetacreditoCliente')
+        else:
+            context['form'] = formulario
+    return render(request, 'tarjeta/editarTarjetacreditoCliente.html', context)
+
+@login_required(login_url="loginCliente")
+def eliminarTarjetacreditoCliente(request, id):
+    tarjeta = get_object_or_404(Tarjetacredito, id=id)
+    tarjeta.delete()
+    return redirect(to='listarTarjetacreditoCliente')
 
 ##################################
 ##       Cambiar a Dueno        ##
