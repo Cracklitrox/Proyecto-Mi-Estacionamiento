@@ -231,11 +231,20 @@ def cambiar_estado(request, estacionamiento_id):
 
 @login_required(login_url="loginDueno")
 def arriendo(request):
-    estacionamiento_arriendo = Arriendo.objects.all
-    estacionamiento = Estacionamiento.objects.all
-    context = {'arriendo': estacionamiento_arriendo,
-               'estacionamientos': estacionamiento}
-    return render(request,'estacionamiento/arriendo/arriendoDueno.html', context)
+    arriendo_list = Arriendo.objects.all()
+    estacionamientos = Estacionamiento.objects.filter(id_dueno=request.user.id)
+
+    if not estacionamientos:
+        messages.error(request, 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento')
+
+    context = {
+        'arriendo': arriendo_list,
+        'estacionamientos': estacionamientos,
+    }
+
+    return render(request, 'estacionamiento/arriendo/arriendoDueno.html', context)
+
+
 
 ##################################
 ##       Generar-image          ##
@@ -278,7 +287,7 @@ def generar_pdf(request, id_estacionamiento):
         arriendoTotal = arriendos.count()
 
         if arriendoTotal == 0:
-            messages.warning(request, 'No hay arriendos asociados a este estacionamiento.')
+            messages.warning(request, '')
             return redirect('listarArriendo')
         else:
 

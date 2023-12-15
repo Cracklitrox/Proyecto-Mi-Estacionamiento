@@ -5,7 +5,7 @@
 {% load humanize %}
 
 {% block css%}
-<link rel="stylesheet" href="{% static 'css/arriendoDueno.css' %}">
+<link rel="stylesheet" href="{% static 'css/estacionamiento/arriendo/arriendoDueno.css' %}">
 {% endblock%}
 
 {% block title %}
@@ -17,7 +17,7 @@ Arriendos
   
     <div class="row">
         <h2 class="text-center mt-5 "> Arriendos </h2>        
-
+        {% if estacionamientos %}
         <table class="table table-secondary table-bordered table-striped-columns mt-4">
             <thead>
               <tr>
@@ -55,20 +55,32 @@ Arriendos
           
             </tbody>
         </table>  
-        
+        {% else %}
+        <div class="alert alert-warning text-center mt-4" role="alert">
+            No tienes estacionamientos. Agrega al menos uno para acceder a esta sección.
+        </div>
+        {% endif %}
     </div>
 </div>
 {% if messages %}
-  {% for message in messages %}
-    <script>
-      Swal.fire({
-        title: "{% if message.tags == 'success' %}Felicitaciones{% elif message.tags == 'warning' %}Error{% endif %}",
-        text: "{{ message }}",
-        icon: "{% if message.tags == 'success' %}success{% elif message.tags == 'warning' %}error{% endif %}",
-      });
-      
-    </script>
-  {% endfor %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Swal.fire({
+          title: 'Warning!',
+          text: 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento',
+          icon: 'warning',
+          confirmButtonText: 'OK',
+          willOpen: () => {
+            document.body.classList.add('blur-effect');
+          },
+          didClose: () => {
+            document.body.classList.remove('blur-effect');
+            window.location.href = "{% url 'indexDueno' %}";
+          }
+        });
+    });
+</script>
 {% endif %}
+
 
 {% endblock %}

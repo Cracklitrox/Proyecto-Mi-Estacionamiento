@@ -36,6 +36,7 @@ Index
 
     <section class="m-5">
         <h2 class="mb-4">Mis estacionamientos</h2>
+        {% if estacionamientos %}
         <div class="row row-cols-1 row-cols-xl-4 row-cols-md-2 g-4">
             {% for estacionamiento in estacionamientos %}
             <div class="col">
@@ -106,6 +107,11 @@ Index
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="alert alert-warning text-center" role="alert">
+            No tienes estacionamientos. Agrega al menos uno para acceder a esta sección.
+        </div>
+    {% endif %}
     </section>
 </div>
 <!-- Cambiar a js Propios -->
