@@ -37,7 +37,7 @@ class Casilla(models.Model):
 class Estacionamiento(models.Model):
     id_dueno = models.ForeignKey(DuenoProfile, on_delete=models.CASCADE)
     direccion = models.CharField(max_length=255)
-    disponible = models.BooleanField(default=False, verbose_name='Estado Estacionamiento')
+    disponible = models.BooleanField(default=True, verbose_name='Estado Estacionamiento')
     tarifahora = models.IntegerField(db_column='tarifaHora', verbose_name='Tarifa por Hora')
     observaciones = models.CharField(max_length=255, blank=True, null=True)
     imagen = models.ImageField(upload_to='fotoEstacionamiento/', null=True, blank=True, verbose_name='Imagen del Estacionamiento')

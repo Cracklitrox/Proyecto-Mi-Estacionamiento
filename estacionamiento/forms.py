@@ -5,12 +5,7 @@ from django.forms.widgets import HiddenInput
 class EstacionamientoForm(forms.ModelForm):
     class Meta:
         model = Estacionamiento
-        fields = "__all__"
-        widgets = {
-            'id_dueno': HiddenInput(),
-            'disponible': HiddenInput(),
-            'id_puntoInteres': HiddenInput(),
-        }
+        fields = ['direccion', 'disponible', 'tarifahora', 'observaciones']
 
     direccion = forms.CharField(min_length=3, max_length=10, required=True)
     tarifahora = forms.IntegerField(min_value=1, required=True)
@@ -19,6 +14,11 @@ class EstacionamientoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EstacionamientoForm, self).__init__(*args, **kwargs)
         
+        # Personalizar la apariencia de los campos
+        # self.fields['id_dueno'].widget.attrs.update({'class': 'form-control'})
+        self.fields['direccion'].widget.attrs.update({'class': 'form-control'})
+        self.fields['tarifahora'].widget.attrs.update({'class': 'form-control'})
+        self.fields['observaciones'].widget.attrs.update({'class': 'form-control'})
 
                
     
