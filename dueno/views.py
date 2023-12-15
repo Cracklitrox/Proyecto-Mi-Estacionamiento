@@ -190,17 +190,17 @@ def editEstacionamiento(request, id):
     }
     
     if request.method == 'POST':
-        formulario = EstacionamientoForms(data= request.POST, instance=estacionamiento, files=request.FILES)
+        form = EstacionamientoForms(data= request.POST, instance=estacionamiento, files=request.FILES)
         punto_interes_form = PuntointeresForm(request.POST, instance=punto_interes)
 
-        if formulario.is_valid() :
+        if form.is_valid() and punto_interes_form.is_valid():
             # Guarda los cambios en el estacionamiento
-            formulario.save()
+            form.save()
             punto_interes_form.save()
             messages.success(request, 'Estacionamiento y Punto de Interés modificados.')
             return redirect(to='indexDueno')
         else:
-            context["form"] = formulario
+            context["form"] = form
             context['punto_interes_form'] = punto_interes_form
             context["mensaje_incorrecto"] = "No se ha podido modificar el estacionamiento"
 
@@ -241,15 +241,14 @@ def cambiar_estado(request, estacionamiento_id):
 def arriendo(request):
     arriendo_list = Arriendo.objects.all()
     estacionamientos = Estacionamiento.objects.filter(id_dueno=request.user.id)
-
+    if not arriendo:
+        messages.error= (request, 'No se puede ingresar. no tienes arriendos')
     context = {
         'arriendo': arriendo_list,
         'estacionamientos': estacionamientos,
     }
 
     return render(request, 'estacionamiento/arriendo/arriendoDueno.html', context)
-
-
 
 ##################################
 ##       Generar-image          ##
@@ -312,7 +311,7 @@ def generar_pdf(request, id_estacionamiento):
                 'precio_total': precio_total,
                 'arriendoTotal': arriendoTotal,
                 'duracion_promedio': duracion_promedio,
-                'icon': os.path.join(settings.STATIC_URL, 'img/logo_mi_estacionamiento.jpg'),
+                #'icon': os.path.join(settings.STATIC_URL, 'img/logo_mi_estacionamiento.jpg'),
             }
             template = get_template(template_path)
             html_content = template.render(context)
@@ -325,7 +324,8 @@ def generar_pdf(request, id_estacionamiento):
             pisa_status = pisa.CreatePDF(
                 html_content, 
                 dest=response,
-                link_callback=link_callback)
+                #link_callback=link_callback
+                )
             if pisa_status.err:
                 return HttpResponse('Error al generar el PDF', status=500)
             return response
