@@ -63,7 +63,7 @@ def loginAdministrador(request):
 ##################################
 
 @login_required(login_url="loginAdministrador")
-@user_passes_test(in_administrador_group, login_url='loginDueno')
+@user_passes_test(in_administrador_group, login_url='loginAdministrador')
 def logoutAdmin(request):
     logout(request)
     return redirect('loginAdministrador')
