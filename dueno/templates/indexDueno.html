@@ -109,7 +109,8 @@ Index
         </div>
         {% else %}
         <div class="alert alert-warning text-center" role="alert">
-            No tienes estacionamientos. Agrega al menos uno para acceder a esta sección.
+            No tienes estacionamientos. Agrega al menos uno para acceder a esta sección.<br>
+            <a class="btn btn-success mt-4" href="{% url 'addEstacionamiento' user.id %}">Crear estacionamiento</a>
         </div>
     {% endif %}
     </section>

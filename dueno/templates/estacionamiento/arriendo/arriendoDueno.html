@@ -57,30 +57,12 @@ Arriendos
         </table>  
         {% else %}
         <div class="alert alert-warning text-center mt-4" role="alert">
-            No tienes estacionamientos. Agrega al menos uno para acceder a esta sección.
+            No tienes estacionamientos. Agrega al menos uno para acceder a esta sección. <br>
+            <a class="btn btn-success mt-4" href="{% url 'addEstacionamiento' user.id %}">Crear estacionamiento</a>
         </div>
         {% endif %}
     </div>
 </div>
-{% if messages %}
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        Swal.fire({
-          title: 'Warning!',
-          text: 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento',
-          icon: 'warning',
-          confirmButtonText: 'OK',
-          willOpen: () => {
-            document.body.classList.add('blur-effect');
-          },
-          didClose: () => {
-            document.body.classList.remove('blur-effect');
-            window.location.href = "{% url 'indexDueno' %}";
-          }
-        });
-    });
-</script>
-{% endif %}
 
 
 {% endblock %}

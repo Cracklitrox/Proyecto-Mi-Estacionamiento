@@ -18,6 +18,7 @@ Mi Estacionamiento | Estacionamientos
   <h2 class="mt-5">Puntos de Interes </h2>
   <section class="mt-3 mb-5">
     <select id="PuntoSelect" class="form-control">
+      <option value="0">Seleccione un estacionamiento </option>
       {% for punto in puntos_interes %}
       <option value="{{ punto.id }}">{{ punto.nombre }}</option>
       {% endfor %}
@@ -117,6 +118,68 @@ Mi Estacionamiento | Estacionamientos
     // Mostrar el primer punto de interés al cargar la página
     manejarPuntoSelect();
   }
+
+  function manejarPuntoSelect() {
+    const selectPuntoId = document.getElementById('PuntoSelect').value;
+    const selectPuntoI = puntosDeInteres.find(poi => poi.id == selectPuntoId);
+
+    // Verificar si selectPuntoI está definido antes de acceder a sus propiedades
+    if (selectPuntoId === "0") {
+    // Limpiar todos los marcadores antes de agregar uno nuevo
+    limpiarMarcadores();
+
+    // Mostrar el nuevo marcador para el punto 0 (Santiago)
+    marker = new google.maps.Marker({
+        position: { lat: parseFloat(santiagoCoords.lat), lng: parseFloat(santiagoCoords.lng) },
+        map: map,
+        icon: {
+            url: imageUrl,
+            scaledSize: new google.maps.Size(40, 40),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(20, 40)
+        },
+        title: santiagoCoords.name
+    });
+
+    // Agregar el nuevo marcador al array
+    marcadorArray.push(marker);
+
+    // Centrar el mapa en el nuevo marcador
+    map.setCenter(marker.getPosition());
+    } else if (selectPuntoI) {
+        limpiarMarcadores();
+
+        // Mostrar el nuevo marcador
+        marker = new google.maps.Marker({
+            position: { lat: parseFloat(selectPuntoI.latitud), lng: parseFloat(selectPuntoI.longitud) },
+            map: map,
+            icon: {
+                url: imageUrl,
+                scaledSize: new google.maps.Size(40, 40),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(20, 40)
+            },
+            title: selectPuntoI.nombre
+        });
+
+        // Agregar el nuevo marcador al array
+        marcadorArray.push(marker);
+
+        // Centrar el mapa en el nuevo marcador
+        map.setCenter(marker.getPosition());
+    } else {
+        console.error(`No se encontró ningún punto de interés con id ${selectPuntoId}`);
+    }
+}
+
+function limpiarMarcadores() {
+    // Iterar sobre el array y configurar el mapa como nulo para cada marcador
+    for (let i = 0; i < marcadorArray.length; i++) {
+        marcadorArray[i].setMap(null);
+    }
+    // Limpiar el array
+    marcadorArray = [];
+}
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=initMap"
   defer></script>

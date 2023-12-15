@@ -94,8 +94,8 @@ def indexCliente(request):
     if request.user.is_authenticated:
         id_usuario = request.user.id
         usuario = User.objects.get(id=id_usuario)
-        puntos_interes = Puntointeres.objects.all()
         estacionamientos = Estacionamiento.objects.all()
+        puntos_interes = Puntointeres.objects.filter(id__in=estacionamientos.values('id_puntoInteres'))
 
         for estacionamiento in estacionamientos:
             estacionamiento.tarifahora_str = str(estacionamiento.tarifahora).replace(',', '.')

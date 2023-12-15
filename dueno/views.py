@@ -234,9 +234,6 @@ def arriendo(request):
     arriendo_list = Arriendo.objects.all()
     estacionamientos = Estacionamiento.objects.filter(id_dueno=request.user.id)
 
-    if not estacionamientos:
-        messages.error(request, 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento')
-
     context = {
         'arriendo': arriendo_list,
         'estacionamientos': estacionamientos,
