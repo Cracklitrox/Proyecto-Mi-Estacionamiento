@@ -126,28 +126,16 @@ def logout_dueno(request):
 def indexDueno(request):    
     id = request.user.id
     estacionamientos = Estacionamiento.objects.filter(id_dueno=id)
-
-    casillas = []
-    casillas_total = 0
-    casillas_disponibles = 0
-    casillas_ocupadas = 0
     
     for estacionamiento in estacionamientos:
         casillas_estacionamiento = Casilla.objects.filter(id_estacionamiento=estacionamiento)
-        casillas.extend(casillas_estacionamiento)
-        casillas_total = casillas_estacionamiento.count()
-        casillas_disponibles = casillas_estacionamiento.filter(disponible=True).count()
-        casillas_ocupadas = casillas_estacionamiento.filter(disponible=False).count()
+        estacionamiento.casillas_totales = casillas_estacionamiento.count()
+        estacionamiento.casillas_disponibles = casillas_estacionamiento.filter(disponible=True).count()
+        estacionamiento.casillas_ocupadas = casillas_estacionamiento.filter(disponible=False).count()
 
     puntos_interes = Puntointeres.objects.all()
-    context = {'estacionamientos':estacionamientos,
-               'casillas': casillas,
-                'puntos_interes': puntos_interes,
-                'casillas_total': casillas_total,
-                'casillas_disponibles':casillas_disponibles,
-                'casillas_ocupadas':casillas_ocupadas
-                }
-    return render(request,'indexDueno.html', context)
+    context = {'estacionamientos': estacionamientos, 'puntos_interes': puntos_interes}
+    return render(request, 'indexDueno.html', context)
 
 ##################################
 ##      Add-Estacionamiento     ##

@@ -82,31 +82,28 @@ Index
                 </div>
             </div>
             <!-- Model (Alerta Ver más) -->
-            {% for casilla in casillas %}
-                {% if casilla.id_estacionamiento.id == estacionamiento.id %}
-                    <div class="modal fade" id="miPopupModal{{estacionamiento.id}}" tabindex="-1" role="dialog" aria-labelledby="miPopupModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title " id="miPopupModalLabel">{{ estacionamiento.direccion }}</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Cerrar">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <p>Casillas totales: {{ casillas_total }}</p>
-                                    <p>Casillas disponibles: {{ casillas_disponibles }}</p>
-                                    <p>Casillas ocupadas: {{casillas_ocupadas}}</p>
-                                    <p>Tarifa H/R: {{estacionamiento.tarifahora}}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
+            <div class="modal fade" id="miPopupModal{{estacionamiento.id}}" tabindex="-1" role="dialog" aria-labelledby="miPopupModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="miPopupModalLabel">{{ estacionamiento.direccion }}</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <!-- Utiliza las variables calculadas en la vista -->
+                            <p>Casillas totales: {{ estacionamiento.casillas_totales }}</p>
+                            <p>Casillas disponibles: {{ estacionamiento.casillas_disponibles }}</p>
+                            <p>Casillas ocupadas: {{ estacionamiento.casillas_ocupadas }}</p>
+                            <p>Tarifa H/R: {{ estacionamiento.tarifahora }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
-                {% endif %}
-            {% endfor %}
+                </div>
+            </div>
             {% endfor %}
         </div>
     </section>

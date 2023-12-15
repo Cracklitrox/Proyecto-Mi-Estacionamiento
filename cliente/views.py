@@ -183,7 +183,6 @@ def cambiar_casilla(request, casilla_id):
         return JsonResponse({'error': 'casilla no encontrada'}, status=404)
 
 
-
 ##################################
 ##   Función guardar Casilla    ##
 ##################################

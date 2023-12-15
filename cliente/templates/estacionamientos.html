@@ -19,7 +19,7 @@ Mi Estacionamiento | Reserva
         <div class="parking-manager">
             <div class="new-car-btn">Seleccionar Estacionamientos</div>
             <div class="new-car-entry d-flex">
-                {% for estacasilla in estacionamientoCasilla %}
+                {% for estacasilla in casilla %}
                     {% if estacasilla.id_estacionamiento.id == estacionamiento.id %}
                         <div onclick="carenter({{ estacasilla.id_casilla.posicion }})" id="slot{{ estacasilla.id_casilla.posicion }}"
                             class="btn {% if estacasilla.disponible %}btn-success {% else %}btn-danger disabled{% endif %} casilla-btn"
