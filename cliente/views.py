@@ -349,6 +349,7 @@ def cambiar_a_dueno(request):
         return redirect('indexDueno')
     except Group.DoesNotExist:
         return HttpResponse("Error: Los grupos no están configurados correctamente. Contacta al administrador.")
+<<<<<<< HEAD
     
 def logout_dueno(request):
     user = request.user
@@ -365,3 +366,12 @@ def logout_dueno(request):
     
     # Personaliza la redirección para los dueños
     return redirect('loginDueno')
+=======
+
+
+##################################
+##          Notfounf            ##
+##################################  
+def notfound(request):
+    return render(request, 'notfound.html')
+>>>>>>> a4be3dfd9db7fda1e52214ca56d1735235bf3dcc
