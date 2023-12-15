@@ -151,6 +151,7 @@ def addEstacionamiento(request, id):
         if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
             estacionamiento = estacionamiento_form.save(commit=False)
             estacionamiento.id_dueno = dueno_profile
+            estacionamiento.disponible = True
             puntointeres = puntointeres_form.save()
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
