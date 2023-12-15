@@ -55,7 +55,7 @@ Añadir Estacionamiento
           <label for="{{ puntointeres_form.latitud.id_for_label }}">Latitud:</label>
           {{ puntointeres_form.latitud }}
           {{ puntointeres_form.latitud.errors }}
-        </div>
+        </div>        
         <div class="col-md-4">
           <label for="{{ puntointeres_form.nombre.id_for_label }}">Nombre:</label>
           {{ puntointeres_form.nombre }}
@@ -83,6 +83,7 @@ Añadir Estacionamiento
 
   function iniciarMapa() {
     mapDiv = document.getElementById("mapa");
+    
     var latitud = -33.448716;
     var longitud = -70.669279;
 

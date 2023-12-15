@@ -29,31 +29,46 @@ Arriendos
               </tr>
             </thead>
             <tbody class="align-middle">
-                {% for estacionamiento in estacionamientos %}
-                <tr>
-                <th scope="row">{{ estacionamiento.direccion }}</th>
-                <td class="text-center"> ${{ estacionamiento.tarifahora }}</td>
-                <td>
-                    {% if estacionamiento.observaciones %}
-                        {{ estacionamiento.observaciones }}
-                    {% else %}
-                        No hay observaciones disponibles
-                    {% endif %}
-                </td>
-                <td class="text-center">{% if estacionamiento.imagen %}
-                    <img class="product-img-table" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
-                    {% else %}
-                    <img class="product-img-table" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
-                    {% endif %}</td>
-                <td class="text-center">
-                  <a href="{% url 'generar_pdf' estacionamiento.id %}" class="btn btn-success btn-sm">Generar Reporte</a>
-                </td>
-            </tr>
-              {% endfor %}
+              {% for estacionamiento in estacionamientos %}
+              <tr>
+                  <th scope="row">{{ estacionamiento.direccion }}</th>
+                  <td class="text-center"> ${{ estacionamiento.tarifahora }}</td>
+                  <td>
+                      {% if estacionamiento.observaciones %}
+                          {{ estacionamiento.observaciones }}
+                      {% else %}
+                          No hay observaciones disponibles
+                      {% endif %}
+                  </td>
+                  <td class="text-center">
+                      {% if estacionamiento.imagen %}
+                          <img class="product-img-table" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
+                      {% else %}
+                          <img class="product-img-table" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
+                      {% endif %}
+                  </td>
+                  <td class="text-center">
+                    <a href="{% url 'generar_pdf' estacionamiento.id %}" class="btn btn-success btn-sm">Generar Reporte</a>                  
+                  </td>
+              </tr>
+          {% endfor %}
+          
             </tbody>
         </table>  
         
     </div>
 </div>
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      Swal.fire({
+        title: "{% if message.tags == 'success' %}Felicitaciones{% elif message.tags == 'warning' %}Error{% endif %}",
+        text: "{{ message }}",
+        icon: "{% if message.tags == 'success' %}success{% elif message.tags == 'warning' %}error{% endif %}",
+      });
+      
+    </script>
+  {% endfor %}
+{% endif %}
 
 {% endblock %}

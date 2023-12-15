@@ -13,23 +13,68 @@ Formulario
 {% endblock %}
 
 {% block content %}
+{% load crispy_forms_tags %}
     <div class="container mt-5">
-        <a href="{% url 'indexDueno' %}" class="btn btn-secondary">Volver</a>
-        <form method="post">
+        <a href="{% url 'indexDueno' %}" class="row btn btn-secondary col-md-2">Volver</a>
+        <div class="row justify-content-center">
+            <form method="post" id="miFormulario" onsubmit="enviarFormulario()" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="id_direccion" class="form-label">Dirección:</label>
-                {{ formulario.direccion }}
+            {{ form | crispy }}
+            {{ punto_interes_form | crispy }}
+            <div class="form-group mb-2">
+                <p class="h5 text-center"> Rellenar mapa</p>
             </div>
-            <div class="mb-3">
-                <label for="id_tarifa" class="form-label">Tarifa:</label>
-                {{ formulario.tarifahora }}
-            </div>
-            <div class="mb-3">
-                <label for="id_observaciones" class="form-label">Observaciones:</label>
-                {{ formulario.observaciones }}
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-        </form>
+            <div id="mapa" style="width: 100%; height: 500px" class="mb-3"></div>
+            <button type="submit" class="btn btn-primary" id="enviarFormulario">Enviar</button>
+            </form>
+        </div>
     </div>
+    {{mensaje_correcto}}
+    {{mensaje_incorrecto}}
+
+    <script>
+        function enviarFormulario() {
+      
+          document.getElementById("miFormulario").submit();
+        }
+      
+        let map;
+        let mapDiv;
+        let marcador;
+        
+        function iniciarMapa() {
+            mapDiv = document.getElementById("mapa");
+            var latitud = parseFloat(document.getElementById("id_latitud").value);
+            var longitud = parseFloat(document.getElementById("id_longitud").value);
+
+      
+          const coordenadas = {
+            lat: latitud,
+            lng: longitud,
+          };
+      
+          generarMapa(coordenadas);
+        }
+      
+        function generarMapa(coordenadas) {
+          var map = new google.maps.Map(mapDiv, {
+            zoom: 12,
+            center: coordenadas,
+          });
+      
+          marcador = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            position: new google.maps.LatLng(coordenadas.lat, coordenadas.lng),
+          });
+      
+          marcador.addListener('dragend', function (event) {
+            document.getElementById("id_latitud").value = this.getPosition().lat();
+            document.getElementById("id_longitud").value = this.getPosition().lng();
+          })
+        }
+      </script>
+      <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYqY4KKNA-mDE-uc09rKn2k2prxKzWx0&libraries=places&callback=iniciarMapa"
+        defer></script>
 {% endblock %}

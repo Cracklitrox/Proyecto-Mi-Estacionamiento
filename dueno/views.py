@@ -187,10 +187,35 @@ def addEstacionamiento(request, id):
 ##################################
 
 @login_required(login_url="loginDueno")
-def editEstacionamiento(request, id=id):
-    estacionamiento = Estacionamiento.objects.get(id=id)
-    formulario = EstacionamientoForm(request.POST, instance=estacionamiento, files=request.FILES)
-    return render(request,'estacionamiento/editEstacionamiento.html', {'formulario':formulario})
+def editEstacionamiento(request, id):
+    estacionamiento = get_object_or_404(Estacionamiento, id=id)
+    punto_interes = estacionamiento.id_puntoInteres
+
+    context = {
+        'form': EstacionamientoForms(instance=estacionamiento),
+        'punto_interes_form': PuntointeresForm(instance=punto_interes),
+    }
+    
+    if request.method == 'POST':
+        formulario = EstacionamientoForms(data= request.POST, instance=estacionamiento, files=request.FILES)
+        punto_interes_form = PuntointeresForm(request.POST, instance=punto_interes)
+
+        if formulario.is_valid() :
+            # Guarda los cambios en el estacionamiento
+            formulario.save()
+            punto_interes_form.save()
+            messages.success(request, 'Estacionamiento y Punto de Interés modificados correctamente.')
+            return redirect(to='indexDueno')
+        else:
+            context["form"] = formulario
+            context['punto_interes_form'] = punto_interes_form
+            context["mensaje_incorrecto"] = "No se ha podido modificar el estacionamiento"
+
+    return render(request, 'estacionamiento/editEstacionamiento.html', context)
+
+   
+
+
 
 ##################################
 ##     Del-Estacionamiento      ##
@@ -267,41 +292,47 @@ def generar_pdf(request, id_estacionamiento):
         # Contador de estacionamientos
         arriendoTotal = arriendos.count()
 
-        # Calcula la duración promedio en minutos
-        duracion_promedio = arriendos.aggregate(
-            promedio_duracion=Avg(F('horafin') - F('horainicio'))
-        )['promedio_duracion']
+        if arriendoTotal == 0:
+            messages.warning(request, 'No hay arriendos asociados a este estacionamiento.')
+            return redirect('listarArriendo')
+        else:
 
-        # Renderiza la plantilla HTML con el contexto
-        template_path = 'estacionamiento/arriendo/pdf.html'
-        context = {
-            'usuario': usuario, 
-            'estacionamiento': estacionamiento, 
-            'arriendos': arriendos,
-            'precio_total': precio_total,
-            'arriendoTotal': arriendoTotal,
-            'duracion_promedio': duracion_promedio,
-            'icon': os.path.join(settings.STATIC_URL, 'img/logo_mi_estacionamiento.jpg'),
-        }
-        template = get_template(template_path)
-        html_content = template.render(context)
+            # Calcula la duración promedio en minutos
+            duracion_promedio = arriendos.aggregate(
+                promedio_duracion=Avg(F('horafin') - F('horainicio'))
+            )['promedio_duracion']
 
-        # Configura la respuesta HTTP con el tipo de contenido y el nombre del archivo
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'filename="{usuario.username}_{estacionamiento.direccion}.pdf"'
+            # Renderiza la plantilla HTML con el contexto
+            template_path = 'estacionamiento/arriendo/pdf.html'
+            context = {
+                'usuario': usuario, 
+                'estacionamiento': estacionamiento, 
+                'arriendos': arriendos,  # Cambiado a 'arriendos'
+                'precio_total': precio_total,
+                'arriendoTotal': arriendoTotal,
+                'duracion_promedio': duracion_promedio,
+                'icon': os.path.join(settings.STATIC_URL, 'img/logo_mi_estacionamiento.jpg'),
+            }
+            template = get_template(template_path)
+            html_content = template.render(context)
 
-        # Convierte la plantilla HTML a PDF y envía la respuesta
-        pisa_status = pisa.CreatePDF(
-            html_content, 
-            dest=response,
-            link_callback=link_callback)
-        if pisa_status.err:
-            return HttpResponse('Error al generar el PDF', status=500)
-        return response
+            # Configura la respuesta HTTP con el tipo de contenido y el nombre del archivo
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = f'filename="{usuario.username}_{estacionamiento.direccion}.pdf"'
+
+            # Convierte la plantilla HTML a PDF y envía la respuesta
+            pisa_status = pisa.CreatePDF(
+                html_content, 
+                dest=response,
+                link_callback=link_callback)
+            if pisa_status.err:
+                return HttpResponse('Error al generar el PDF', status=500)
+            return response
     
-    except:
-        pass
-    return redirect('listarArriendo')
+    except Exception as e:
+        messages.error(request, f'Error al generar el PDF: {str(e)}')
+        return redirect('listarArriendo')
+
 
 ##################################
 ##       Dueno a Cliente        ##
