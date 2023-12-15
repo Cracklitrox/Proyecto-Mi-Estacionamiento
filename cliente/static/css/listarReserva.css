@@ -1,0 +1,14 @@
+.empty-reservations {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.empty-reservations h2 {
+    margin-bottom: 10px;
+}
+
+.empty-reservations .btn {
+    margin-top: 15px;
+}
