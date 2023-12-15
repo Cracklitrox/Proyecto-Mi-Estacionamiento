@@ -35,7 +35,7 @@ class EstacionamientoForms(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EstacionamientoForms, self).__init__(*args, **kwargs)
-        self.fields['direccion'].widget.attrs.update({'class': 'form-control mb-'})
+        self.fields['direccion'].widget.attrs.update({'class': 'form-control mb-2'})
         self.fields['disponible'].widget.attrs.update({'class': 'form-check-input'})
         self.fields['tarifahora'].widget.attrs.update({'class': 'form-control'})
         self.fields['observaciones'].widget.attrs.update({'class': 'form-control'})

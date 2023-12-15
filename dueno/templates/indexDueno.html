@@ -62,7 +62,7 @@ Index
                         </li>
                     </ul>
                     <div class="card-body d-flex align-items-center justify-content-center">
-                        <a href="#" class="btn btn-outline-light btn-dark product-add btn-cambiar-estado "
+                        <a href="#" class="btn btn-outline-dark btn-light product-add btn-cambiar-estado "
                             data-estacionamiento-id="{{ estacionamiento.id }}">
                             {% if estacionamiento.disponible %}
                             Deshabilitado
@@ -70,14 +70,14 @@ Index
                             Habilitado
                             {% endif %}
                         </a>
-                        <button type="button" class="btn btn-outline-light btn-dark product-add" data-bs-toggle="modal" data-bs-target="#miPopupModal{{estacionamiento.id}}">
+                        <button type="button" class="btn btn-outline-dark btn-light product-add" data-bs-toggle="modal" data-bs-target="#miPopupModal{{estacionamiento.id}}">
                             Ver más
                         </button>
                     </div>
                     <td>
-                        <a name="" id="" class="btn btn-info" href="{% url 'editEstacionamiento' estacionamiento.id %}"
+                        <a name="" id="" class="btn btn-secondary" href="{% url 'editEstacionamiento' estacionamiento.id %}"
                             role="button">Editar</a>
-                        <a name="" id="" class="btn btn-danger"
+                        <a name="" id="" class="btn btn-light btn-outline-danger"
                             href="{% url 'eliminarEstacionamiento' estacionamiento.id %}" role="button">Eliminar</a>
                     </td>
                 </div>

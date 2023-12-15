@@ -159,7 +159,7 @@ def addEstacionamiento(request, id):
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
             
-            messages.success(request, 'Estacionamiento creado exitosamente.')
+            messages.success(request, 'Estacionamiento creado.')
             return redirect('indexDueno')
         else:
             print(estacionamiento_form.errors)
@@ -197,7 +197,7 @@ def editEstacionamiento(request, id):
             # Guarda los cambios en el estacionamiento
             formulario.save()
             punto_interes_form.save()
-            messages.success(request, 'Estacionamiento y Punto de Interés modificados correctamente.')
+            messages.success(request, 'Estacionamiento y Punto de Interés modificados.')
             return redirect(to='indexDueno')
         else:
             context["form"] = formulario
@@ -332,6 +332,7 @@ def generar_pdf(request, id_estacionamiento):
     
     except Exception as e:
         messages.error(request, f'Error al generar el PDF: {str(e)}')
+        print(f'Error al generar el PDF: {str(e)}')
         return redirect('listarArriendo')
 
 
