@@ -41,7 +41,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'listarVehiculo' %}">Vehículos</a></li>
-                <li><a class="dropdown-item" href="{% url 'tarjeta' %}">Tarjetas</a></li>
+                <li><a class="dropdown-item" href="{% url 'listarTarjetacreditoCliente' %}">Tarjetas</a></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
@@ -133,7 +133,7 @@
       </script>
     {% endfor %}
   {% endif %}
-  {% block js%} 
+  {% block js%}
   {% endblock%}
 </body>
 </html>

@@ -7,19 +7,21 @@ from django.contrib import messages
 from django.views import View
 from django.http import JsonResponse, HttpResponse
 from django.db import connection
-
-# Cliente
+# CLIENTE
 from .form import ClienteForm
-# Usuario
+# USUARIO
 from usuario.forms import ClienteProfileForm
-#Estacionamiento
+# ESTACIONAMIENTO
 from estacionamiento.models import *
 from estacionamiento.forms import VehiculoForm
-#Geolocalizacion
+# GEOLOCALIZACION
 from geolocalizacion.forms import *
-#Arriendo
+# ARRIENDO
 from arriendo.models import Arriendo
 from arriendo.form import *
+# TRANSACCION_PAGO
+from transaccion_pago.models import Tarjetacredito
+from transaccion_pago.forms import TarjetacreditoForm
 
 ##################################
 ##        Grupo - permisos      ##
@@ -266,8 +268,29 @@ def eliminarVehiculo(request, id):
 ##          Tarjetas            ##
 ##################################
 @login_required(login_url="loginCliente")
-def tarjetaCliente(request):
-    return render(request, 'tarjeta/tarjetaCliente.html')
+def listarTarjetacreditoCliente(request):
+    tarjetascreditocliente = Tarjetacredito.objects.filter(id_usuario_id=request.user.id)
+    context = {'tarjetas':tarjetascreditocliente}
+    return render(request, 'tarjeta/listarTarjetacreditoCliente.html', context)
+
+@login_required(login_url="loginCliente")
+def agregarTarjetacreditoCliente(request):
+    if request.method == 'POST':
+        formulario = TarjetacreditoForm(request.POST)
+        if formulario.is_valid():
+            tarjetacredito = formulario.save(commit=False)
+            tarjetacredito.id_usuario.id = request.user.id
+            formulario.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = TarjetacreditoForm()
+    return render(request, 'tarjeta/agregarTarjetacreditoCliente.html', {'form':formulario})
+
+##################################
+##       Cambiar a Dueno        ##
+##################################
 
 @login_required(login_url="loginCliente")
 def cambiar_a_dueno(request):

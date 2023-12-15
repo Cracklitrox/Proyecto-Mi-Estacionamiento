@@ -15,7 +15,7 @@ class Vehiculo(models.Model):
     id_marca = models.ForeignKey(Marca, models.DO_NOTHING, db_column='id_marca', default=None)
     modelo = models.CharField(max_length=255)
     estacionado = models.BooleanField(default=False, verbose_name='Vehiculo Estacionado')
-
+    
     def __str__(self):
         return 'ID del vehiculo: ' + str(self.id)
 

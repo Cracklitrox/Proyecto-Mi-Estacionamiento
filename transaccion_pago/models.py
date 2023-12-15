@@ -19,5 +19,9 @@ class Tarjetacredito(models.Model):
     fechavencimiento = models.DateField(db_column='fechaVencimiento', verbose_name='Fecha de Vencimiento')
     cvv = models.IntegerField(db_column='CVV')
 
+    def save(self, *args, **kwargs):
+        self.numero = self.numero.replace('-', '')
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return 'ID de la Tarjeta: ' + str(self.id) + ' / Numero de la Tarjeta: ' + str(self.numero)
