@@ -6,12 +6,15 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.views import View
 from django.http import JsonResponse, HttpResponse
+from django.db import connection
+
 # Cliente
 from .form import ClienteForm
 # Usuario
-from usuario.forms import UserForm, ClienteProfileForm
+from usuario.forms import ClienteProfileForm
 #Estacionamiento
 from estacionamiento.models import *
+from estacionamiento.forms import VehiculoForm
 #Geolocalizacion
 from geolocalizacion.forms import *
 #Arriendo
@@ -76,9 +79,6 @@ def loginCliente(request):
 ##################################
 @login_required(login_url="loginCliente")
 def logoutCliente(request):
-
-
-      
     logout(request)
     # Personaliza la redirección para los dueños
     return redirect('indexCliente')
@@ -203,20 +203,64 @@ class GuardarEstadoCasillaView(View):
 ##################################
 ##      Listar-Arriendos        ##
 ##################################
+
 @login_required(login_url="loginCliente")
 def listarArriendos(request):
-    arriendos = Arriendo.objects.all()
-    contexto = {'arriendos' : arriendos}
-    return render(request, 'listarReserva/listar.html',contexto)
-
+    arriendos = Arriendo.objects.filter(id_cliente_id=request.user.id)
+    mensaje = ''
+    if not arriendos:
+        mensaje = 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento'
+    contexto = {'arriendos' : arriendos, 'mensaje': mensaje}
+    return render(request, 'reserva/listarReserva.html', contexto)
 
 ##################################
 ##          Vehículos           ##
 ##################################
-@login_required(login_url="loginCliente")
-def vehiculosCliente(request):
-    return render(request, 'vehiculos/vehiculosCliente.html')
 
+# Funciones Vehiculo
+
+@login_required(login_url="loginCliente")
+def listarVehiculo(request):
+    vehiculos = Vehiculo.objects.filter(id_usuario_id=request.user.id)
+    context = {'vehiculos':vehiculos}
+    return render(request, 'vehiculos/listarVehiculo.html', context)
+
+@login_required(login_url="loginCliente")
+def agregarVehiculo(request):
+    if request.method == 'POST':
+        formulario = VehiculoForm(request.POST)
+        if formulario.is_valid():
+            vehiculo = formulario.save(commit=False)
+            vehiculo.id_usuario_id = request.user.id
+            formulario.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': dict(formulario.errors)})
+    else:
+        formulario = VehiculoForm()
+    return render(request, 'vehiculos/agregarVehiculo.html', {'form':formulario})
+
+@login_required(login_url="loginCliente")
+def editarVehiculo(request, id):
+    vehiculos = get_object_or_404(Vehiculo, id=id)
+    context = {
+        'form':VehiculoForm(instance=vehiculos)
+    }
+    if request.method == 'POST':
+        formulario = VehiculoForm(data = request.POST, instance=vehiculos)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Vehiculo modificado correctamente.')
+            return redirect(to='listarVehiculo')
+        else:
+            context['form'] = formulario
+    return render(request, 'vehiculos/editarVehiculo.html', context)
+
+@login_required(login_url="loginCliente")
+def eliminarVehiculo(request, id):
+    vehiculo = get_object_or_404(Vehiculo, id=id)
+    vehiculo.delete()
+    return redirect(to='listarVehiculo')
 
 ##################################
 ##          Tarjetas            ##

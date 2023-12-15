@@ -11,7 +11,6 @@ from arriendo.views import *
 
 
 urlpatterns = [
-    #Index
     path('',views.indexCliente,name='indexCliente'),
     path('indexCliente/',views.indexCliente,name='indexCliente'),
     #Registro 
@@ -22,11 +21,13 @@ urlpatterns = [
     path('cambiar_a_dueno', views.cambiar_a_dueno, name='cambiar_a_dueno'),
     #Arriendo
     path('indexCliente/listar/',views.listarArriendos,name='listar'),
-    #Vehículos
+    # Rutas VEHICULOS
+    path('vehiculos/listarVehiculo/', views.listarVehiculo, name='listarVehiculo'),
+    path('vehiculos/agregarVehiculo/', views.agregarVehiculo, name='agregarVehiculo'),
+    path('vehiculos/editarVehiculo/<id>/', views.editarVehiculo, name='editarVehiculo'),
+    path('vehiculos/eliminarVehiculo/<id>/', views.eliminarVehiculo, name='eliminarVehiculo'),
+    #Tarjetas
     path('indexCliente/tarjetaCliente/',views.tarjetaCliente,name='tarjeta'),
-     #Tarjetas
-    path('indexCliente/vehiculosCliente/',views.vehiculosCliente,name='vehiculos'),
-
     path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     #Estacionamiento / Arriendo
     path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),

@@ -40,3 +40,11 @@ class EstacionamientoForms(forms.ModelForm):
         self.fields['tarifahora'].widget.attrs.update({'class': 'form-control'})
         self.fields['observaciones'].widget.attrs.update({'class': 'form-control'})
         self.fields['imagen'].widget.attrs.update({'class': 'form-control-file'})
+
+class VehiculoForm(forms.ModelForm):
+    class Meta:
+        model = Vehiculo
+        fields = ['patente', 'id_marca', 'modelo']
+        labels = {
+            'id_marca': 'Marca'
+        }

@@ -1,0 +1,100 @@
+{% extends 'baseCliente.html' %}
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Vehiculos de {{request.user.username}}
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="card">
+    <div class="card-body">
+        <h2 style="text-align: center;">Vehiculos de {{request.user.username}}</h2>
+        <hr>
+        {% if vehiculos %}
+            <table class="table table-striped table-hover table-responsive-sm">
+                <tr class="table-active">
+                    <th>Patente</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Estacionado?</th>
+                    <th>Opciones</th>
+                </tr>
+                {% for v in vehiculos %}
+                <tr class="table-default">
+                    <td>{{ v.patente }}</td>
+                    <td>{{ v.id_marca.nombre }}</td>
+                    <td>{{ v.modelo }}</td>
+                    <td>
+                        {% if v.estacionado %}
+                        <i class="bi bi-check2-square" style="color: rgb(31, 208, 0);">Estacionado</i>
+                        {% else %}
+                        <i class="bi bi-dash-circle" style="color: rgb(208, 0, 0);">No Estacionado</i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'editarVehiculo' v.id %}" class="btn btn-info btn-sm">Editar</a>
+                        <a href="#" onclick="eliminarVehiculo({{ v.id }})" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <p>No tiene ningun vehiculo agregado, quiere agregar uno?</p>
+                <a href="{% url 'agregarVehiculo' %}" class="btn btn-primary">Agregar Vehiculo</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<br><br>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <p>¿Quiere agregar otro vehiculo?</p>
+    <a href="{% url 'agregarVehiculo' %}" class="btn btn-primary">Agregar Vehiculo</a>
+</div>
+{% endblock %}
+{% block js%}
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    function eliminarVehiculo(id) {
+        swalWithBootstrapButtons.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, Elíminalo",
+            cancelButtonText: "No, Cancelar",
+            reverseButtons: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire({
+                    title: "Eliminado",
+                    text: "El vehiculo ha sido eliminado.",
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = "../eliminarVehiculo/" + id + "/";
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelado",
+                    text: "Tu vehiculo está seguro :)",
+                    icon: "error"
+                });
+            }
+        });
+    }
+</script>
+{% endblock %}
