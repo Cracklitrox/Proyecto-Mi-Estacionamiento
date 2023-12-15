@@ -1,16 +1,10 @@
 var w,h;
 var parklock = false;
 var parklist = [0,0,0,0,0,0,0,0,0,0];
-var queueitems = 0; // initially its 0
-
-
+var queueitems = 0;
 function setupparkingmanager(){
-    
     w = document.getElementById('parkingspace').offsetWidth;
     h = document.getElementById('parkingspace').offsetHeight;
-
-    // creating Animations -- important part
-
     var anim = document.createElement('style');
     var rule1 = document.createTextNode('@-webkit-keyframes car-park {'+
         'from { transform: rotate(270deg) }'+
@@ -43,9 +37,7 @@ function setupparkingmanager(){
     document.getElementById('parkingspace').appendChild(anim);
     inicializarVehiculos();
 }
-
 function updatequeue(){
-    
     for(i=1;i<=5;i++){
         if(i<=queueitems){
             document.getElementById('queue'+i.toString()).src = 'car.png';
@@ -54,18 +46,14 @@ function updatequeue(){
         }
     }
 }
-
-function queuecheck(slot){
-   
+function queuecheck(slot){  
     if(queueitems > 0){
         queueitems = queueitems - 1;
         updatequeue();
         carenter(slot);
     }
 }
-
 function carexit(slot){
-    
     if(!parklock){
         parklist[slot] = 0;
         console.log(parklist)
@@ -78,9 +66,7 @@ function carexit(slot){
         setTimeout(function(){document.getElementById('car'+(slot).toString()).remove();parklock=false;queuecheck(slot)},1500)
     }
 }
-
 function generatenewcar(slot){
-    
     var space = document.getElementById('parkingspace');
     let img = document.createElement('img');
     img.src = '/static/img/rayo.png';
@@ -89,17 +75,13 @@ function generatenewcar(slot){
     img.id = 'car'+slot.toString();
     space.appendChild(img)
 }
-
-
 function carenter(slot){
     let casilla = document.getElementById('slot');
-
     // Verificar si la casilla está disponible
     if (casilla && casilla.classList.contains('no-disponible')) {
         // La casilla no está disponible, no hacer nada
         return;
     }
-
     if(!document.getElementById('car'+(slot).toString()) && !parklock){
         parklist[slot] = 1;
         console.log(parklist)

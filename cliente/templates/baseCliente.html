@@ -21,7 +21,8 @@
   <header>
     <div>
       <a class="navbar-brand rounded" href="{% url 'indexCliente' %}">
-        <img src="{% static 'img/cars.jpg' %}" alt="Logo" height="50" width="50">
+        {% load static %}
+        <img src="/media/logo_mi_estacionamiento.png" alt="Logo" height="50" width="50">
         Mi Estacionamiento
       </a>
     </div>

@@ -31,8 +31,6 @@ urlpatterns = [
     path('tarjeta/agregarTarjetacreditoCliente/', views.agregarTarjetacreditoCliente, name='agregarTarjetacreditoCliente'),
     path('tarjeta/editarTarjetacreditoCliente/<id>/', views.editarTarjetacreditoCliente, name='editarTarjetacreditoCliente'),
     path('tarjeta/eliminarTarjetacreditoCliente/<id>/', views.eliminarTarjetacreditoCliente, name='eliminarTarjetacreditoCliente'),
-
-    path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     #Estacionamiento / Arriendo
     path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),
     path('indexCliente/estacionamientos/cambiar_casilla/<int:casilla_id>',views.cambiar_casilla,name='cambiar_casilla'),

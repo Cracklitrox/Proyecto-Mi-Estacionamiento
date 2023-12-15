@@ -127,16 +127,6 @@ def indexCliente(request):
 
 
 ##################################
-##       Pago-Cliente           ##
-##################################
-
-@login_required(login_url="loginCliente")
-@user_passes_test(in_cliente_group, login_url='loginCliente')
-def pagoCliente(request):
-    return render(request,'pagoCliente.html')
-
-
-##################################
 ##           Arriendo           ##
 ##################################
 
@@ -145,32 +135,24 @@ def pagoCliente(request):
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
     casillas = Casilla.objects.filter(id_estacionamiento=estacionamiento)
-
-    # Obtiene el id del dueño asociado al estacionamiento
     id_usuario = request.user.id
     tarifahora = estacionamiento.tarifahora
-
     if request.method == 'POST':
         arriendo_form = ArriendoForm(request.POST, id_estacionamiento=id, id_user=id_usuario, preciototal=tarifahora)
-
         if arriendo_form.is_valid():
             arriendo = arriendo_form.save(commit=False)
             arriendo.save()
-
-            
             messages.success(request, 'Arriendo creado exitosamente.')
             return redirect('indexCliente')
         else:
             messages.error(request, 'Corrige los errores en el formulario.')
     else:
         arriendo_form = ArriendoForm(id_estacionamiento=id, id_user=id_usuario, preciototal=tarifahora)
-
     context = {
         'estacionamiento': estacionamiento,
         'casillas': casillas,
         'arriendo_form': arriendo_form,
     }
-
     return render(request, 'estacionamientos.html', context)
 
 ##################################
