@@ -44,35 +44,31 @@ Mi Estacionamiento | Estacionamientos
               {% else %}
                 <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
               {% endif %}
-              <div class="card-body text-center">
-                <h3 class="card-title mb-3 text-info">{{ estacionamiento.direccion | capfirst }}</h3>
+              <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item"></li>
+                <p class="card-title mb-3 text-info h3">{{ estacionamiento.direccion | capfirst }}</p>
                 <p class="card-text mb-2">Precio: ${{ estacionamiento.tarifahora_str | intcomma }}</p>
-                <div class="row">
-                  <div class="col">
-                    <button class="btn {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}btn-success{% else %}btn-danger{% endif %} btn-lg"
-                      disabled>
-                      {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
-                        <i class="bi bi-check-circle"></i> Disponible
-                      {% else %}
-                        <i class="bi bi-x-circle"></i> No Disponible
-                      {% endif %}
-                    </button>
-                  </div>
-                  <div class="col">
-                    {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
-                      <a href="{% url 'estacionamientos' id=estacionamiento.id %}"
-                        class="btn btn-outline-light btn-lg btn-dark" data-bs-toggle="tooltip" title="Reservar">
-                        <i class="bi bi-calendar-plus"></i> Reservar
-                      </a>
-                    {% else %}
-                      <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled" data-bs-toggle="tooltip"
-                        title="Estacionamiento no disponible">
-                        <i class="bi bi-calendar-minus"></i> Reservar
-                      </a>
-                    {% endif %}
-                  </div>
-                </div>
+                </li>
+              </ul>
+              <div class="d-grid gap-2">
+                <button class="btn {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}btn-success{% else %}btn-danger{% endif %} btn-lg" disabled>
+                  {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
+                    <i class="bi bi-check-circle"></i> Disponible
+                  {% else %}
+                    <i class="bi bi-x-circle"></i> No Disponible
+                  {% endif %}
+                </button>
+                {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
+                  <a href="{% url 'estacionamientos' id=estacionamiento.id %}" class="btn btn-outline-light btn-lg btn-dark " data-bs-toggle="tooltip" title="Reservar">
+                    <i class="bi bi-calendar-plus"></i> Reservar
+                  </a>
+                {% else %}
+                  <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled" data-bs-toggle="tooltip" title="Estacionamiento no disponible">
+                    <i class="bi bi-calendar-minus"></i> Reservar
+                  </a>
+                {% endif %}
               </div>
+              
             </div>
           </div>
         {% endif %}

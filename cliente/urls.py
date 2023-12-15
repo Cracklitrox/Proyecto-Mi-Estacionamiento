@@ -8,6 +8,7 @@ from estacionamiento.views import *
 from arriendo.models import *
 from arriendo.models import Arriendo
 from arriendo.views import *
+from dueno.views import *
 
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path('logout_cliente/', views.logoutCliente, name='logoutCliente'),
     #Cambiar rol
     path('cambiar_a_dueno', views.cambiar_a_dueno, name='cambiar_a_dueno'),
+    path('logoutDueno', views.logout_dueno, name='logoutDueno2'),
     #Arriendo
     path('indexCliente/listar/',views.listarArriendos,name='listar'),
     # Rutas VEHICULOS
@@ -31,6 +33,13 @@ urlpatterns = [
     path('tarjeta/agregarTarjetacreditoCliente/', views.agregarTarjetacreditoCliente, name='agregarTarjetacreditoCliente'),
     path('tarjeta/editarTarjetacreditoCliente/<id>/', views.editarTarjetacreditoCliente, name='editarTarjetacreditoCliente'),
     path('tarjeta/eliminarTarjetacreditoCliente/<id>/', views.eliminarTarjetacreditoCliente, name='eliminarTarjetacreditoCliente'),
+
+    #Not Found 
+    path('notfound/',views.notfound,name='notfound'),
+
+    #Pago Cliente
+    path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
+        
     #Estacionamiento / Arriendo
     path('indexCliente/estacionamientos/<int:id>/',views.estacionamientos,name='estacionamientos'),
     path('indexCliente/estacionamientos/cambiar_casilla/<int:casilla_id>',views.cambiar_casilla,name='cambiar_casilla'),

@@ -21,41 +21,18 @@ Editar Estacionamiento
         <div class="mt-1 mb-2 border p-4">
             <form method="post" id="miFormulario" onsubmit="enviarFormulario()" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="row form-group mb-1">
-              <div class="col-md-6">
-                <label for="{{ form.direccion.id_for_label }}">Dirección:</label>
-                {{ form.direccion }}
-                {{ form.direccion.errors }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.tarifahora.id_for_label }}">Tarifa por Hora:</label>
-                {{ form.tarifahora }}
-                {{ form.tarifahora.errors }}
-              </div>
-            </div>
+            {{ form | crispy}}
+            <!-- {{ punto_interes_form | crispy}} --> 
             <div class="row form-group mb-2">
-              <div class="col-md-6">
-                <label for="{{ form.observaciones.id_for_label }}">Observación:</label>
-                {{ form.observaciones }}
-                {{ form.observaciones.errors }}
-              </div>
-              <div class="col-md-6">
-                <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen:</label>
-                <input type="file" class="form-control" id="{{ form.imagen.id_for_label }}"
-                  name="{{ form.imagen.name }}">
-                <div class="invalid-feedback">{{ form.imagen.errors }}</div>
-              </div>
-            </div>
-            <div class="row form-group mb-2">
-              <div class="col-md-4">
-                <label for="{{ punto_interes_form.longitud.id_for_label }}">Longitud:</label>
-                {{ punto_interes_form.longitud }}
-                {{ puntointerepunto_interes_forms_form.longitud.errors }}
-              </div>
               <div class="col-md-4">
                 <label for="{{ punto_interes_form.latitud.id_for_label }}">Latitud:</label>
                 {{ punto_interes_form.latitud }}
                 {{ punto_interes_form.latitud.errors }}
+              </div>
+              <div class="col-md-4">
+                <label for="{{ punto_interes_form.longitud.id_for_label }}">Longitud:</label>
+                {{ punto_interes_form.longitud }}
+                {{ puntointerepunto_interes_forms_form.longitud.errors }}
               </div>        
               <div class="col-md-4">
                 <label for="{{ punto_interes_form.nombre.id_for_label }}">Nombre:</label>

@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/notfound.css' %}">
+    <title>404 Not Found</title>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">Página no encontrada</div>
+        <a href="{% url 'indexCliente' %}" class="btn btn-primary btn-home">Ir a la página de inicio</a>
+    </div>
+</body>
+</html>
