@@ -27,8 +27,8 @@ from transaccion_pago.forms import TarjetacreditoForm
 ##        Grupo - permisos      ##
 ##################################
 
-def es_cliente(user):
-    return user.groups.filter(name='Cliente').exists()  
+def in_cliente_group(user):
+    return user.groups.filter(name__in=['Cliente']).exists()
 
 ##################################
 ##           Registro           ##
@@ -79,12 +79,13 @@ def loginCliente(request):
 ##################################
 ##            Logout            ##
 ##################################
+
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def logoutCliente(request):
     logout(request)
     # Personaliza la redirección para los dueños
     return redirect('indexCliente')
-
 
 ##################################
 ##            Index             ##
@@ -130,6 +131,7 @@ def indexCliente(request):
 ##################################
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def pagoCliente(request):
     return render(request,'pagoCliente.html')
 
@@ -139,6 +141,7 @@ def pagoCliente(request):
 ##################################
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
     casillas = Casilla.objects.filter(id_estacionamiento=estacionamiento)
@@ -154,7 +157,6 @@ def estacionamientos(request, id):
             arriendo = arriendo_form.save(commit=False)
             arriendo.save()
 
-            # Resto del código para actualizar las casillas...
             
             messages.success(request, 'Arriendo creado exitosamente.')
             return redirect('indexCliente')
@@ -174,6 +176,9 @@ def estacionamientos(request, id):
 ##################################
 ##   Función cambiar Casilla    ##
 ##################################
+
+@login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def cambiar_casilla(request, casilla_id):
     try:
         casilla = Casilla.objects.get(id=casilla_id)
@@ -186,7 +191,9 @@ def cambiar_casilla(request, casilla_id):
 ##################################
 ##   Función guardar Casilla    ##
 ##################################
+
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 class GuardarEstadoCasillaView(View):
     def post(self, request, *args, **kwargs):
         id_casilla = request.POST.get('idCasilla')
@@ -206,6 +213,7 @@ class GuardarEstadoCasillaView(View):
 ##################################
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def listarArriendos(request):
     arriendos = Arriendo.objects.filter(id_user=request.user.id)
     mensaje = ''
@@ -221,12 +229,14 @@ def listarArriendos(request):
 # Funciones Vehiculo
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def listarVehiculo(request):
     vehiculos = Vehiculo.objects.filter(id_usuario_id=request.user.id)
     context = {'vehiculos':vehiculos}
     return render(request, 'vehiculos/listarVehiculo.html', context)
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def agregarVehiculo(request):
     if request.method == 'POST':
         formulario = VehiculoForm(request.POST)
@@ -242,6 +252,7 @@ def agregarVehiculo(request):
     return render(request, 'vehiculos/agregarVehiculo.html', {'form':formulario})
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def editarVehiculo(request, id):
     vehiculos = get_object_or_404(Vehiculo, id=id)
     context = {
@@ -258,6 +269,7 @@ def editarVehiculo(request, id):
     return render(request, 'vehiculos/editarVehiculo.html', context)
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def eliminarVehiculo(request, id):
     vehiculo = get_object_or_404(Vehiculo, id=id)
     vehiculo.delete()
@@ -266,13 +278,16 @@ def eliminarVehiculo(request, id):
 ##################################
 ##          Tarjetas            ##
 ##################################
+
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def listarTarjetacreditoCliente(request):
     tarjetascreditocliente = Tarjetacredito.objects.filter(id_usuario_id=request.user.id)
     context = {'tarjetas':tarjetascreditocliente}
     return render(request, 'tarjeta/listarTarjetacreditoCliente.html', context)
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def agregarTarjetacreditoCliente(request):
     if request.method == 'POST':
         formulario = TarjetacreditoForm(request.POST)
@@ -289,6 +304,7 @@ def agregarTarjetacreditoCliente(request):
 
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def editarTarjetacreditoCliente(request, id):
     tarjetas = get_object_or_404(Tarjetacredito, id=id)
     context = {
@@ -305,6 +321,7 @@ def editarTarjetacreditoCliente(request, id):
     return render(request, 'tarjeta/editarTarjetacreditoCliente.html', context)
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def eliminarTarjetacreditoCliente(request, id):
     tarjeta = get_object_or_404(Tarjetacredito, id=id)
     tarjeta.delete()
@@ -315,6 +332,7 @@ def eliminarTarjetacreditoCliente(request, id):
 ##################################
 
 @login_required(login_url="loginCliente")
+@user_passes_test(in_cliente_group, login_url='loginCliente')
 def cambiar_a_dueno(request):
     try:
         # Obtener el usuario actual
@@ -329,6 +347,5 @@ def cambiar_a_dueno(request):
 
         user.save()
         return redirect('indexDueno')
-
     except Group.DoesNotExist:
         return HttpResponse("Error: Los grupos no están configurados correctamente. Contacta al administrador.")

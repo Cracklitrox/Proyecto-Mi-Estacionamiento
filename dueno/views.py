@@ -36,8 +36,8 @@ from usuario.forms import UserForm, UsuarioProfileForm
 ##        Grupo - permisos      ##
 ##################################
 
-def es_dueno(user):
-    return user.groups.filter(name='Dueno').exists()
+def in_dueno_group(user):
+    return user.groups.filter(name__in=['Dueno']).exists()
 
 ##################################
 ##           Registro           ##
@@ -100,6 +100,7 @@ def loginDueno(request):
 ##################################
 
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def logout_dueno(request):
     user = request.user
     
@@ -122,7 +123,7 @@ def logout_dueno(request):
 
 
 @login_required(login_url="loginDueno")
-@user_passes_test(es_dueno)
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def indexDueno(request):    
     id = request.user.id
     estacionamientos = Estacionamiento.objects.filter(id_dueno=id)
@@ -143,6 +144,7 @@ def indexDueno(request):
 ##################################
 
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def addEstacionamiento(request, id):
     dueno_profile = get_object_or_404(DuenoProfile, pk=id)
     if request.method == 'POST':
@@ -152,6 +154,7 @@ def addEstacionamiento(request, id):
         if estacionamiento_form.is_valid() and puntointeres_form.is_valid():
             estacionamiento = estacionamiento_form.save(commit=False)
             estacionamiento.id_dueno = dueno_profile
+            estacionamiento.disponible = True
             puntointeres = puntointeres_form.save()
             estacionamiento.id_puntoInteres = puntointeres
             estacionamiento.save()
@@ -176,6 +179,7 @@ def addEstacionamiento(request, id):
 ##################################
 
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def editEstacionamiento(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
     punto_interes = estacionamiento.id_puntoInteres
@@ -208,6 +212,7 @@ def editEstacionamiento(request, id):
 ##################################
 
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def eliminarEstacionamiento(request,id):
     estacionamiento = Estacionamiento.objects.get(id=id)
     estacionamiento.delete()
@@ -218,6 +223,7 @@ def eliminarEstacionamiento(request,id):
 ##################################
 @csrf_exempt
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def cambiar_estado(request, estacionamiento_id):
     try:
         estacionamiento = Estacionamiento.objects.get(id=estacionamiento_id)
@@ -231,6 +237,7 @@ def cambiar_estado(request, estacionamiento_id):
 ##################################
 
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def arriendo(request):
     arriendo_list = Arriendo.objects.all()
     estacionamientos = Estacionamiento.objects.filter(id_dueno=request.user.id)
@@ -248,7 +255,8 @@ def arriendo(request):
 ##       Generar-image          ##
 ##################################
 
-
+@login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def link_callback(uri, rel):
     sUrl = settings.STATIC_URL
     sRoot = settings.STATIC_ROOT
@@ -270,6 +278,7 @@ def link_callback(uri, rel):
 ##################################
 
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def generar_pdf(request, id_estacionamiento):
     try:
         # Obtén el usuario autenticado y el estacionamiento asociado
@@ -329,7 +338,9 @@ def generar_pdf(request, id_estacionamiento):
 ##################################
 ##       Dueno a Cliente        ##
 ##################################
+
 @login_required(login_url="loginDueno")
+@user_passes_test(in_dueno_group, login_url='loginDueno')
 def cambiar_a_cliente(request):
     # Obtener el usuario actual
     user = request.user
