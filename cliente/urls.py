@@ -29,6 +29,8 @@ urlpatterns = [
     # Rutas TARJETA
     path('tarjeta/listarTarjetacreditoCliente/',views.listarTarjetacreditoCliente,name='listarTarjetacreditoCliente'),
     path('tarjeta/agregarTarjetacreditoCliente/', views.agregarTarjetacreditoCliente, name='agregarTarjetacreditoCliente'),
+    path('tarjeta/editarTarjetacreditoCliente/<id>/', views.editarTarjetacreditoCliente, name='editarTarjetacreditoCliente'),
+    path('tarjeta/eliminarTarjetacreditoCliente/<id>/', views.eliminarTarjetacreditoCliente, name='eliminarTarjetacreditoCliente'),
 
     path('pagoCliente/',views.pagoCliente,name='pagoCliente'),
     #Estacionamiento / Arriendo

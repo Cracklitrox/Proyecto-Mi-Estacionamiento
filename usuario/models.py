@@ -87,7 +87,6 @@ class UsuarioProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     run = models.IntegerField(_('Run'), validators=[MinValueValidator(1000000), MaxValueValidator(99999999)])
     dv_run = models.CharField(_('Digito Verificador'), max_length=1, validators=[RegexValidator(r'^[1-9K]$')])
-    #vehiculos = models.IntegerField(_('Cantidad de Vehiculos'), null=True, blank=True, validators=[MinValueValidator(0)])
     id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
 
     class Meta:
@@ -97,7 +96,6 @@ class ClienteProfile(UsuarioProfile):
     calificacion_promedio_cliente = models.DecimalField(_('Calificacion Promedio del Cliente'), default=0, max_digits=2, decimal_places=1, null=True, blank=True)
 
 class DuenoProfile(UsuarioProfile):
-    #estacionamientos = models.IntegerField(_('Cantidad de Estacionamientos'), null=True, blank=True, validators=[MinValueValidator(0)])
     calificacion_promedio_dueno = models.DecimalField(_('Calificacion Promedio del Dueño'), default=0, max_digits=2, decimal_places=1, null=True, blank=True)
 
 class AdministradorProfile(models.Model):

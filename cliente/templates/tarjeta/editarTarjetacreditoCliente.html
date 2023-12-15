@@ -1,0 +1,64 @@
+{% extends 'baseCliente.html' %}
+{% load static %}
+
+{% block css %}
+{# Tus estilos específicos para esta vista #}
+{% endblock %}
+
+{% block title %}
+Modificar tarjeta de usuario {{request.user.username}}
+{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<br><br>
+<div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h2 style="text-align: center;">Editar Tarjeta de Credito</h2>
+                <hr>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.numero|as_crispy_field }}
+                    {{ form.fechavencimiento|as_crispy_field }}
+                    {{ form.nombre_titular|as_crispy_field }}
+                    {{ form.id_banco|as_crispy_field }}
+                    <div class="form-group">
+                        {{ form.cvv|as_crispy_field }}
+                        <input type="checkbox" id="toggleCvv" />
+                        <label for="toggleCvv">Mostrar CVV</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="d-flex justify-content-start">
+                                <a href="{% url 'listarTarjetacreditoCliente' %}" class="btn btn-info">Volver</a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex justify-content-end">
+                                <input type="reset" value="Cancelar" class="btn btn-warning">
+                                <input type="submit" value="Editar" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#toggleCvv').change(function() {
+        if ($('#toggleCvv').is(':checked')) {
+            $('#id_cvv').attr('type', 'text');
+        } else {
+            $('#id_cvv').attr('type', 'password');
+        }
+    });
+});
+</script>
+{% endblock %}
