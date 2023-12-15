@@ -26,53 +26,59 @@ Mi Estacionamiento | Estacionamientos
   </section>
 
   <!-- Cartas -->
-  <section class="">
-    {% load humanize %}
-    <h2 class="mb-3">Estacionamientos</h2>
+<section class="">
+  <h2 class="mb-3">Estacionamientos</h2>
+    {% if messages %}
+      <div class="alert alert-warning text-center" role="alert">
+        {{ messages }}
+      </div>
+    {% endif %}
     <div class="row row-cols-1 row-cols-xl-4 row-cols-md-3 g-4 m-5">
       {% for estacionamiento in estacionamientos %}
-      <div class="col">
-        <div class="card h-100">
-          
-          {% if estacionamiento.imagen %}
-          <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
-          {% else %}
-          <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
-          {% endif %}
-          <div class="card-body text-center">
-            <h3 class="card-title mb-3 text-info">{{ estacionamiento.direccion | capfirst }}</h3>
-            <p class="card-text mb-2">Precio: ${{ estacionamiento.tarifahora_str | intcomma }}</p>
-            <div class="row">
-              <div class="col">
-                <button class="btn {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id%}btn-success{% else %}btn-danger{% endif %} btn-lg"
-                  disabled>
-                  {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id%}
-                  <i class="bi bi-check-circle"></i> Disponible
-                  {% else %}
-                  <i class="bi bi-x-circle"></i> No Disponible
-                  {% endif %}
-                </button>
-              </div>
-              <div class="col">
-                {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
-                <a href="{% url 'estacionamientos' id=estacionamiento.id %}"
-                  class="btn btn-outline-light btn-lg btn-dark" data-bs-toggle="tooltip" title="Reservar">
-                  <i class="bi bi-calendar-plus"></i> Reservar
-                </a>
-                {% else %}
-                <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled" data-bs-toggle="tooltip"
-                  title="Estacionamiento no disponible">
-                  <i class="bi bi-calendar-minus"></i> Reservar
-                </a>
-                {% endif %}
+        {% if estacionamiento.id_dueno.user_id != usuario.id%}
+          <div class="col">
+            <div class="card h-100">
+              {% if estacionamiento.imagen %}
+                <img class="card-img-top" src="{{ estacionamiento.imagen.url }}" alt="Imagen del estacionamiento">
+              {% else %}
+                <img class="card-img-top" src="../../media/otros/error_imagen.jpg" alt="Imagen de relleno (error)">
+              {% endif %}
+              <div class="card-body text-center">
+                <h3 class="card-title mb-3 text-info">{{ estacionamiento.direccion | capfirst }}</h3>
+                <p class="card-text mb-2">Precio: ${{ estacionamiento.tarifahora_str | intcomma }}</p>
+                <div class="row">
+                  <div class="col">
+                    <button class="btn {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}btn-success{% else %}btn-danger{% endif %} btn-lg"
+                      disabled>
+                      {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
+                        <i class="bi bi-check-circle"></i> Disponible
+                      {% else %}
+                        <i class="bi bi-x-circle"></i> No Disponible
+                      {% endif %}
+                    </button>
+                  </div>
+                  <div class="col">
+                    {% if estacionamiento.disponible and estacionamiento.id_dueno.user_id != usuario.id %}
+                      <a href="{% url 'estacionamientos' id=estacionamiento.id %}"
+                        class="btn btn-outline-light btn-lg btn-dark" data-bs-toggle="tooltip" title="Reservar">
+                        <i class="bi bi-calendar-plus"></i> Reservar
+                      </a>
+                    {% else %}
+                      <a href="#" class="btn btn-outline-light btn-lg btn-dark disabled" data-bs-toggle="tooltip"
+                        title="Estacionamiento no disponible">
+                        <i class="bi bi-calendar-minus"></i> Reservar
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        {% endif %}
       {% endfor %}
     </div>
-  </section>
+</section>
+
 </main>
 <script>
   const imageUrl = "{% static 'img/geo-alt-fill.svg' %}";

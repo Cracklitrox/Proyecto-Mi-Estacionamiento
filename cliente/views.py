@@ -105,6 +105,11 @@ def indexCliente(request):
             'puntos_interes': puntos_interes,
             'estacionamientos': estacionamientos,
         }
+
+        if not estacionamientos:
+            # Si no hay estacionamientos, muestra un mensaje de advertencia
+            messages.warning(request, 'No tienes estacionamientos. Agrega al menos uno para acceder a esta sección.')
+
         return render(request, 'indexCliente.html', context)
     else:
         puntos_interes = Puntointeres.objects.all()
@@ -117,7 +122,7 @@ def indexCliente(request):
             'puntos_interes': puntos_interes,
             'estacionamientos': estacionamientos,
         }
-    return render(request, 'indexCliente.html', context)
+        return render(request, 'indexCliente.html', context)
 
 
 ##################################
