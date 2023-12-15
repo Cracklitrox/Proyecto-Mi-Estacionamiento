@@ -134,36 +134,31 @@ def pagoCliente(request):
 @login_required(login_url="loginCliente")
 def estacionamientos(request, id):
     estacionamiento = get_object_or_404(Estacionamiento, id=id)
-    casilla = Casilla.objects.all()
+    casillas = Casilla.objects.filter(id_estacionamiento=estacionamiento)
 
     # Obtiene el id del dueño asociado al estacionamiento
-    id_usuario = estacionamiento.id_dueno_id
+    id_usuario = request.user.id
     tarifahora = estacionamiento.tarifahora
 
-    # Crea una instancia del formulario ArriendoForm
-    arriendo_form = ArriendoForm(id_estacionamiento=id, id_cliente=id_usuario, preciototal=tarifahora)
-
     if request.method == 'POST':
-        # Procesar el formulario cuando se envíe
-        arriendo_form = ArriendoForm(request.POST)
+        arriendo_form = ArriendoForm(request.POST, id_estacionamiento=id, id_user=id_usuario, preciototal=tarifahora)
 
         if arriendo_form.is_valid():
-            # Guarda el formulario y realiza las acciones necesarias
             arriendo = arriendo_form.save(commit=False)
             arriendo.save()
 
             # Resto del código para actualizar las casillas...
             
-            messages.success(request, 'Estacionamiento creado exitosamente.')
+            messages.success(request, 'Arriendo creado exitosamente.')
             return redirect('indexCliente')
         else:
-            print(arriendo_form.errors)
             messages.error(request, 'Corrige los errores en el formulario.')
+    else:
+        arriendo_form = ArriendoForm(id_estacionamiento=id, id_user=id_usuario, preciototal=tarifahora)
 
-    # Método GET, renderiza la página con el formulario
     context = {
         'estacionamiento': estacionamiento,
-        'casilla': casilla,
+        'casillas': casillas,
         'arriendo_form': arriendo_form,
     }
 
@@ -205,7 +200,7 @@ class GuardarEstadoCasillaView(View):
 
 @login_required(login_url="loginCliente")
 def listarArriendos(request):
-    arriendos = Arriendo.objects.filter(id_cliente_id=request.user.id)
+    arriendos = Arriendo.objects.filter(id_user=request.user.id)
     mensaje = ''
     if not arriendos:
         mensaje = 'No puede ingresar a la página hasta arrendar al menos 1 estacionamiento'

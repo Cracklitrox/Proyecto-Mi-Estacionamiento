@@ -202,9 +202,6 @@ def editEstacionamiento(request, id):
     return render(request, 'estacionamiento/editEstacionamiento.html', context)
 
    
-
-
-
 ##################################
 ##     Del-Estacionamiento      ##
 ##################################

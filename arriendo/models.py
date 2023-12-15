@@ -1,12 +1,12 @@
 from django.db import models
 from estacionamiento.models import Estacionamiento
 # Usuario
-from usuario.models import ClienteProfile
+from usuario.models import ClienteProfile, User
 
 # Create your models here.
 
 class Arriendo(models.Model):
-    id_cliente = models.ForeignKey(ClienteProfile,  on_delete=models.CASCADE, null=True)
+    id_user = models.ForeignKey(User,  on_delete=models.CASCADE, db_column='id_user', null=True)
     id_estacionamiento = models.ForeignKey('estacionamiento.Estacionamiento', on_delete=models.CASCADE, db_column='id_estacionamiento', verbose_name='Estacionamiento')
     horainicio = models.DateTimeField(db_column='horaInicio', verbose_name='Hora de Inicio')
     horafin = models.DateTimeField(db_column='horaFin', verbose_name='Hora de Fin')

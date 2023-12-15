@@ -14,6 +14,8 @@ Mi Estacionamiento | Reserva
 {% endblock %}
 
 {% block content %}
+
+{% load crispy_forms_tags %}
 <div class="container">
     <div class="dashboard">
         <div class="parking-manager">
@@ -33,32 +35,9 @@ Mi Estacionamiento | Reserva
             <div class="new-car-btn">Tarifa: </div>
             <br>
             <div class="new-car-btn">Cliente: 10</div>
-            <form method="post" enctype="multipart/form-data" class="text-white m-5 mt-4 ">
+            <form method="post" enctype="multipart/form-data" class="text-black m-5 mt-4 ">
                 {% csrf_token %}
-                {{ arriendo_form.non_field_errors }}
-                
-                <input type="hidden" name="{{ arriendo_form.id_dueno.name }}" value="{{ arriendo_form.id_dueno.value }}">
-                <input type="hidden" name="{{ arriendo_form.id_estacionamiento.name }}" value="{{ arriendo_form.id_estacionamiento.value }}">
-
-                <!-- Nuevo campo oculto para el ID del cliente -->
-                <input type="hidden" name="id_cliente" value="{{ user.id }}">
-
-                <div class="mb-3">
-                    {{ arriendo_form.horainicio.label_tag }}
-                    {{ arriendo_form.horainicio }}
-                </div>
-
-                <div class="mb-3">
-                    {{ arriendo_form.horafin.label_tag }}
-                    {{ arriendo_form.horafin }}
-                </div>
-
-                <div class="mb-3">
-                    {{ arriendo_form.preciototal.label_tag }}
-                    {{ arriendo_form.preciototal }}
-                </div>
-
-                <input type="hidden" name="casilla_seleccionada" id="casilla_seleccionada" value="">
+                {{arriendo_form | crispy}}
 
                 <div class="mb-3">
                     <button class="btn btn-outline-light btn-lg btn-dark" type="submit">Guardar</button>
