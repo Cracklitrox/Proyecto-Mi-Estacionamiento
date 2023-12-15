@@ -14,49 +14,43 @@ Vehiculos de {{request.user.username}}
 <br><br>
 <div class="card">
     <div class="card-body">
-        <h2 style="text-align: center;">Vehiculos de {{request.user.username}}</h2>
+        <h2 style="text-align: center;">Tarjetas de credito de {{request.user.username}}</h2>
         <hr>
-        {% if vehiculos %}
+        {% if tarjetas %}
             <table class="table table-striped table-hover table-responsive-sm">
                 <tr class="table-active">
-                    <th>Patente</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Estacionado?</th>
+                    <th>Nombre Titular</th>
+                    <th>Numero Tarjeta</th>
+                    <th>Fecha Vencimiento</th>
+                    <th>Banco Asociado</th>
                     <th>Opciones</th>
                 </tr>
-                {% for v in vehiculos %}
+                {% for tj in tarjetas %}
                 <tr class="table-default">
-                    <td>{{ v.patente }}</td>
-                    <td>{{ v.id_marca.nombre }}</td>
-                    <td>{{ v.modelo }}</td>
+                    <td>{{ tj.nombre_titular }}</td>
+                    <td>{{ v.numero }}</td>
+                    <td>{{ v.fechavencimiento }}</td>
+                    <td>{{ v.id_banco_id.nombre }}</td>
                     <td>
-                        {% if v.estacionado %}
-                        <i class="bi bi-check2-square" style="color: rgb(31, 208, 0);">Estacionado</i>
-                        {% else %}
-                        <i class="bi bi-dash-circle" style="color: rgb(208, 0, 0);">No Estacionado</i>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'editarVehiculo' v.id %}" class="btn btn-info btn-sm">Editar</a>
-                        <a href="#" onclick="eliminarVehiculo({{ v.id }})" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="{% url 'editarTarjetacreditoCliente' tj.id %}" class="btn btn-info btn-sm">Editar</a>
+                        <a href="#" onclick="eliminarTarjetacreditoCliente({{ tj.id }})" class="btn btn-danger btn-sm">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}
             </table>
         {% else %}
             <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                <p>No tiene ningun vehiculo agregado, quiere agregar uno?</p>
-                <a href="{% url 'agregarVehiculo' %}" class="btn btn-primary">Agregar Vehiculo</a>
+                <p>No tiene ningun tarjeta de credito guardada, quiere agregar uno?</p>
+                <a href="{% url 'agregarTarjetacreditoCliente' %}" class="btn btn-primary">Agregar Tarjeta de Credito</a>
             </div>
         {% endif %}
     </div>
 </div>
 <br><br>
-{% if vehiculos %}
+{% if tarjetas %}
 <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-    <p>¿Quiere agregar otro vehiculo?</p>
-    <a href="{% url 'agregarVehiculo' %}" class="btn btn-primary">Agregar Vehiculo</a>
+    <p>¿Quiere agregar otra tarjeta?</p>
+    <a href="{% url 'agregarVehiculo' %}" class="btn btn-primary">Agregar Tarjeta</a>
 </div>
 {% else %}
 {% endif %}
@@ -71,7 +65,7 @@ Vehiculos de {{request.user.username}}
         buttonsStyling: false
     });
 
-    function eliminarVehiculo(id) {
+    function eliminarTarjetacreditoCliente(id) {
         swalWithBootstrapButtons.fire({
             title: "¿Estás seguro?",
             text: "No podrás revertir esto.",
@@ -85,15 +79,15 @@ Vehiculos de {{request.user.username}}
             if (result.isConfirmed) {
                 swalWithBootstrapButtons.fire({
                     title: "Eliminado",
-                    text: "El vehiculo ha sido eliminado.",
+                    text: "La tarjeta ha sido eliminado.",
                     icon: "success"
                 }).then(() => {
-                    window.location.href = "../eliminarVehiculo/" + id + "/";
+                    window.location.href = "../eliminarTarjetacreditoCliente/" + id + "/";
                 });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 swalWithBootstrapButtons.fire({
                     title: "Cancelado",
-                    text: "Tu vehiculo está seguro :)",
+                    text: "Tu tarjeta está a salvo :)",
                     icon: "error"
                 });
             }
