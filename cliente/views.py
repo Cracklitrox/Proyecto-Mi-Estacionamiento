@@ -349,3 +349,10 @@ def cambiar_a_dueno(request):
         return redirect('indexDueno')
     except Group.DoesNotExist:
         return HttpResponse("Error: Los grupos no están configurados correctamente. Contacta al administrador.")
+
+
+##################################
+##          Notfounf            ##
+##################################  
+def notfound(request):
+    return render(request, 'notfound.html')
